@@ -48,7 +48,7 @@ namespace CityGame
             int groundDetailDataIndex = 0;
             GGL.ImageDrawData[] objectData = new ImageDrawData[20000];
             int objectDataIndex = 0;
-            ImageDrawData selectFieldGround = new ImageDrawData();
+            SquareDrawData selectFieldGround = new SquareDrawData();
             ImageDrawData selectField = new ImageDrawData();
             //GGL.SquareDrawData[] groundData = new SquareDrawData[10000];
 
@@ -147,20 +147,37 @@ namespace CityGame
                             //groundDrawPos,
                             //Color.Lime);
                             int size = gameObject[CurBuild].Size;
-                            if (gameObject[CurBuild].Texture != null)
+
+                            if ((gameObject[CurBuild].Ground != null || gameObject[CurBuild].Texture != null) && showCurBuild)
                             {
                                 Color color;
-                                if (World.CanBuild((byte)CurBuild, CurField)&&World.TestTyp((byte)CurBuild, CurField)==0) color = Color.FromArgb(150, 0, 255, 0);
+                                if (World.CanBuild((byte)CurBuild, CurField) && World.TestTyp((byte)CurBuild, CurField) == 0) color = Color.FromArgb(150, 0, 255, 0);
                                 else color = Color.FromArgb(150, 255, 0, 0);
-                                Texture texture = gameObject[CurBuild].Texture[0, 0];
-                                int overdrawSrs = texture.Width - 64 * size;
-                                int overdrawDst = (int)(overdrawSrs * (mapScale / 64f));
-                                selectField.Update(texture,
-                                    new Rectangle(0, 0, texture.Width, texture.Width),
-                                    new Rectangle(drawPos.X, drawPos.Y - overdrawDst, (int)(texture.Width * (mapScale / 64f)), (int)(texture.Width * (mapScale / 64f))),
-                                    color);
+
+                                if (gameObject[CurBuild].Ground != null)
+                                {
+                                    int tile = 1;
+                                    Texture texture = gameObject[CurBuild].Ground[0];
+                                    int anim = animator[texture.Height / 64 - 1];
+                                    if (gameObject[CurBuild].GroundMode == 1) tile = World.AutoTile((byte)CurBuild,CurField);
+                                    drawedTiles++;
+                                    selectFieldGround.Update(texture,
+                                        new Point[4] { new Point((64 * tile) + 0, 64 * anim), new Point((64 * tile) + 64, 64 * anim), new Point((64 * tile) + 64, 64 + 64 * anim), new Point((64 * tile) + 0, 64 + 64 * anim) },
+                                        groundDrawPos,
+                                        color);
+                                }
+                                if (gameObject[CurBuild].Texture != null)
+                                {
+                                    Texture texture = gameObject[CurBuild].Texture[0, 0];
+                                    int overdrawSrs = texture.Width - 64 * size;
+                                    int overdrawDst = (int)(overdrawSrs * (mapScale / 64f));
+                                    selectField.Update(texture,
+                                        new Rectangle(0, 0, texture.Width, texture.Width),
+                                        new Rectangle(drawPos.X, drawPos.Y - overdrawDst, (int)(texture.Width * (mapScale / 64f)), (int)(texture.Width * (mapScale / 64f))),
+                                        color);
+                                }
                             }
-                            else
+                            else if(showCurBuild)
                             {
                                 Color color;
                                 if (World.CanBuild((byte)CurBuild, CurField)) color = Color.FromArgb(200, 0, 255, 0);
@@ -186,6 +203,7 @@ namespace CityGame
             rendertime.Stop();
 
             if (selectField.Texture != null) GL2D.drawImage(selectField);
+            if (selectFieldGround.Texture != null) GL2D.drawSquare(selectFieldGround);
             GL2D.UseShader(glowShader);
             GL2D.UpdateBuffer();
             GL2D.Render();

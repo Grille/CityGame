@@ -39,6 +39,7 @@ namespace CityGame
         public int CurField = -1;
         public int CurBuild = 3;
 
+        bool showCurBuild = true;
         Stopwatch animatorTimer;
         Point mouseDownPos;
         long date;

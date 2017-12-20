@@ -280,21 +280,26 @@ namespace CityGame
             {
                 for (int iy = -1; iy <= size; iy++)
                 {
-
-                    if (x + ix > 0 && y + iy > 0 && x + ix < width - 1 && y + iy < height - 1)
-                    {
-                        autoTile(pos + ix + iy * width);
-                    }
-                    else if (gameObjects[typ].GraphicMode != 0)  Tile[pos] = 15;
-                    else Tile[pos] = 0;
+                     autoTile(pos + ix + iy * width);
                 }
             }
         }
 
         private void autoTile(int pos)
         {
-            //if (Typ[pos] != typ) return;
-            int typ = Typ[pos];
+            int x = pos % width;
+            int y = (pos - x) / width;
+            if (x >= 0 && y >= 0 && x <= width - 1 && y <= height - 1)
+            {
+                Tile[pos] = (byte)AutoTile(Typ[pos], pos);
+            }
+        }
+        public int AutoTile(byte typ,int pos)
+        {
+            int x = pos % width;
+            int y = (pos - x) / width;
+
+
             byte code = 0;
             if (gameObjects[typ].GraphicMode == 1)
             {
@@ -309,13 +314,13 @@ namespace CityGame
                 bool l = true, u = true, r = true, o = true;
                 for (int i = 0; i < graphicNeighbors.Length; i++)
                 {
-                    if (l && Typ[pos - 1] == graphicNeighbors[i]) { code += 1; l = false; }//l
-                    if (u && Typ[pos + Width] == graphicNeighbors[i]) { code += 2; u = false; }//u
-                    if (r && Typ[pos + 1] == graphicNeighbors[i]) { code += 4; r = false; }//r
-                    if (o && Typ[pos - Width] == graphicNeighbors[i]) { code += 8; o = false; }//o
+                    if (x > 0 && Typ[pos - 1] == graphicNeighbors[i]) { code += 1; l = false; }//l
+                    if (x+1 < width && Typ[pos + 1] == graphicNeighbors[i]) { code += 4; r = false; }//r
+                    if (y > 0 && Typ[pos - Width] == graphicNeighbors[i]) { code += 8; o = false; }//o
+                    if (y+1 < height && Typ[pos + Width] == graphicNeighbors[i]) { code += 2; u = false; }//u
                 }
             }
-            Tile[pos] = code;
+            return code;
         }
         public void Clear(int pos) 
         {
@@ -379,18 +384,29 @@ namespace CityGame
             if (result == 0) return;
             else if (result == 1) updateTyp(typ, pos, gameObjects[typ].UpgradeTyp);
             else if (result == 2) updateTyp(typ, pos, gameObjects[typ].DowngradeTyp);
-            else if (result == 3) updateTyp(typ, pos, gameObjects[typ].DecayTyp);
-            else if (result == 4) updateTyp(typ, pos, gameObjects[typ].DemolitionTyp);
+            else if (result == 3) updateTyp(typ, pos, gameObjects[typ].DemolitionTyp);
+            else if (result == 4) updateTyp(typ, pos, gameObjects[typ].DecayTyp);
             else if (result == 5) updateTyp(typ, pos, gameObjects[typ].DestroyTyp);
             else if (result == 6) Clear(pos);
             return;
         }
         private void updateTyp(byte typ, int pos,int[] replace)
         {
-            if (gameObjects[typ].Size == gameObjects[replace[0]].Size)
+            int newTyp = (int)(replace.Length * rnd.NextDouble());
+            if (gameObjects[typ].Size == gameObjects[replace[newTyp]].Size)
             {
-                Clear(pos);
                 Build((byte)replace[0], pos);
+            }
+            else if (gameObjects[replace[newTyp]].Size == 1)
+            {
+                int size = gameObjects[typ].Size;
+                for (int ix = 0;ix < size; ix++)
+                {
+                    for (int iy = 0; iy < size; iy++)
+                    {    
+                        Build((byte)replace[newTyp], pos + ix + iy * width);
+                    }
+                }
             }
             return;
         }

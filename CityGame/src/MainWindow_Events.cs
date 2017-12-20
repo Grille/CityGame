@@ -41,7 +41,7 @@ namespace CityGame
             while (timer050 > 50 * TimeSpan.TicksPerMillisecond)
             {
                 timer050 -= (int)(50 * TimeSpan.TicksPerMillisecond);
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < (World.Width + World.Height)/8; i++)
                 {
                    World.UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
                 }
@@ -66,6 +66,7 @@ namespace CityGame
 
         private void MainWindow_MouseMove(object sender, MouseEventArgs e)
         {
+            int oldPos = CurField;
             mouse = e;
             if (timerLogic.Enabled == false) CurField = -1;
             else
@@ -75,10 +76,16 @@ namespace CityGame
                 posX = (int)(posX / Cam.Size + Cam.PosX - 0.5 * (gameObject[CurBuild].Size - 1f));
                 posY = (int)(posY / Cam.Size + Cam.PosY - 0.5 * (gameObject[CurBuild].Size - 1f));
                 CurField = (int)(posX + posY * World.Width);
+
+                if (oldPos!=CurField) showCurBuild = true;
             }
             if (e.Button == MouseButtons.Left)
             {
-                if (World.CanBuild((byte)CurBuild, CurField) && gameObject[CurBuild].BuildMode == 1) World.Build((byte)CurBuild, CurField);
+                if (World.CanBuild((byte)CurBuild, CurField) && gameObject[CurBuild].BuildMode == 1)
+                {
+                    World.Build((byte)CurBuild, CurField);
+                    showCurBuild = false;
+                }
             }
         }
         private void MainWindow_MouseDown(object sender, MouseEventArgs e)
@@ -88,12 +95,17 @@ namespace CityGame
             if (World.CanBuild((byte)CurBuild, CurField) && (gameObject[CurBuild].BuildMode == 0 || gameObject[CurBuild].BuildMode == 1))
             {
                 World.Build((byte)CurBuild, CurField);
+                showCurBuild = false;
             }
         }
         private void MainWindow_MouseUp(object sender, MouseEventArgs e)
         {
             mouse = e;
-            if (World.CanBuild((byte)CurBuild, CurField) && gameObject[CurBuild].BuildMode == 2) World.Build((byte)CurBuild, CurField);
+            if (World.CanBuild((byte)CurBuild, CurField) && gameObject[CurBuild].BuildMode == 2)
+            {
+                World.Build((byte)CurBuild, CurField);
+                showCurBuild = false;
+            }
         }
         private void MainWindow_MouseLeave(object sender, EventArgs e)
         {
