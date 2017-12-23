@@ -27,7 +27,7 @@ namespace CityGame
                 else animator[i] = 0;
             }
         }
-        private void Render()
+        unsafe private void Render()
         {
             Stopwatch time = new Stopwatch();
             int drawedTiles = 0;
@@ -66,14 +66,7 @@ namespace CityGame
                     if (posX >= 0 && posY >= 0 && posX < World.Width && posY < World.Height)
                     {
                         // draw positions
-                        int groundPos = posX + posY * (World.Width + 1);
                         Point drawPos = new Point(ix * mapScale - Cam.DetailX, iy * mapScale - Cam.DetailY);
-                        Point[] groundDrawPos = new Point[4] {
-                            new Point(drawPos.X+ World.vertexHeight[groundPos], drawPos.Y+ World.vertexHeight[groundPos]),
-                            new Point(drawPos.X + mapScale+ World.vertexHeight[groundPos+1], drawPos.Y+ World.vertexHeight[groundPos+1]),
-                            new Point(drawPos.X + mapScale+ World.vertexHeight[groundPos+2+World.Width], drawPos.Y + mapScale+ World.vertexHeight[groundPos+2+World.Width]),
-                            new Point(drawPos.X+ World.vertexHeight[groundPos+1+World.Width], drawPos.Y + mapScale+ World.vertexHeight[groundPos+1+World.Width])
-                        };
 
                         // select ground texture
                         int ground = World.Ground[pos];// +World.GroundTile[pos];
@@ -81,14 +74,16 @@ namespace CityGame
                         int groundY = (ground - groundX) / 16;
                         // select ground
                         drawedTiles++;
-                        GL2D.drawSquare(groundTexture,
-                            new Point[4] {
-                                new Point((64 * groundX) + 0+World.vertexHeight[pos], (64 * groundY) + 0),
-                                new Point((64 * groundX) + 64, (64 * groundY) + 0),
-                                new Point((64 * groundX) + 64, (64 * groundY) + 64),
-                                new Point((64 * groundX) + 0, (64 * groundY) + 64) },
-                            groundDrawPos,
-                            Color.White);
+                        //GL2D.drawSquare(groundTexture,
+                        //    new Point[4] {
+                        //        new Point((64 * groundX) + 0+World.vertexHeight[pos], (64 * groundY) + 0),
+                        //        new Point((64 * groundX) + 64, (64 * groundY) + 0),
+                        //        new Point((64 * groundX) + 64, (64 * groundY) + 64),
+                        //        new Point((64 * groundX) + 0, (64 * groundY) + 64) },
+                        //    groundDrawPos,
+                        //    Color.White);
+
+                        GL2D.drawImage(groundTexture, new Rectangle(64 * groundX, 64 * groundY, 64, 64), new Rectangle(drawPos.X, drawPos.Y, mapScale, mapScale),Color.White);
 
                         int refX = World.ReferenceX[pos];
                         int refY = World.ReferenceY[pos];
@@ -96,6 +91,15 @@ namespace CityGame
                         int typ = World.Typ[refPos];
                         if (gameObject[typ].Ground != null)
                         {
+                            // square draw positions
+                            int groundPos = posX + posY * (World.Width + 1);
+                            Point[] groundDrawPos = new Point[4] {
+                            new Point(drawPos.X+ World.vertexHeight[groundPos], drawPos.Y+ World.vertexHeight[groundPos]),
+                            new Point(drawPos.X + mapScale+ World.vertexHeight[groundPos+1], drawPos.Y+ World.vertexHeight[groundPos+1]),
+                            new Point(drawPos.X + mapScale+ World.vertexHeight[groundPos+2+World.Width], drawPos.Y + mapScale+ World.vertexHeight[groundPos+2+World.Width]),
+                            new Point(drawPos.X+ World.vertexHeight[groundPos+1+World.Width], drawPos.Y + mapScale+ World.vertexHeight[groundPos+1+World.Width])
+                            };
+
                             int tile = 0;
                             Texture texture = gameObject[typ].Ground[0];
                             int anim = animator[texture.Height / 64 - 1];
@@ -124,12 +128,6 @@ namespace CityGame
                                     new Rectangle(64 * refX, 64 * refY + (texture.Width * anim), 64 + overdrawSrs, 64 + overdrawSrs),
                                     new Rectangle(drawPos.X, drawPos.Y - overdrawDst, mapScale + overdrawDst, mapScale + overdrawDst),
                                     Color.White);
-
-                                //GL2D.drawImage(
-                                //    texture,
-                                //    new Rectangle(64 * refX, 64 * refY + (texture.Width * anim), 64 + overdrawSrs, 64 + overdrawSrs),
-                                //    new Rectangle(drawPos.X, drawPos.Y - overdrawDst, mapScale + overdrawDst, mapScale + overdrawDst),
-                                //    Color.White);
                             }
                             else //if (refX == 0 && refY)
                             {
@@ -156,15 +154,15 @@ namespace CityGame
 
                                 if (gameObject[CurBuild].Ground != null)
                                 {
-                                    int tile = 1;
-                                    Texture texture = gameObject[CurBuild].Ground[0];
-                                    int anim = animator[texture.Height / 64 - 1];
-                                    if (gameObject[CurBuild].GroundMode == 1) tile = World.AutoTile((byte)CurBuild,CurField);
-                                    drawedTiles++;
-                                    selectFieldGround.Update(texture,
-                                        new Point[4] { new Point((64 * tile) + 0, 64 * anim), new Point((64 * tile) + 64, 64 * anim), new Point((64 * tile) + 64, 64 + 64 * anim), new Point((64 * tile) + 0, 64 + 64 * anim) },
-                                        groundDrawPos,
-                                        color);
+                                    //int tile = 1;
+                                    //Texture texture = gameObject[CurBuild].Ground[0];
+                                    //int anim = animator[texture.Height / 64 - 1];
+                                    //if (gameObject[CurBuild].GroundMode == 1) tile = World.AutoTile((byte)CurBuild,CurField);
+                                    //drawedTiles++;
+                                    //selectFieldGround.Update(texture,
+                                    //    new Point[4] { new Point((64 * tile) + 0, 64 * anim), new Point((64 * tile) + 64, 64 * anim), new Point((64 * tile) + 64, 64 + 64 * anim), new Point((64 * tile) + 0, 64 + 64 * anim) },
+                                    //    groundDrawPos,
+                                    //    color);
                                 }
                                 if (gameObject[CurBuild].Texture != null)
                                 {

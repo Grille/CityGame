@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Text;
 using System.Drawing;
 //using System.Drawing.Imaging;
@@ -102,7 +102,7 @@ namespace GGL
     {
         private static int width = 640, height = 480;
 
-        private static int lastVertexOffset, lastIndexOffset,vertexOffset, indexOffset, textureOffset,renderTextureOffset;
+        private static int lastVertexOffset, lastIndexOffset, vertexOffset, indexOffset, textureOffset, renderTextureOffset;
 
         private static int positionAttrib, texturePosAttrib, colorAttrib, textureIndexAttrib;
 
@@ -216,9 +216,9 @@ namespace GGL
                 textureContinuous[textureOffset] = 0;
             }
             textureContinuous[textureOffset] += 2;
-            }
+        }
 
-        public static void drawGround(Texture texture,byte[] texureOffset, Point[] src, Point[] dst, Color color)
+        public static void drawGround(Texture texture, byte[] texureOffset, Point[] src, Point[] dst, Color color)
         {
 
             textureIndexData[vertexOffset + 0] = new Vector4h(texureOffset[0], texureOffset[1], texureOffset[2], texureOffset[3]);
@@ -227,17 +227,18 @@ namespace GGL
 
         }
 
-        public static void drawSquare(SquareDrawData data)
+        public unsafe static void drawSquare(SquareDrawData data)
         {
             drawSquare(data.Texture, data.Src, data.Dst, data.Color);
         }
-        public static void drawSquare(SquareDrawData[] data,int length)
+        public unsafe static void drawSquare(SquareDrawData[] data, int length)
         {
-            for (int i = 0; i < length; i++) {
+            for (int i = 0; i < length; i++)
+            {
                 drawSquare(data[i].Texture, data[i].Src, data[i].Dst, data[i].Color);
             }
         }
-        public static void drawSquare(Texture texture, Point[] src, Point[] dst, Color color)
+        public unsafe static void drawSquare(Texture texture, Point[] src, Point[] dst, Color color)
         {
 
 
@@ -301,43 +302,54 @@ namespace GGL
 
         }
 
-        public static int CreateShaders(string pathVS,string pathFS)
+        public static int CreateShaders(string pathVS, string pathFS)
         {
-            int vertexShader = GL.CreateShader(ShaderType.VertexShader);
-            int fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+            try
+            {
+                int vertexShader = GL.CreateShader(ShaderType.VertexShader);
+                int fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+            
 
-            int status_code;
-            string info;
+                int status_code;
+                string info;
 
-            GL.ShaderSource(vertexShader, File.ReadAllText(pathVS));
-            GL.CompileShader(vertexShader);
-            GL.GetShaderInfoLog(vertexShader, out info);
-            GL.GetShader(vertexShader, ShaderParameter.CompileStatus, out status_code);
-            if (status_code != 1) {
-                Console.WriteLine("vertexShader:\n" + info);
-                return -1;
+                GL.ShaderSource(vertexShader, File.ReadAllText(pathVS));
+                GL.CompileShader(vertexShader);
+                GL.GetShaderInfoLog(vertexShader, out info);
+                GL.GetShader(vertexShader, ShaderParameter.CompileStatus, out status_code);
+                if (status_code != 1)
+                {
+                    Console.WriteLine("vertexShader:\n" + info);
+                    return -1;
+                }
+
+
+                GL.ShaderSource(fragmentShader, File.ReadAllText(pathFS));
+                GL.CompileShader(fragmentShader);
+                GL.GetShaderInfoLog(fragmentShader, out info);
+                GL.GetShader(fragmentShader, ShaderParameter.CompileStatus, out status_code);
+                if (status_code != 1)
+                {
+                    Console.WriteLine("fragmentShader:\n" + info);
+                    return -1;
+                }
+
+                // Create program
+                shaderProgram = GL.CreateProgram();
+
+                GL.AttachShader(shaderProgram, vertexShader);
+                GL.AttachShader(shaderProgram, fragmentShader);
+
+                GL.LinkProgram(shaderProgram);
+                //GL.UseProgram(shaderProgram);
+                //GL.Uniform1(shaderProgram, pos);
+                return shaderProgram;
+            }
+            catch (AccessViolationException e)
+            {
+                return -2;
             }
 
-
-            GL.ShaderSource(fragmentShader, File.ReadAllText(pathFS));
-            GL.CompileShader(fragmentShader);
-            GL.GetShaderInfoLog(fragmentShader, out info);
-            GL.GetShader(fragmentShader, ShaderParameter.CompileStatus, out status_code);
-            if (status_code != 1) {
-                Console.WriteLine("fragmentShader:\n" + info);
-                return -1;
-            }
-
-            // Create program
-            shaderProgram = GL.CreateProgram();
-
-            GL.AttachShader(shaderProgram, vertexShader);
-            GL.AttachShader(shaderProgram, fragmentShader);
-
-            GL.LinkProgram(shaderProgram);
-            //GL.UseProgram(shaderProgram);
-            //GL.Uniform1(shaderProgram, pos);
-            return shaderProgram;
         }
         public static void UseShader(int shaderProgram) {
 
@@ -439,7 +451,7 @@ namespace GGL
         /// <summary>
         /// 
         /// </summary>
-        public static void Render()
+        public unsafe static void Render()
         {
             int it = 0;
             int offset = 0;

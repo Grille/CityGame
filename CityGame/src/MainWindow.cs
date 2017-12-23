@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Diagnostics;
@@ -138,9 +138,9 @@ namespace CityGame
             Console.WriteLine(GL.GetString(StringName.Renderer));
             Console.WriteLine(GL.GetString(StringName.Version));
             basicShader = GL2D.CreateShaders("../Data/Shaders/basicVS.glsl", "../Data/Shaders/basicFS.glsl");
-            if (basicShader == -1) return 2;
+            if (basicShader < 0) return 2;
             glowShader = GL2D.CreateShaders("../Data/Shaders/glowVS.glsl", "../Data/Shaders/glowFS.glsl");
-            if (glowShader == -1) return 2;
+            if (glowShader < 0) return 2;
             GL2D.UseShader(basicShader);
             GL2D.CreateBuffer(500000);
             // Other state

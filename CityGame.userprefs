@@ -1,0 +1,13 @@
+﻿<Properties StartupConfiguration="{3F6D9B75-D4C5-4351-B0B7-D7C462E48886}|Default">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="CityGame\src\MainWindow.cs">
+    <Files>
+      <File FileName="CityGame\src\MainWindow.cs" Line="23" Column="34" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.CityGame PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
