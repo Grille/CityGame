@@ -2,6 +2,7 @@
  Template
  {
   string name = " ";
+  int value = 0;
   bool CanBeNegative = false;
   bool storable = false;
  }

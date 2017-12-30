@@ -25,12 +25,12 @@
   //effects: 0=not, 1=up, 2=down, 3=demolition, 4=deacy, 5=destroy 6=entf//
   //importance: 0=canNotWork, 1=canWork//
   //15 to 20 Simulation array//
-  //AreaPermanent->typ: 0=water, 1=nature, 2=road
+  //AreaPermanent->typ: 0=water, 1=nature, 2=road,3=saltwater
   int[,] AreaPermanent = [];      //[[typ,size,value]]
   int[,] AreaDependent = [];      //[[typ,minValue,maxValue,effects,mode]]
-  int[,] ResourcesBuild = [];     //[[typ,value,importance]]
-  int[,] ResourcesPermanent = []; //[[typ,value,importance]]
-  int[,] ResourcesMonthly = [];   //[[typ,value,importance]]
+  int[,] ResourcesBuild = [];     //[[typ,value]]
+  int[,] ResourcesPermanent = []; //[[typ,value]]
+  int[,] ResourcesMonthly = [];   //[[typ,value]]
   int[,] ResourcesDependent = []; //[[typ,minValue,maxValue,effects,mode]]
  }
 
@@ -49,7 +49,7 @@
  ID=2; // water
  {
   name = "Saltwater"; graphicMode = 2; groundMode = 1;graphicNeighbors = [1,2]; groundPath = "../Data/texture/nature/saltwater_0";
-  AreaPermanent = [[0,1,1]]
+  AreaPermanent = [[3,1,1]]
  }
 
  ID=3; // forest Conifer
@@ -58,7 +58,8 @@
   canBuiltOn = [0,4,5];
   downgradeTyp = [0];
   AreaPermanent = [[1,3,2]];
-  AreaDependent = [[1,0,10000,2 ,1]];
+  AreaDependent = [[1,0,inf+,2 ,1]];
+  ResourcesDependent = [[0,0,10,5,1]];
  }
  ID=4; // forest Deciduous
  {
@@ -66,7 +67,7 @@
   canBuiltOn = [0,3,5];
   downgradeTyp = [0];
   AreaPermanent = [[1,3,2]];
-  AreaDependent = [[1,0,10000,2 ,1]];
+  AreaDependent = [[1,0,inf+,2 ,1]];
  }
  ID=5; // forest Palm
  {
@@ -74,7 +75,7 @@
   canBuiltOn = [0,3,4];
   downgradeTyp = [0];
   AreaPermanent = [[1,3,2]];
-  AreaDependent = [[1,0,10000,2 ,1]];
+  AreaDependent = [[1,0,inf+,2 ,1]];
  }
 
  ID=6; // forest
@@ -221,27 +222,27 @@
  {
   name = "coal power plant"; size = 3; path = "../Data/texture/urban/power/KKW";
   AreaPermanent = [[1,8,-15],[1,12,-15],[1,16,-15]];
-  AreaDependent = [[2,100,10000,4, 1]];
+  AreaDependent = [[2,100,inf+,4, 1]];
  }
  ID=42; // gas power plant
  {
   name = "gas power plant"; size = 3; path = "../Data/texture/urban/power/GKW";
   AreaPermanent = [[1,10,-15]];
-  AreaDependent = [[2,100,10000,4, 1]];
+  AreaDependent = [[2,100,inf+,4, 1]];
  }
  ID=43; // nuclear power plant
  {
   name = "nuclear power plant"; size = 3; path = "../Data/texture/urban/power/AKW";
-  AreaDependent = [[2,100,10000,4, 1]];
+  AreaDependent = [[2,100,inf+,4, 1]];
  }
  ID=44; // 
  {
   name = "solar power plant"; size = 3; path = "../Data/texture/urban/power/SKW";
-  AreaDependent = [[2,100,10000,4, 1]];
+  AreaDependent = [[2,100,inf+,4, 1]];
  }
  ID=45; // 
  {
-  name = "wind power plant"; size = 2; path = "../Data/texture/urban/power/WKW";
+  name = "wind power plant"; size = 1; path = "../Data/texture/urban/power/WKW";
  }
  ID=46; // void
  {
@@ -261,29 +262,32 @@
  ID=51; // void
  {
   name = "water pump";path = "../Data/texture/urban/water/WP";
-  AreaDependent = [[0,1,10000,5, 1],[1,0,10000,2 ,1]];
+  AreaDependent = [[0,1,inf+,5, 1],[1,0,inf+,2 ,1]];
+  //AreaPermanent = [[0,2,-100],[0,1,100]];
   downgradeTyp = [52];
  }
  ID=52; // void
  {
   name = "polluted water pump";path = "../Data/texture/urban/water/WPp";
+  AreaDependent = [[0,1,inf+,5, 1],[1,0,inf+,1 ,0]];
   upgradeTyp = [51];
  }
  ID=53; // void
  {
   name = "water tower";path = "../Data/texture/urban/water/WT";
-  AreaDependent = [[1,0,10000,2 ,1]];
+  AreaDependent = [[1,0,inf+,2 ,1]];
   downgradeTyp = [54];
  }
  ID=54; // void
  {
   name = "polluted water tower";path = "../Data/texture/urban/water/WTp";
+  AreaDependent = [[1,0,inf+,1 ,0]];
   upgradeTyp = [53];
  }
  ID=55; // void
  {
   name = "sewage plant"; size = 3; path = "../Data/texture/urban/water/KW";
-  AreaDependent = [[2,100,10000,5, 1]];
+  AreaDependent = [[2,100,inf+,5, 1]];
  }
  ID=56; // void
  {
@@ -303,7 +307,7 @@
  ID=60;
  {
   name = "incinerator";size = 2;path = "../Data/texture/urban/disposal/MV";
-  AreaDependent = [[2,100,10000,5, 1]];
+  AreaDependent = [[2,100,inf+,5, 1]];
   AreaPermanent = [[1,8,-15],[1,12,-15]];
  }
 
@@ -313,19 +317,19 @@
  ID=61; // Residential
  {
   name = "Residential"; path = "../Data/texture/urban/Residential/W0";diversity = 5;
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=62;
  {
   name = "Residential"; path = "../Data/texture/urban/Residential/W1";diversity = 5;
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=63;
  {
   name = "Residential"; path = "../Data/texture/urban/Residential/W2";diversity = 5;
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=64;
@@ -352,13 +356,13 @@
  ID=71;
  {
   name = "Comercial"; path = "../Data/texture/urban/Comercial/G0";diversity = 5;
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=72;
  {
   name = "Comercial"; path = "../Data/texture/urban/Comercial/G1";diversity = 5;
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=73;
@@ -370,7 +374,7 @@
  ID=75;
  {
   name = "Comercial"; path = "../Data/texture/urban/Comercial/G4";diversity = 5;
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=76;
@@ -398,14 +402,14 @@
  ID=83; 
  {
   name = "Industrieal"; path = "../Data/texture/urban/Industrieal/I0";diversity = 5;
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=84;
  {
 
   name = "Industrieal"; path = "../Data/texture/urban/Industrieal/I1";diversity = 5;
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=85;
@@ -417,7 +421,7 @@
  ID=87;
  {
   name = "Industrieal"; path = "../Data/texture/urban/Industrieal/I2a";diversity = 5;
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=88; 
@@ -436,31 +440,31 @@
  ID=91;
  {
   name = "small fire department"; size = 2; path = "../Data/texture/urban/public/FW1";
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=92;
  {
   name = "large fire department"; size = 3; path = "../Data/texture/urban/public/FW2";
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=93;
  {
   name = "small police department"; size = 2; path = "../Data/texture/urban/public/PW1";
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=94;
  {
   name = "large police departmen"; size = 3; path = "../Data/texture/urban/public/PW2";
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=95;
  {
   name = "Comercial"; size = 3; path = "../Data/texture/urban/public/G";
-  AreaDependent = [[2,1,10000,5, 1]];
+  AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }
  ID=96;

@@ -13,6 +13,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
+using GGL.Graphic;
 
 namespace CityGame
 {
@@ -179,9 +180,10 @@ namespace CityGame
             int y = (pos - x) / width;
 
             int size = gameObjects[typ].Size;
-            if (x < 0 || y < 0 || x > width - size || y > width - size) return false;
-            if (TestTyp(typ, pos) > 1) return false;
-            if (gameObjects[typ].CanBuiltOnTyp.Length == 0) return true;
+            if (x < 0 || y < 0 || x > width - size || y > width - size) return false;//is on map
+            if (TestResourcesBuild(typ) > 1) return false;
+            if (TestAreaDependet(typ, pos) > 1) return false;
+            if (gameObjects[typ].CanBuiltOnTyp.Length == 0) return true;//can build on all
             bool returnValue = true;
 
 
@@ -210,16 +212,40 @@ namespace CityGame
         private void buildEffects(byte typ,int pos,bool add)
         {
             int x = pos % width;
-            int y = (pos - x) / width; 
+            int y = (pos - x) / width;
 
+            if (add)
+            {
+                //counter
+                objectCounter[typ]++;
+
+                //resources
+                for (int i = 0; i < gameObjects[typ].ResourcesBuild.GetLength(0); i++)
+                {
+                    int dataTyp = gameObjects[typ].ResourcesBuild[i, 0];
+                    int dataValue = gameObjects[typ].ResourcesBuild[i, 1];
+                    resources[typ].Value += dataValue;
+                }
+            }
+            else objectCounter[typ]--;
+
+            //resources
+            for (int i = 0; i < gameObjects[typ].ResourcesPermanent.GetLength(0); i++)
+            {
+                int dataTyp = gameObjects[typ].ResourcesPermanent[i, 0];
+                int dataValue = gameObjects[typ].ResourcesPermanent[i, 1];
+                if (!add) dataValue = -dataValue;
+                resources[typ].AddValue += dataValue; 
+            }
+
+            //area
             for (int i = 0; i < gameObjects[typ].AreaPermanent.GetLength(0); i++)
             {
                 int typSize = gameObjects[typ].Size;
                 int dataTyp = gameObjects[typ].AreaPermanent[i,0];
                 int dataSize = gameObjects[typ].AreaPermanent[i, 1];
                 int dataValue = gameObjects[typ].AreaPermanent[i, 2];
-                if (add) objectCounter[typ]++;
-                else{dataValue = -dataValue;objectCounter[typ]--;}
+                if (!add) dataValue = -dataValue;
 
                 int startX = x - dataSize;
                 if (startX < 0) startX = 0;
@@ -340,7 +366,24 @@ namespace CityGame
             //return pos;
         }
 
-        public int TestTyp(byte typ, int pos)
+        public int TestResourcesBuild(byte typ)
+        {
+            int retValue = 0;
+            for (int i = 0; i < gameObjects[typ].ResourcesDependent.GetLength(0); i++)
+            {
+                int dataTyp = gameObjects[typ].ResourcesDependent[i, 0];
+                int dataMin = gameObjects[typ].ResourcesDependent[i, 1];
+                int dataMax = gameObjects[typ].ResourcesDependent[i, 2];
+                int dataEffects = gameObjects[typ].ResourcesDependent[i, 3];
+                int dataInvert = gameObjects[typ].ResourcesDependent[i, 4];
+
+                bool fire = false;
+                if (fire && retValue < dataEffects) retValue = dataEffects;
+            }
+            return retValue;
+
+        }
+        public int TestAreaDependet(byte typ, int pos)
         {
             int retValue = 0;
 
@@ -350,10 +393,10 @@ namespace CityGame
                 int dataTyp = gameObjects[typ].AreaDependent[i,0];
                 int dataMin = gameObjects[typ].AreaDependent[i, 1];
                 int dataMax = gameObjects[typ].AreaDependent[i, 2];
-                int dataValue = gameObjects[typ].AreaDependent[i, 3];
+                int dataEffects = gameObjects[typ].AreaDependent[i, 3];
                 int dataInvert = gameObjects[typ].AreaDependent[i, 4];
 
-                bool fuba = true;
+                bool result = true;
                 for (int ix = 0; ix < size; ix++)
                 {
                     for (int iy = 0; iy < size; iy++)
@@ -364,15 +407,15 @@ namespace CityGame
 
                         if (dataInvert == 0)
                         {
-                            fuba = fuba & !(curValue < dataMin || curValue > dataMax);
+                            result = result & !(curValue < dataMin || curValue > dataMax);
                         }
                         else
                         {
-                            fuba = fuba & (curValue < dataMin || curValue > dataMax);
+                            result = result & (curValue < dataMin || curValue > dataMax);
                         }
                     }
                 }
-                if (fuba && retValue < dataValue) retValue = dataValue;
+                if (result && retValue < dataEffects) retValue = dataEffects;
             }
             return retValue;
         }
@@ -380,7 +423,7 @@ namespace CityGame
         {
             if (ReferenceX[pos] != 0 || ReferenceY[pos] != 0) return;
             byte typ = Typ[pos];
-            int result = TestTyp(typ, pos);
+            int result = TestAreaDependet(typ, pos);
             if (result == 0) return;
             else if (result == 1) updateTyp(typ, pos, gameObjects[typ].UpgradeTyp);
             else if (result == 2) updateTyp(typ, pos, gameObjects[typ].DowngradeTyp);
@@ -550,176 +593,6 @@ namespace CityGame
                 //if (rgbData[i * 4 + 1] == 128) Build(1, i);
             }
             loadMode = false;
-        }
-    }
-
-    public class GameObject
-    {
- 
-        private string name;
-        public int BuildMode;
-        private Texture[,] texture;
-        public Texture[,] Texture { get { return texture; } }
-        private int diversity;
-        public int Diversity { get { return diversity; } }
-        private byte size;
-        public byte Size { get { return size; } }
-        private Texture[] ground;
-        public Texture[] Ground { get { return ground; } }
-        private int groundMode;
-        public int GroundMode { get { return groundMode; } }
-
-        private int graphicMode;  //0=nothing, 1=self, 2=useArray;
-        public int GraphicMode { get { return graphicMode; } }
-        public int[] graphicNeighbors;
-
-        public int[] UpgradeTyp;
-        public int[] DowngradeTyp;
-        public int[] DemolitionTyp;
-        public int[] DecayTyp;
-        public int[] DestroyTyp;
-        public int[] CanBuiltOnTyp;          //[typ]
-
-        //effects: 0=up, 1=down, 2=demolition, 3=deacy, 4=destroy 5=entf//
-        //importance: 0=canNotWork, 1=canWork//
-        public int[,] AreaPermanent;        //[[typ,size,value]]
-        public int[,] AreaDependent;      //[[typ,minValue,maxValue,effects]]
-        public int[,] ResourcesBuild;     //[[typ,value,importance]]
-        public int[,] ResourcesPermanent; //[[typ,value,importance]]
-        public int[,] ResourcesMonthly;   //[[typ,value,importance]]
-        public int[,] ResourcesDependent; //[[typ,minValue,maxValue,effects]]
-
-        public void LoadBasic(string name, string path, string groundPath, int buildMode,int slopeMode, int diversity, int size,int groundMode, int graphicMode, int[] graphicNeighbors)
-        {
-
-            this.name = name;
-            this.diversity = diversity;
-            this.size = (byte)size;
-
-            this.BuildMode = buildMode;
-            this.groundMode = groundMode;
-            this.graphicMode = graphicMode;
-            this.graphicNeighbors = graphicNeighbors;
-
-            if (groundPath != "-")
-            {
-                ground = new Texture[1];
-                if (File.Exists(groundPath + "_g.png")) ground[0] = new Texture(groundPath+"_g.png");
-                else ground[0] = new Texture(groundPath + ".png"); 
-            }
-            if (path != "-")
-            {
-                texture = new Texture[diversity, 16];
-                for (int i = 0; i < diversity; i++)
-                {
-                    if (graphicMode == 0)
-                    {
-                        if (!File.Exists(path + "_" + i + "_0.png")) texture[i, 0] = new Texture(path + "_" + i + ".png"); 
-                        else texture[i, 0] = new Texture(path + "_" + i + "_0.png");
-                    }
-                    else
-                    {
-                        for (int i2 = 0; i2 < 16; i2++)
-                        {
-                            if (!File.Exists(path + "_" + i + "_" + i2 + ".png")) texture[i, i2] = texture[i, 0];
-                            else texture[i, i2] = new Texture(path + "_" + i + "_" + i2 + ".png");
-                        }
-                    }
-                }
-            }
-        }
-        public void LoadTypRefs(int[] upgradeTyp, int[] downgradeTyp, int[] demolitionTyp, int[] decayTyp, int[] destroyTyp, int[] CanBuiltOnTyp) 
-        {
-            this.UpgradeTyp = upgradeTyp;
-            this.DowngradeTyp = downgradeTyp;
-            this.DemolitionTyp = demolitionTyp;
-            this.DecayTyp = decayTyp;
-            this.DestroyTyp = destroyTyp;
-            this.CanBuiltOnTyp = CanBuiltOnTyp;
-        }
-        public void LoadSimData(int[,] AreaPermanent,int[,] AreaDependent,int[,] ResourcesBuild,int[,] ResourcesPermanent,int[,] ResourcesMonthly,int[,] ResourcesDependent)
-        {
-            this.AreaPermanent = AreaPermanent;
-            this.AreaDependent = AreaDependent;
-            this.ResourcesBuild = ResourcesBuild;
-            this.ResourcesPermanent = ResourcesPermanent;
-            this.ResourcesMonthly = ResourcesMonthly;
-            this.ResourcesDependent = ResourcesDependent;
-        }
-    }
-
-    public class GameResources 
-    {
-        private string name;
-        private bool canBeNegative;
-        private bool storable;
-        private int value;
-        private int addValue;
-        public int AddValue
-        {
-            set
-            {
-            }
-            get
-            {
-                return AddValue;
-            }
-        }
-        private int storeSize;
-
-
-        public GameResources()
-        {
-        }
-        public void Load(string name, bool canBeNegative, bool storable)
-        {
-            this.name = name;
-            this.canBeNegative = canBeNegative;
-            this.storable = storable;
-        }
-        public void Update()
-        {
-            value += AddValue;
-        }
-
-    }
-
-    public class Camera
-    {
-        private World world;
-        private Control sender;
-        public int Speed = 30;
-        public int Size = 64;
-        public int PosX = 0;
-        public int PosY = 0;
-
-        public int DetailX = 0;
-        public int DetailY = 0;
-
-        public Camera(World world,Control sender)
-        {
-            this.world = world;
-            this.sender = sender;
-        }
-        public void Move(int x, int y)
-        {
-            DetailX += x;
-            DetailY += y;
-            while (DetailX >= Size) { DetailX -= Size; PosX++; }
-            while (DetailY >= Size) { DetailY -= Size; PosY++; }
-            while (DetailX < 0) { DetailX += Size; PosX--; }
-            while (DetailY < 0) { DetailY += Size; PosY--; }
-        }
-        public int GetCenter()
-        {
-            int x = sender.Width / Size - PosX;
-            int y = sender.Height / Size - PosY;
-            return x+y*world.Width;
-        }
-        public void SetCenter(int pos)
-        {
-            PosX = pos % world.Width - sender.Width / Size;
-            PosY = pos / world.Height - sender.Height / Size;
         }
     }
 }

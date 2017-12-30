@@ -77,7 +77,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "MainWindow";
-            this.Text = "MainWindow";
+            this.Text = "CityGame";
             this.Shown += new System.EventHandler(this.MainWindow_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseDown);

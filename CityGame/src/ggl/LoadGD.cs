@@ -18,6 +18,10 @@ namespace GGL
             data = data.Replace('\x9', '\x20');//Replace TAB with space
             data = data.Replace("{", ";{;");
             data = data.Replace("}", ";};");
+            data = data.Replace("inf+", "10000");
+            data = data.Replace("inf-", "-10000");
+            //data = data.Replace("true", "1");
+            //data = data.Replace("false", "0");
             lines = data.Split(new char[] { '\x3b' });//split by ;
 
             for (int i = 0; i < lines.Length; i++)

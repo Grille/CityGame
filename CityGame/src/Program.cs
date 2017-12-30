@@ -18,13 +18,13 @@ namespace CityGame
         [STAThread]
         static void Main(string[] args)
         {
-        MainWindow = new MainWindow();
-        MenuWindow = new MenuWindow();
+            MainWindow = new MainWindow();
+            MenuWindow = new MenuWindow();
 
-        MenuOverlay = new MenuOverlay();
-        //Console.WriteLine();
-        Application.Run(MainWindow);
-            //new MainWindow().Run(60);
+            MenuOverlay = new MenuOverlay();
+            //Console.WriteLine();
+            Application.Run(MainWindow);
+                //new MainWindow().Run(60);
         }
     }
 }

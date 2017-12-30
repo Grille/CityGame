@@ -56,6 +56,7 @@ namespace CityGame
         }
         public new void Show()
         {
+			// hallo
             base.Show(Program.MainWindow);
             this.Location = new Point(SystemInformation.VirtualScreen.Width / 2 - 320, SystemInformation.VirtualScreen.Height / 2 - 200);
             this.Size = new Size(640, 400);

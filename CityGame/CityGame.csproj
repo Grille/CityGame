@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3F6D9B75-D4C5-4351-B0B7-D7C462E48886}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CityGame</RootNamespace>
     <AssemblyName>CityGame</AssemblyName>
@@ -28,7 +28,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>
+    </DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -69,7 +70,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\Classes.cs" />
+    <Compile Include="src\GameClasses\GameResources.cs" />
+    <Compile Include="src\GameClasses\Camera.cs" />
+    <Compile Include="src\GameClasses\GameObject.cs" />
+    <Compile Include="src\GameClasses\World.cs" />
     <Compile Include="src\LockBitmap.cs" />
     <Compile Include="src\MainWindow_Graphic.cs" />
     <Compile Include="src\MainWindow_Events.cs" />
@@ -78,7 +82,6 @@
     <Compile Include="src\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\ggl\GL2D.cs" />
     <Compile Include="src\MenuOverlay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="data\config\engineConfig.gd" />
+    <None Include="data\config\gameArea.gd" />
+    <None Include="data\config\gameObject.gd" />
+    <None Include="data\config\gameResources.gd" />
+    <None Include="data\config\gui.gd" />
+    <None Include="data\config\mapBuild.gd" />
     <None Include="data\shaders\basicFS.glsl" />
     <None Include="data\shaders\basicVS.glsl" />
     <None Include="data\shaders\glowFS.glsl" />

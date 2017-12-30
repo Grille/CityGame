@@ -14,6 +14,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
+using GGL.Graphic;
 
 namespace CityGame
 {
@@ -22,41 +23,15 @@ namespace CityGame
         private void timerRender_Tick(object sender, EventArgs e)
         {
             Render();
-            renderControl.SwapBuffers();
         }
         private void timerLogic_Tick(object sender, EventArgs e)
         {
-            int ticks = (int)(DateTime.Now.Ticks - date);
-            date = DateTime.Now.Ticks;
-            timer010 += ticks;
-            while (timer010 > 10 * TimeSpan.TicksPerMillisecond)
-            {
-                timer010 -= (int)(10 * TimeSpan.TicksPerMillisecond);
-                if (mouse.X < 1) Cam.Move(-32, 0);
-                if (mouse.Y < 1) Cam.Move(0, -32);
-                if (mouse.X >= this.Width - 1) Cam.Move(+32, 0);
-                if (mouse.Y >= this.Height - 1) Cam.Move(0, +32);
-            }
-            timer050 += ticks;
-            while (timer050 > 50 * TimeSpan.TicksPerMillisecond)
-            {
-                timer050 -= (int)(50 * TimeSpan.TicksPerMillisecond);
-                for (int i = 0; i < (World.Width + World.Height)/8; i++)
-                {
-                   World.UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
-                }
-            }
-            timer100 += ticks;
-            while (timer100 > 100 * TimeSpan.TicksPerMillisecond)
-            {
-                timer100 -= (int)(100 * TimeSpan.TicksPerMillisecond);
-            }
+            simulate();
         }
 
         private void OnRenderControlResize(object sender, EventArgs e)
         {
             Program.MenuOverlay.Size = this.Size;
-            renderControl.Size = this.Size;
             GL2D.UpdateSize(this.Size);
         }
         private void MainWindow_Shown(object sender, EventArgs e)

@@ -1,12 +1,15 @@
 ﻿<Properties StartupConfiguration="{3F6D9B75-D4C5-4351-B0B7-D7C462E48886}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="CityGame\src\MainWindow.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CityGame\src\MainWindow_Graphic.cs">
     <Files>
-      <File FileName="CityGame\src\MainWindow.cs" Line="23" Column="34" />
+      <File FileName="CityGame\src\MainWindow.cs" Line="12" Column="14" />
+      <File FileName="CityGame\src\MenuWindow.cs" Line="161" Column="10" />
+      <File FileName="CityGame\src\MainWindow_Events.cs" Line="1" Column="1" />
+      <File FileName="CityGame\src\MainWindow_Graphic.cs" Line="9" Column="32" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.ItemProperties.CityGame PreferredExecutionTarget="MonoDevelop.Default" />
