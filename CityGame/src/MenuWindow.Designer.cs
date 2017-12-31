@@ -44,7 +44,6 @@
             this.newGame = new System.Windows.Forms.Panel();
             this.imageButton6 = new GGL.Control.ImageButton();
             this.imageButton5 = new GGL.Control.ImageButton();
-            this.labelNewGameSize = new System.Windows.Forms.Label();
             this.listBoxNewGame = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBoxNewGame = new System.Windows.Forms.PictureBox();
@@ -264,7 +263,6 @@
             this.newGame.BackColor = System.Drawing.Color.Transparent;
             this.newGame.Controls.Add(this.imageButton6);
             this.newGame.Controls.Add(this.imageButton5);
-            this.newGame.Controls.Add(this.labelNewGameSize);
             this.newGame.Controls.Add(this.listBoxNewGame);
             this.newGame.Controls.Add(this.label3);
             this.newGame.Controls.Add(this.pictureBoxNewGame);
@@ -281,7 +279,7 @@
             this.imageButton6.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
             this.imageButton6.HoverImage = null;
             this.imageButton6.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton6.Location = new System.Drawing.Point(113, 319);
+            this.imageButton6.Location = new System.Drawing.Point(113, 288);
             this.imageButton6.Name = "imageButton6";
             this.imageButton6.Size = new System.Drawing.Size(200, 50);
             this.imageButton6.SwitchMode = false;
@@ -297,7 +295,7 @@
             this.imageButton5.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
             this.imageButton5.HoverImage = null;
             this.imageButton5.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton5.Location = new System.Drawing.Point(319, 319);
+            this.imageButton5.Location = new System.Drawing.Point(319, 288);
             this.imageButton5.Name = "imageButton5";
             this.imageButton5.Size = new System.Drawing.Size(200, 50);
             this.imageButton5.SwitchMode = false;
@@ -305,17 +303,6 @@
             this.imageButton5.Text = "Back";
             this.imageButton5.TextDownOffset = 1;
             this.imageButton5.Click += new System.EventHandler(this.buttonBack_Click);
-            // 
-            // labelNewGameSize
-            // 
-            this.labelNewGameSize.BackColor = System.Drawing.Color.Transparent;
-            this.labelNewGameSize.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelNewGameSize.Location = new System.Drawing.Point(319, 281);
-            this.labelNewGameSize.Name = "labelNewGameSize";
-            this.labelNewGameSize.Size = new System.Drawing.Size(200, 34);
-            this.labelNewGameSize.TabIndex = 13;
-            this.labelNewGameSize.Text = "Size:";
-            this.labelNewGameSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // listBoxNewGame
             // 
@@ -332,7 +319,7 @@
             this.listBoxNewGame.Location = new System.Drawing.Point(115, 75);
             this.listBoxNewGame.Name = "listBoxNewGame";
             this.listBoxNewGame.ScrollAlwaysVisible = true;
-            this.listBoxNewGame.Size = new System.Drawing.Size(198, 238);
+            this.listBoxNewGame.Size = new System.Drawing.Size(198, 200);
             this.listBoxNewGame.TabIndex = 6;
             this.listBoxNewGame.SelectedIndexChanged += new System.EventHandler(this.listBoxNewGame_SelectedIndexChanged);
             // 
@@ -343,7 +330,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(634, 39);
             this.label3.TabIndex = 4;
-            this.label3.Text = "New Game";
+            this.label3.Text = "Browser";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBoxNewGame
@@ -356,7 +343,7 @@
             this.pictureBoxNewGame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxNewGame.TabIndex = 5;
             this.pictureBoxNewGame.TabStop = false;
-            this.pictureBoxNewGame.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxNewGame_Paint);
+            this.pictureBoxNewGame.Paint += new System.Windows.Forms.PaintEventHandler(this.renderMapPreview);
             // 
             // loadGame
             // 
@@ -738,7 +725,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.PictureBox pictureBoxNewGame;
         private System.Windows.Forms.ListBox listBoxNewGame;
-        private System.Windows.Forms.Label labelNewGameSize;
         private System.Windows.Forms.ListBox listBoxLoadGame;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.ListBox listBoxSaveGame;

@@ -163,17 +163,26 @@ namespace CityGame
             int mapScale = Cam.Size;
             int size = gameObject[CurBuild].Size;
             int builMode = gameObject[CurBuild].BuildMode;
+            int width = World.Width;
+            int height = World.Height;
 
-            if (builMode == 0|| builMode == 1)
+            if (builMode == 0 || builMode == 1)
             {
-                Color color;
-                if (World.CanBuild((byte)CurBuild, CurField) && World.TestAreaDependet((byte)CurBuild, CurField) == 0) color = Color.FromArgb(150, 0, 255, 0);
-                else color = Color.FromArgb(150, 255, 0, 0);
+                int pos = CurField;
+                int x = pos % width;
+                int y = (pos - x) / width;
 
-                int tile = 0;
-                if (gameObject[CurBuild].GraphicMode != 0) tile = World.AutoTile((byte)CurBuild, CurField);
-                if (gameObject[CurBuild].Ground != null) drawGroundOnPos(gameObject[CurBuild].Ground[0], CurField, gameObject[CurBuild].GroundMode == 0 ? 0 : tile, color);
-                if (gameObject[CurBuild].Texture != null) drawObjectOnPos(gameObject[CurBuild].Texture[0, 0], CurField, color);
+                if (x >= 0 && y >= 0 && x < width && y < height)
+                {
+                    Color color;
+                    if (World.CanBuild((byte)CurBuild, pos) && World.TestAreaDependet((byte)CurBuild, pos) == 0) color = Color.FromArgb(150, 0, 255, 0);
+                    else color = Color.FromArgb(150, 255, 0, 0);
+
+                    int tile = 0;
+                    if (gameObject[CurBuild].GraphicMode != 0) tile = World.AutoTile((byte)CurBuild, pos);
+                    if (gameObject[CurBuild].Ground != null) drawGroundOnPos(gameObject[CurBuild].Ground[0], pos, gameObject[CurBuild].GroundMode == 0 ? 0 : tile, color);
+                    if (gameObject[CurBuild].Texture != null) drawObjectOnPos(gameObject[CurBuild].Texture[0, 0], pos, color);
+                }
             }
 
             GL2D.UpdateBuffer();
@@ -186,12 +195,13 @@ namespace CityGame
             int mapScale = Cam.Size;
             float factor = mapScale / 64f;
             int width = World.Width;
+            int height = World.Height;
             int x = pos % width - Cam.PosX;
             int y = (pos - x) / width - Cam.PosY;
 
-            int drawPosX = mapScale * x - Cam.DetailX;
-            int drawPosY = mapScale * y - Cam.DetailY - (int)((texture.Width % 64) * factor);
-            GL2D.DrawImage(texture, new Rectangle(64 * tile, 0, 64, 64), new Rectangle(drawPosX, drawPosY, mapScale, mapScale), color);
+                int drawPosX = mapScale * x - Cam.DetailX;
+                int drawPosY = mapScale * y - Cam.DetailY - (int)((texture.Width % 64) * factor);
+                GL2D.DrawImage(texture, new Rectangle(64 * tile, 0, 64, 64), new Rectangle(drawPosX, drawPosY, mapScale, mapScale), color);
         }
         private void drawGroundOnPos(Texture texture, int pos, Color color)
         {
@@ -202,12 +212,13 @@ namespace CityGame
             int mapScale = Cam.Size;
             float factor = mapScale / 64f;
             int width = World.Width;
+            int height = World.Height;
             int x = pos % width-Cam.PosX;
             int y = (pos - x) / width - Cam.PosY;
 
-            int drawPosX = mapScale*x-Cam.DetailX;
-            int drawPosY = mapScale*y - Cam.DetailY- (int)((texture.Width % 64)*factor);
-            GL2D.DrawImage(texture, new Rectangle(0, 0, texture.Width, texture.Width), new Rectangle(drawPosX, drawPosY, (int)(texture.Width* factor), (int)(texture.Width* factor)), color);
+                int drawPosX = mapScale * x - Cam.DetailX;
+                int drawPosY = mapScale * y - Cam.DetailY - (int)((texture.Width % 64) * factor);
+                GL2D.DrawImage(texture, new Rectangle(0, 0, texture.Width, texture.Width), new Rectangle(drawPosX, drawPosY, (int)(texture.Width * factor), (int)(texture.Width * factor)), color);
         }
     }
 }

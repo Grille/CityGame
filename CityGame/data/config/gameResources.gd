@@ -9,6 +9,7 @@
 
  ID=0; // money
  {
+  value = 200000000;
   name = "Money";
   storable = true;
  }
@@ -26,5 +27,6 @@
  ID=3; // waste
  {
   name = "waste";
+  value = 200000000;
  }
 }

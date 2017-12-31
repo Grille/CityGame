@@ -217,7 +217,7 @@ namespace CityGame
             while (timer050 > 50 * TimeSpan.TicksPerMillisecond)
             {
                 timer050 -= (int)(50 * TimeSpan.TicksPerMillisecond);
-                for (int i = 0; i < (World.Width + World.Height) / 8; i++)
+                for (int i = 0; i < (World.Width + World.Height) / 1; i++)
                 {
                     World.UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
                 }

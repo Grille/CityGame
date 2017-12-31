@@ -15,8 +15,10 @@ namespace CityGame
     {
         private Panel currentPanel;
         private Panel lastPanel;
+        private Bitmap mapImage;
         public MenuWindow()
         {
+            mapImage = new Bitmap(1, 1);
             //listBox1.Items.
             InitializeComponent();
             Console.WriteLine("imbut: "+imageButton1.Text);
@@ -146,7 +148,7 @@ namespace CityGame
         private void buttonStartGame_Click(object sender, EventArgs e)
         {
             Hide();
-            Program.MainWindow.World.GenerateMap((Bitmap)pictureBoxNewGame.Image);
+            Program.MainWindow.World.GenerateMap(mapImage);
             Program.MainWindow.StartGame();
             Program.MenuOverlay.Show(Program.MainWindow);
         }
@@ -159,13 +161,19 @@ namespace CityGame
 
         private void listBoxNewGame_SelectedIndexChanged(object sender, EventArgs e)
         {
-            pictureBoxNewGame.Image = new Bitmap("../data/maps/"+(string)listBoxNewGame.SelectedItem);
-            labelNewGameSize.Text = "Size: " + pictureBoxNewGame.Image.Width + "x" + pictureBoxNewGame.Image.Height;
+            mapImage = new Bitmap("../data/maps/" + (string)listBoxNewGame.SelectedItem);
+            //pictureBoxNewGame.Image = bitmap;
+            pictureBoxNewGame.Refresh();
         }
 
-        private void pictureBoxNewGame_Paint(object sender, PaintEventArgs e)
+        private void renderMapPreview(object sender, PaintEventArgs e)
         {
-
+            PictureBox pbsender = (PictureBox)sender;
+            Graphics g = e.Graphics;
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            g.DrawImage(mapImage, new Rectangle(0, 0, pbsender.Width, pbsender.Height));
+            g.DrawString("Size: " + mapImage.Width + "x" + mapImage.Height, new Font(new FontFamily("Franklin Gothic Medium"), 12), new SolidBrush(Color.Black), new Point(0, pbsender.Height-12*2));
         }
+
     }
 }

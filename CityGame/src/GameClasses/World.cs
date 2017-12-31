@@ -181,7 +181,8 @@ namespace CityGame
 
             int size = gameObjects[typ].Size;
             if (x < 0 || y < 0 || x > width - size || y > width - size) return false;//is on map
-            if (TestResourcesBuild(typ) > 1) return false;
+            if (!loadMode&&!TestResourcesBuild(typ)) return false;
+            if (TestResourcesDependet(typ) > 1) return false;
             if (TestAreaDependet(typ, pos) > 1) return false;
             if (gameObjects[typ].CanBuiltOnTyp.Length == 0) return true;//can build on all
             bool returnValue = true;
@@ -220,11 +221,15 @@ namespace CityGame
                 objectCounter[typ]++;
 
                 //resources
-                for (int i = 0; i < gameObjects[typ].ResourcesBuild.GetLength(0); i++)
+                if (!loadMode)
                 {
-                    int dataTyp = gameObjects[typ].ResourcesBuild[i, 0];
-                    int dataValue = gameObjects[typ].ResourcesBuild[i, 1];
-                    resources[typ].Value += dataValue;
+                    for (int i = 0; i < gameObjects[typ].ResourcesBuild.GetLength(0); i++)
+                    {
+                        int dataTyp = gameObjects[typ].ResourcesBuild[i, 0];
+                        int dataValue = gameObjects[typ].ResourcesBuild[i, 1];
+                        resources[dataTyp].Value += dataValue;
+                        Console.WriteLine(resources[dataTyp].Value);
+                    }
                 }
             }
             else objectCounter[typ]--;
@@ -235,7 +240,7 @@ namespace CityGame
                 int dataTyp = gameObjects[typ].ResourcesPermanent[i, 0];
                 int dataValue = gameObjects[typ].ResourcesPermanent[i, 1];
                 if (!add) dataValue = -dataValue;
-                resources[typ].AddValue += dataValue; 
+                resources[dataTyp].AddValue += dataValue; 
             }
 
             //area
@@ -366,7 +371,18 @@ namespace CityGame
             //return pos;
         }
 
-        public int TestResourcesBuild(byte typ)
+        public bool TestResourcesBuild(byte typ)
+        {
+            for (int i = 0; i < gameObjects[typ].ResourcesBuild.GetLength(0); i++)
+            {
+                int dataTyp = gameObjects[typ].ResourcesBuild[i, 0];
+                int dataValue = gameObjects[typ].ResourcesBuild[i, 1];
+                if (resources[dataTyp].Value + dataValue < 0) return false;
+            }
+            return true;
+
+        }
+        public int TestResourcesDependet(byte typ)
         {
             int retValue = 0;
             for (int i = 0; i < gameObjects[typ].ResourcesDependent.GetLength(0); i++)
@@ -377,7 +393,10 @@ namespace CityGame
                 int dataEffects = gameObjects[typ].ResourcesDependent[i, 3];
                 int dataInvert = gameObjects[typ].ResourcesDependent[i, 4];
 
+                int curValue = resources[dataTyp].Value;
                 bool fire = false;
+                fire = curValue >= dataMin && curValue <= dataMax;
+                if (dataInvert == 1) fire = !fire;
                 if (fire && retValue < dataEffects) retValue = dataEffects;
             }
             return retValue;
@@ -424,6 +443,8 @@ namespace CityGame
             if (ReferenceX[pos] != 0 || ReferenceY[pos] != 0) return;
             byte typ = Typ[pos];
             int result = TestAreaDependet(typ, pos);
+            int result2 = TestResourcesDependet(typ);
+            if (result < result2) result = result2;
             if (result == 0) return;
             else if (result == 1) updateTyp(typ, pos, gameObjects[typ].UpgradeTyp);
             else if (result == 2) updateTyp(typ, pos, gameObjects[typ].DowngradeTyp);

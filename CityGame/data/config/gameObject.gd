@@ -59,7 +59,7 @@
   downgradeTyp = [0];
   AreaPermanent = [[1,3,2]];
   AreaDependent = [[1,0,inf+,2 ,1]];
-  ResourcesDependent = [[0,0,10,5,1]];
+  //ResourcesDependent = [[0,0,inf+,5,1]];
  }
  ID=4; // forest Deciduous
  {
@@ -142,6 +142,7 @@
   canBuiltOn = [0,3,4,5];
   graphicMode = 2; groundMode = 1; graphicNeighbors = [21,22,23,24]; groundPath = "../Data/texture/urban/road/FW1_2";
   AreaPermanent = [[2,1,1]];
+  ResourcesBuild = [[0,-10]];
   buildMode = 1;
  }
  ID=22; //
@@ -150,6 +151,7 @@
   canBuiltOn = [0,3,4,5,21];
   graphicMode = 2; groundMode = 1; graphicNeighbors = [21,22,23,24]; groundPath = "../Data/texture/urban/road/RS_2";
   AreaPermanent = [[2,1,1],[2,1,100]];
+  ResourcesBuild = [[0,-10]];
   buildMode = 1;
  }
  ID=23; // 
@@ -158,6 +160,7 @@
   canBuiltOn = [0,3,4,5,21,22];
   graphicMode = 2; groundMode = 1; graphicNeighbors = [21,22,23,24]; groundPath = "../Data/texture/urban/road/RM_1";
   AreaPermanent = [[2,2,1],[2,1,100]];
+  ResourcesBuild = [[0,-10]];
   buildMode = 1;
  }
  ID=24; // 
@@ -166,6 +169,7 @@
   canBuiltOn = [0,3,4,5,21,22,23];
   graphicMode = 2; groundMode = 1; graphicNeighbors = [21,22,23,24]; groundPath = "../Data/texture/urban/road/RL_1";
   AreaPermanent = [[2,3,1],[2,1,100]];
+  ResourcesBuild = [[0,-10]];
   buildMode = 1;
  }
  ID=25; // 
@@ -298,11 +302,15 @@
  ID=58;
  {
   name = "landfill"; groundPath = "../Data/texture/urban/disposal/MD";
+  ResourcesDependent = [[3,0,inf+,1,1]];
+  upgradeTyp = [59];
  }
  ID=59;
  {
   name = "filed landfill";graphicMode = 1; groundMode = 1;groundPath = "../Data/texture/urban/disposal/MDF";diversity = 5; path = "../Data/texture/urban/disposal/rubbish";
   AreaPermanent = [[1,5,-3]];
+  ResourcesBuild = [[0,-100]];
+  downgradeTyp = [58];
  }
  ID=60;
  {

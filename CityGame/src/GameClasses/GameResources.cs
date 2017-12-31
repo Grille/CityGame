@@ -22,34 +22,8 @@ namespace CityGame
         private string name;
         private bool canBeNegative;
         private bool storable;
-        private int value;
-        public int Value
-        {
-            set
-            {
-                this.value += value;
-            }
-            get
-            {
-                int result;
-                if (storable) result = value;
-                else result =  addValue;
-                if (!canBeNegative && result < 0) result = 0;
-                return result;
-            }
-        }
-        private int addValue;
-        public int AddValue
-        {
-            set
-            {
-                addValue += value;
-            }
-            get
-            {
-                return addValue;
-            }
-        }
+        public int Value;
+        public int AddValue;
         private int storeSize;
 
 
@@ -61,11 +35,11 @@ namespace CityGame
             this.name = name;
             this.canBeNegative = canBeNegative;
             this.storable = storable;
-            this.value = value;
+            this.Value = value;
         }
         public void Update()
         {
-            value += AddValue;
+            Value += AddValue;
         }
 
     }
