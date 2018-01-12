@@ -40,6 +40,7 @@ namespace CityGame
         public void Update()
         {
             Value += AddValue;
+            if (!canBeNegative && Value < 0) Value = 0;
         }
 
     }

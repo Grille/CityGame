@@ -47,11 +47,12 @@ namespace CityGame
 
         //effects: 0=up, 1=down, 2=demolition, 3=deacy, 4=destroy 5=entf//
         //importance: 0=canNotWork, 1=canWork//
-        public int[,] AreaPermanent;        //[[typ,size,value]]
+        public int[,] AreaPermanent;      //[[typ,size,value]]
         public int[,] AreaDependent;      //[[typ,minValue,maxValue,effects]]
-        public int[,] ResourcesBuild;     //[[typ,value,importance]]
-        public int[,] ResourcesPermanent; //[[typ,value,importance]]
-        public int[,] ResourcesMonthly;   //[[typ,value,importance]]
+        public int[,] ResourcesEffect;    //[[firedEfffect,typ,value]]
+        public int[,] ResourcesBuild;     //[[typ,value]]
+        public int[,] ResourcesPermanent; //[[typ,value]]
+        public int[,] ResourcesMonthly;   //[[typ,value]]
         public int[,] ResourcesDependent; //[[typ,minValue,maxValue,effects]]
 
         public void LoadBasic(string name, string path, string groundPath, int buildMode,int slopeMode, int diversity, int size,int groundMode, int graphicMode, int[] graphicNeighbors)
@@ -102,10 +103,11 @@ namespace CityGame
             this.DestroyTyp = destroyTyp;
             this.CanBuiltOnTyp = CanBuiltOnTyp;
         }
-        public void LoadSimData(int[,] AreaPermanent,int[,] AreaDependent,int[,] ResourcesBuild,int[,] ResourcesPermanent,int[,] ResourcesMonthly,int[,] ResourcesDependent)
+        public void LoadSimData(int[,] AreaPermanent,int[,] AreaDependent,int[,] ResourcesEffect,int[,] ResourcesBuild,int[,] ResourcesPermanent,int[,] ResourcesMonthly,int[,] ResourcesDependent)
         {
             this.AreaPermanent = AreaPermanent;
             this.AreaDependent = AreaDependent;
+            this.ResourcesEffect = ResourcesEffect;
             this.ResourcesBuild = ResourcesBuild;
             this.ResourcesPermanent = ResourcesPermanent;
             this.ResourcesMonthly = ResourcesMonthly;

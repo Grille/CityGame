@@ -301,7 +301,7 @@
             this.imageButton6.ButtonDown += new System.EventHandler(this.imageButton6_ButtonDown);
             this.imageButton6.ButtonUp += new System.EventHandler(this.imageButton6_ButtonUp);
             // 
-            // listBox1
+            // listBox
             // 
             this.listBox.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.listBox.BackColor = System.Drawing.SystemColors.Highlight;
@@ -311,7 +311,7 @@
             this.listBox.ItemDistance = 0;
             this.listBox.ItemHeight = 20;
             this.listBox.Location = new System.Drawing.Point(927, 92);
-            this.listBox.Name = "listBox1";
+            this.listBox.Name = "listBox";
             this.listBox.Size = new System.Drawing.Size(186, 150);
             this.listBox.TabIndex = 17;
             this.listBox.Visible = false;
@@ -459,10 +459,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.Panel panel3;
@@ -478,5 +476,7 @@
         private GGL.Control.ImageButton imageButton2;
         private GGL.Control.ListBox listBox;
         public System.Windows.Forms.Label debugLabel;
+        public System.Windows.Forms.Label label5;
+        public System.Windows.Forms.Label label8;
     }
 }

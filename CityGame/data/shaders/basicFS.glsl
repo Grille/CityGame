@@ -12,6 +12,6 @@ in vec4 vColor;
 void main(void)
 {
   vec4 texture = texture(uSampler, vTexturePos);
-  vec4 color = (vColor/vec4(255,255,255,255));
+  vec4 color = (vColor/vec4(255,255,255,255 ));
   gl_FragColor = (vec4(texture * color));
 }

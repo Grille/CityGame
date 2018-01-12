@@ -9,9 +9,10 @@
 
  ID=0; // money
  {
-  value = 200000000;
+  value = 200000;
   name = "Money";
   storable = true;
+  CanBeNegative = true;
  }
 
  ID=1; // energy
@@ -27,6 +28,6 @@
  ID=3; // waste
  {
   name = "waste";
-  value = 200000000;
+  value = 2000;
  }
 }

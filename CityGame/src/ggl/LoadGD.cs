@@ -2,8 +2,9 @@
 namespace GGL
 {
 
-    static public partial class LoadObjects
+    static public partial class Pharse
     {
+        static public string[] ReplaceList = new string[0];
         static private string[] loadAndPrepare(string pfad)
         {
             string data;
@@ -18,8 +19,9 @@ namespace GGL
             data = data.Replace('\x9', '\x20');//Replace TAB with space
             data = data.Replace("{", ";{;");
             data = data.Replace("}", ";};");
-            data = data.Replace("inf+", "10000");
-            data = data.Replace("inf-", "-10000");
+            data = data.Replace("inf+", "2147483647");
+            data = data.Replace("inf-", "-2147483647");
+            for (int i = 0; i < ReplaceList.Length; i += 2) data = data.Replace(ReplaceList[i], ReplaceList[i + 1]);
             //data = data.Replace("true", "1");
             //data = data.Replace("false", "0");
             lines = data.Split(new char[] { '\x3b' });//split by ;

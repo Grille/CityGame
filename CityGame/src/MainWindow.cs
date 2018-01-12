@@ -32,8 +32,8 @@ namespace CityGame
         int RenderMode = 0;
 
         Random rnd;
-        GameObject[] gameObject;
-        GameResources[] resources;
+        public GameObject[] gameObject;
+        public GameResources[] resources;
         Texture groundTexture;
         public World World;
         public Camera Cam;
@@ -48,6 +48,7 @@ namespace CityGame
         int timer010;
         int timer050;
         int timer100;
+        int timer1000;
         int[] animator;
 
         int basicShader;
@@ -138,8 +139,15 @@ namespace CityGame
         }
         private void loadData()
         {
+            //effects: 0=not, 1=up, 2=down, 3=break, 4=deacy, 5=destroy 6=entf//
+            //AreaPermanent->typ: 0=water, 1=nature, 2=road,3=saltwater
+            Pharse.ReplaceList = new string[] {
+                "effect.not", "0","effect.up", "1","effect.down", "2","effect.break", "3","effect.deacy", "4","effect.destroy", "5","effect.entf", "6",
+                "res.money", "0", "res.energy", "1", "res.water", "2", "res.waste", "3",
+                "area.water", "0","area.pollution", "1","area.road", "2","area.saltwater", "3"
+            };
             Console.WriteLine("//load: gameResourcesData");
-            object[,] gameResourcesData = LoadObjects.Load("../Data/config/gameResources.gd");
+            object[,] gameResourcesData = Pharse.Load("../Data/config/gameResources.gd");
             resources = new GameResources[gameResourcesData.GetLength(0)];
             for (int i = 0; i < gameResourcesData.GetLength(0); i++)
             {
@@ -152,7 +160,7 @@ namespace CityGame
                     (bool)gameResourcesData[i, index++]);
             }
             Console.WriteLine("//load: gameObjectData");
-            object[,] gameObjectData = LoadObjects.Load("../Data/config/gameObject.gd");
+            object[,] gameObjectData = Pharse.Load("../Data/config/gameObject.gd");
             gameObject = new GameObject[gameObjectData.GetLength(0)];
             this.progressBarLoad.Maximum = gameObjectData.GetLength(0) + 2;
             for (int i = 0; i < gameObjectData.GetLength(0); i++)
@@ -181,6 +189,7 @@ namespace CityGame
                     );
                 gameObject[i].LoadSimData(
                     (int[,])gameObjectData[i, index++],
+                    (int[,])gameObjectData[i, index++],
                     (int[,])gameObjectData[i, index++], 
                     (int[,])gameObjectData[i, index++], 
                     (int[,])gameObjectData[i, index++], 
@@ -202,6 +211,8 @@ namespace CityGame
 
         private void simulate()
         {
+            Program.MenuOverlay.label5.Text = ""+resources[0].Value;
+            Program.MenuOverlay.label8.Text = "" + resources[0].AddValue;
             int ticks = (int)(DateTime.Now.Ticks - date);
             date = DateTime.Now.Ticks;
             timer010 += ticks;
@@ -217,15 +228,24 @@ namespace CityGame
             while (timer050 > 50 * TimeSpan.TicksPerMillisecond)
             {
                 timer050 -= (int)(50 * TimeSpan.TicksPerMillisecond);
-                for (int i = 0; i < (World.Width + World.Height) / 1; i++)
-                {
-                    World.UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
-                }
             }
             timer100 += ticks;
             while (timer100 > 100 * TimeSpan.TicksPerMillisecond)
             {
                 timer100 -= (int)(100 * TimeSpan.TicksPerMillisecond);
+            }
+            timer1000 += ticks;
+            while (timer1000 > 1000 * TimeSpan.TicksPerMillisecond)
+            {
+                timer1000 -= (int)(1000 * TimeSpan.TicksPerMillisecond);
+                for (int i = 0; i < resources.Length; i++)
+                {
+                    resources[i].Update();
+                }
+                for (int i = 0; i < (World.Width + World.Height) / 1; i++)
+                {
+                    World.UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
+                }
             }
         }
 

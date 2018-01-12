@@ -152,6 +152,12 @@ namespace CityGame
             Program.MainWindow.StartGame();
             Program.MenuOverlay.Show(Program.MainWindow);
         }
+        private void buttonBackToGame_Click(object sender, EventArgs e)
+        {
+            Hide();
+            Program.MainWindow.StartGame();
+            Program.MenuOverlay.Show(Program.MainWindow);
+        }
 
         private void timer_Tick(object sender, EventArgs e)
         {
@@ -173,6 +179,14 @@ namespace CityGame
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             g.DrawImage(mapImage, new Rectangle(0, 0, pbsender.Width, pbsender.Height));
             g.DrawString("Size: " + mapImage.Width + "x" + mapImage.Height, new Font(new FontFamily("Franklin Gothic Medium"), 12), new SolidBrush(Color.Black), new Point(0, pbsender.Height-12*2));
+        }
+
+        private void buttonLoadGame_Click(object sender, EventArgs e)
+        {
+            Hide();
+            Program.MainWindow.World.Load("../saves/game.txt");
+            Program.MainWindow.StartGame();
+            Program.MenuOverlay.Show(Program.MainWindow);
         }
 
     }

@@ -17,7 +17,7 @@ using GGL.Graphic;
 
 namespace CityGame
 {
-    public class World
+    public partial class World
     {
         private GameObject[] gameObjects;
         private GameResources[] resources;
@@ -228,7 +228,6 @@ namespace CityGame
                         int dataTyp = gameObjects[typ].ResourcesBuild[i, 0];
                         int dataValue = gameObjects[typ].ResourcesBuild[i, 1];
                         resources[dataTyp].Value += dataValue;
-                        Console.WriteLine(resources[dataTyp].Value);
                     }
                 }
             }
@@ -240,7 +239,14 @@ namespace CityGame
                 int dataTyp = gameObjects[typ].ResourcesPermanent[i, 0];
                 int dataValue = gameObjects[typ].ResourcesPermanent[i, 1];
                 if (!add) dataValue = -dataValue;
-                resources[dataTyp].AddValue += dataValue; 
+                resources[dataTyp].Value += dataValue;
+            }
+            for (int i = 0; i < gameObjects[typ].ResourcesMonthly.GetLength(0); i++)
+            {
+                int dataTyp = gameObjects[typ].ResourcesMonthly[i, 0];
+                int dataValue = gameObjects[typ].ResourcesMonthly[i, 1];
+                if (!add) dataValue = -dataValue;
+                resources[dataTyp].AddValue += dataValue;
             }
 
             //area
@@ -446,15 +452,23 @@ namespace CityGame
             int result2 = TestResourcesDependet(typ);
             if (result < result2) result = result2;
             if (result == 0) return;
-            else if (result == 1) updateTyp(typ, pos, gameObjects[typ].UpgradeTyp);
-            else if (result == 2) updateTyp(typ, pos, gameObjects[typ].DowngradeTyp);
-            else if (result == 3) updateTyp(typ, pos, gameObjects[typ].DemolitionTyp);
-            else if (result == 4) updateTyp(typ, pos, gameObjects[typ].DecayTyp);
-            else if (result == 5) updateTyp(typ, pos, gameObjects[typ].DestroyTyp);
+            else if (result == 1) replaceTyp(typ, pos, gameObjects[typ].UpgradeTyp);
+            else if (result == 2) replaceTyp(typ, pos, gameObjects[typ].DowngradeTyp);
+            else if (result == 3) replaceTyp(typ, pos, gameObjects[typ].DemolitionTyp);
+            else if (result == 4) replaceTyp(typ, pos, gameObjects[typ].DecayTyp);
+            else if (result == 5) replaceTyp(typ, pos, gameObjects[typ].DestroyTyp);
             else if (result == 6) Clear(pos);
+            for (int i = 0; i < gameObjects[typ].ResourcesEffect.GetLength(0); i++)
+            {
+                if (gameObjects[typ].ResourcesEffect[i, 0] == result)
+                {
+                    resources[gameObjects[typ].ResourcesEffect[i, 1]].Value += gameObjects[typ].ResourcesEffect[i, 2];
+                }
+            }
             return;
         }
-        private void updateTyp(byte typ, int pos,int[] replace)
+
+        private void replaceTyp(byte typ, int pos,int[] replace)
         {
             int newTyp = (int)(replace.Length * rnd.NextDouble());
             if (gameObjects[typ].Size == gameObjects[replace[newTyp]].Size)
@@ -475,97 +489,6 @@ namespace CityGame
             return;
         }
 
-
-        //private byte[] decompressByte(byte[] input)
-        //{
-        //    //byte[] returnData = new byte[index];
-        //    //for (int i = 0; i < returnData.Length; i++)
-        //    //{
-        //    //    returnData[i] = saveData[i];
-        //    //}
-        //    //return returnData;
-        //}
-        private byte[] compressByte(byte[] input)
-        {
-            //byte[] saveData = new byte[input.Length];
-            //int index = 0;
-            //byte lastData = input[0];
-            //int dataLenght = 0;
-            //for (int i = 1; i < input.Length; i++)
-            //{
-            //    if (input[i] == lastData && dataLenght < 16)
-            //    {
-            //        dataLenght++;
-            //    }
-            //    else
-            //    {
-            //        saveData[index] = (byte)(dataLenght | lastData << 4);
-            //        //saveData[index + 1] = lastData;
-            //        dataLenght = 0;
-            //        index += 1;
-            //        lastData = input[i];
-            //    }
-            //}
-            //byte[] returnData = new byte[index];
-            //for (int i = 0; i < returnData.Length; i++)
-            //{
-            //    returnData[i] = saveData[i];
-            //}
-            //return returnData;
-
-            byte[] saveData = new byte[input.Length * 2];
-            int index = 0;
-            byte lastData = input[0];
-            int dataLenght = 0;
-            for (int i = 1; i < input.Length; i++)
-            {
-                if (input[i] == lastData && dataLenght < 255)
-                {
-                    dataLenght++;
-                }
-                else
-                {
-                    saveData[index] = (byte)dataLenght;
-                    saveData[index + 1] = lastData;
-                    dataLenght = 0;
-                    index += 2;
-                    lastData = input[i];
-                }
-            }
-            byte[] returnData = new byte[index];
-            for (int i = 0; i < returnData.Length; i++)
-            {
-                returnData[i] = saveData[i];
-            }
-            return returnData;
-
-        }
-        private byte[] addByte(byte[] input1,byte[] input2) 
-        {
-            byte[] returnData = new byte[input1.Length + input2.Length];
-            int index = 0;
-            for (int i = 0; i < input1.Length; i++)
-            {
-                returnData[index++] = input1[i];
-            }
-            for (int i = 0; i < input2.Length; i++)
-            {
-                returnData[index++] = input2[i];
-            }
-            return returnData;
-        }
-        public void Save(string path)
-        {
-
-            byte[] saveData = new byte[8*16];
-            saveData = addByte(saveData, compressByte(Ground));
-            saveData = addByte(saveData, compressByte(Typ));
-            saveData = addByte(saveData, compressByte(Version));
-            File.WriteAllBytes(path, saveData);
-
-            //File.WriteAllBytes(path, addByte(compressByte(Typ), compressByte(Tile)));
-        }
-        public void Load(string path) { }
         public void GenerateMap(Image map)
         {
             Random rnd = new Random(1000);

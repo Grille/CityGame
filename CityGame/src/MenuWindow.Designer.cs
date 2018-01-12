@@ -246,7 +246,7 @@
             this.imageButton10.TabIndex = 9;
             this.imageButton10.Text = "Back to Game";
             this.imageButton10.TextDownOffset = 1;
-            this.imageButton10.Click += new System.EventHandler(this.buttonStartGame_Click);
+            this.imageButton10.Click += new System.EventHandler(this.buttonBackToGame_Click);
             // 
             // label2
             // 
@@ -393,7 +393,7 @@
             this.imageButton8.TabIndex = 17;
             this.imageButton8.Text = "Load Game";
             this.imageButton8.TextDownOffset = 1;
-            this.imageButton8.Click += new System.EventHandler(this.buttonStartGame_Click);
+            this.imageButton8.Click += new System.EventHandler(this.buttonLoadGame_Click);
             // 
             // imageButton7
             // 
