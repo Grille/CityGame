@@ -1,0 +1,13 @@
+G:\projecte\CityGame\CityGame\bin\CityGame.exe.config
+G:\projecte\CityGame\CityGame\bin\CityGame.exe
+G:\projecte\CityGame\CityGame\bin\GGL.dll
+G:\projecte\CityGame\CityGame\bin\OpenTK.dll
+G:\projecte\CityGame\CityGame\bin\OpenTK.GLControl.dll
+G:\projecte\CityGame\CityGame\bin\OpenTK.xml
+G:\projecte\CityGame\CityGame\bin\OpenTK.GLControl.xml
+G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.Properties.Resources.resources
+G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MainWindow.resources
+G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MenuOverlay.resources
+G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MenuWindow.resources
+G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.csproj.GenerateResource.Cache
+G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.exe

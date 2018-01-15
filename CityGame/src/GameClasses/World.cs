@@ -26,13 +26,13 @@ namespace CityGame
         public int Width { get { return width; } }
         private int height;
         public int Height { get { return height; } }
-        public byte[] Typ;
-        public byte[] Zone;
-        public byte[] Tile;
         public byte[] Ground;
+        public byte[] Zone;
+        public byte[] Typ;
+        public byte[] Version;
+        public byte[] Tile;
         public byte[] ReferenceX;
         public byte[] ReferenceY;
-        public byte[] Version;
         public byte[] vertexHeight;
         public byte[] vertexTexture;
         public int[,] Data;
@@ -206,31 +206,22 @@ namespace CityGame
             return returnValue;
         }
 
-        private void buildEffects(byte typ, int pos)
+        private void buildCoasts(byte typ)
         {
-            buildEffects(typ, pos, true);
+            //resources
+                for (int i = 0; i < gameObjects[typ].ResourcesBuild.GetLength(0); i++)
+                {
+                    int dataTyp = gameObjects[typ].ResourcesBuild[i, 0];
+                    int dataValue = gameObjects[typ].ResourcesBuild[i, 1];
+                    resources[dataTyp].Value += dataValue;
+                }
         }
         private void buildEffects(byte typ,int pos,bool add)
         {
             int x = pos % width;
             int y = (pos - x) / width;
 
-            if (add)
-            {
-                //counter
-                objectCounter[typ]++;
-
-                //resources
-                if (!loadMode)
-                {
-                    for (int i = 0; i < gameObjects[typ].ResourcesBuild.GetLength(0); i++)
-                    {
-                        int dataTyp = gameObjects[typ].ResourcesBuild[i, 0];
-                        int dataValue = gameObjects[typ].ResourcesBuild[i, 1];
-                        resources[dataTyp].Value += dataValue;
-                    }
-                }
-            }
+            if (add) objectCounter[typ]++;
             else objectCounter[typ]--;
 
             //resources
@@ -284,7 +275,6 @@ namespace CityGame
         }
         public void Build(byte typ, int pos)
         {
-            buildEffects(typ, pos, true);
 
             int x = pos % width;
             int y = (pos - x) / width; 
@@ -308,6 +298,8 @@ namespace CityGame
             //build
             Typ[pos] = typ;
             Version[pos] = (byte)(rnd.NextDouble() * gameObjects[typ].Diversity);
+            if (!loadMode) buildCoasts(typ);
+            buildEffects(typ, pos, true);
 
             //set Data
 

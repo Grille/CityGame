@@ -284,7 +284,7 @@
             this.imageButton6.Size = new System.Drawing.Size(200, 50);
             this.imageButton6.SwitchMode = false;
             this.imageButton6.TabIndex = 16;
-            this.imageButton6.Text = "Start Game";
+            this.imageButton6.Text = "Next";
             this.imageButton6.TextDownOffset = 1;
             this.imageButton6.Click += new System.EventHandler(this.buttonStartGame_Click);
             // 

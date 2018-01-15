@@ -13,6 +13,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
+using GGL.IO;
 using GGL.Graphic;
 
 namespace CityGame
@@ -128,24 +129,37 @@ namespace CityGame
             newIndex = index+4;
             return  12 << data[index+0] | 8 << data[index+1] | 4 << data[index+2] | data[index+3];
         }
+
         public void Save(string path)
         {
+            ByteStream byteStream = new ByteStream();
+            byteStream.Write(width);
+            byteStream.Write(height);
+            byteStream.Write(Ground,2);
+            byteStream.Write(Typ);
+            byteStream.Write(Version,2);
 
-            byte[] saveData = new byte[8 * 16];
-            saveData[0] = (byte)width;
-            saveData[1] = (byte)height;
-            saveData = combineByte(saveData, compressByte(Ground, 3));
-            saveData = combineByte(saveData, compressByte(Typ, 1));
-            saveData = combineByte(saveData, compressByte(Version, 3));
-            File.WriteAllBytes(path, saveData);
-
-            //File.WriteAllBytes(path, addByte(compressByte(Typ), compressByte(Tile)));
+            byteStream.Save(path);
         }
         public void Load(string path)
         {
-            byte[] data = File.ReadAllBytes(path);
-            BuildWorld(data[0], data[1]);
+            ByteStream byteStream = new ByteStream(path);
+            byteStream.ResetIndex();
 
+            BuildWorld(byteStream.ReadInt(), byteStream.ReadInt());
+
+            Ground = byteStream.ReadByteArray();
+            byte[] newTyp = byteStream.ReadByteArray();
+
+            loadMode = true;
+            for (int i = 0; i < width * height; i++)
+            {
+                if (newTyp[i]!=0)Build(newTyp[i], i);
+                //autoTile(i);
+                //buildEffects(Typ[i], i, true);
+            }
+            loadMode = false;
+            Version = byteStream.ReadByteArray();
         }
     }
 }
