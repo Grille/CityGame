@@ -20,8 +20,10 @@ namespace CityGame
 
     public class GameObject
     {
- 
-        private string name;
+
+        public string Name;
+        public string Path;
+        
         public int BuildMode;
         private Texture[,] texture;
         public Texture[,] Texture { get { return texture; } }
@@ -36,7 +38,7 @@ namespace CityGame
 
         private int graphicMode;  //0=nothing, 1=self, 2=useArray;
         public int GraphicMode { get { return graphicMode; } }
-        public int[] graphicNeighbors;
+        public int[] GraphicNeighbors;
 
         public int[] UpgradeTyp;
         public int[] DowngradeTyp;
@@ -44,6 +46,7 @@ namespace CityGame
         public int[] DecayTyp;
         public int[] DestroyTyp;
         public int[] CanBuiltOnTyp;          //[typ]
+        public int[,] ReplaceTyp;          //[typ]
 
         //effects: 0=up, 1=down, 2=demolition, 3=deacy, 4=destroy 5=entf//
         //importance: 0=canNotWork, 1=canWork//
@@ -58,14 +61,14 @@ namespace CityGame
         public void LoadBasic(string name, string path, string groundPath, int buildMode,int slopeMode, int diversity, int size,int groundMode, int graphicMode, int[] graphicNeighbors)
         {
 
-            this.name = name;
+            this.Name = name;
+            this.Path = path;
             this.diversity = diversity;
             this.size = (byte)size;
-
             this.BuildMode = buildMode;
             this.groundMode = groundMode;
             this.graphicMode = graphicMode;
-            this.graphicNeighbors = graphicNeighbors;
+            this.GraphicNeighbors = graphicNeighbors;
 
             if (groundPath != "-")
             {
@@ -83,7 +86,7 @@ namespace CityGame
                         if (!File.Exists(path + "_" + i + "_0.png")) texture[i, 0] = new Texture(path + "_" + i + ".png"); 
                         else texture[i, 0] = new Texture(path + "_" + i + "_0.png");
                     }
-                    else
+                    else if (graphicMode == 1 || graphicMode == 2)
                     {
                         for (int i2 = 0; i2 < 16; i2++)
                         {
@@ -91,17 +94,26 @@ namespace CityGame
                             else texture[i, i2] = new Texture(path + "_" + i + "_" + i2 + ".png");
                         }
                     }
+                    else if (graphicMode == 3)
+                    {
+                        for (int i2 = 0; i2 < 2; i2++)
+                        {
+                            if (!File.Exists(path + "_" + i + "_" + i2 + ".png")) texture[i, i2] = texture[i, 0];
+                            else texture[i, i2] = new Texture(path + "_" + i + "_" + i2 + ".png");
+                        }
+                    }
                 }
-            }
+            }                     // GGL.LockBitmap lockBitmap1 = new LockBitmap()
         }
-        public void LoadTypRefs(int[] upgradeTyp, int[] downgradeTyp, int[] demolitionTyp, int[] decayTyp, int[] destroyTyp, int[] CanBuiltOnTyp) 
+        public void LoadTypRefs(int[] upgradeTyp, int[] downgradeTyp, int[] demolitionTyp, int[] decayTyp, int[] destroyTyp, int[] canBuiltOnTyp,int[,] replaceTyp) 
         {
             this.UpgradeTyp = upgradeTyp;
             this.DowngradeTyp = downgradeTyp;
             this.DemolitionTyp = demolitionTyp;
             this.DecayTyp = decayTyp;
             this.DestroyTyp = destroyTyp;
-            this.CanBuiltOnTyp = CanBuiltOnTyp;
+            this.CanBuiltOnTyp = canBuiltOnTyp;
+            this.ReplaceTyp = replaceTyp;
         }
         public void LoadSimData(int[,] AreaPermanent,int[,] AreaDependent,int[,] ResourcesEffect,int[,] ResourcesBuild,int[,] ResourcesPermanent,int[,] ResourcesMonthly,int[,] ResourcesDependent)
         {

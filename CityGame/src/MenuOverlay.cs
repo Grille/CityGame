@@ -19,12 +19,12 @@ namespace CityGame
         {
 
             InitializeComponent();
-            imageButton1.LoadImages(new Bitmap("../Data/texture/gui/terrain1.png"), new Bitmap("../Data/texture/gui/terrain2.png"), new Bitmap("../Data/texture/gui/terrain3.png"));
-            imageButton2.LoadImages(new Bitmap("../Data/texture/gui/traffic1.png"), new Bitmap("../Data/texture/gui/traffic2.png"), new Bitmap("../Data/texture/gui/traffic3.png"));
-            imageButton3.LoadImages(new Bitmap("../Data/texture/gui/supply1.png"), new Bitmap("../Data/texture/gui/supply2.png"), new Bitmap("../Data/texture/gui/supply3.png"));
-            imageButton4.LoadImages(new Bitmap("../Data/texture/gui/zones1.png"),new Bitmap("../Data/texture/gui/zones2.png"), new Bitmap("../Data/texture/gui/zones3.png"));
-            imageButton5.LoadImages(new Bitmap("../Data/texture/gui/empty1.png"), new Bitmap("../Data/texture/gui/empty2.png"), new Bitmap("../Data/texture/gui/empty3.png"));
-            imageButton6.LoadImages(new Bitmap("../Data/texture/gui/empty1.png"), new Bitmap("../Data/texture/gui/empty2.png"), new Bitmap("../Data/texture/gui/empty3.png"));
+            imageButton1.LoadImages(new Bitmap("../Data/texture/gui/terrain1.png"),new Bitmap("../Data/texture/gui/terrain3.png"));
+            imageButton2.LoadImages(new Bitmap("../Data/texture/gui/traffic1.png"),new Bitmap("../Data/texture/gui/traffic3.png"));
+            imageButton3.LoadImages(new Bitmap("../Data/texture/gui/supply1.png"), new Bitmap("../Data/texture/gui/supply3.png"));
+            imageButton4.LoadImages(new Bitmap("../Data/texture/gui/zones1.png"), new Bitmap("../Data/texture/gui/zones3.png"));
+            imageButton5.LoadImages(new Bitmap("../Data/texture/gui/empty1.png"), new Bitmap("../Data/texture/gui/empty3.png"));
+            imageButton6.LoadImages(new Bitmap("../Data/texture/gui/empty1.png"), new Bitmap("../Data/texture/gui/empty3.png"));
 
             listBox.BackColor = Color.FromArgb(99, 139, 139);
             listBox.ItemHeight = 24;

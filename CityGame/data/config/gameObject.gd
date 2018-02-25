@@ -21,6 +21,7 @@
   int[] decayTyp = [13];
   int[] destroyTyp = [13];
   int[] canBuiltOn = [0,3,4,5,6,7,8,9,13];       //[typ]
+  int[,] RepalceTyp = [];     //[[fieldtyp,newtyp]]
 
   //effects: 0=not, 1=up, 2=down, 3=demolition, 4=deacy, 5=destroy 6=entf//
   //importance: 0=canNotWork, 1=canWork//
@@ -33,6 +34,7 @@
   int[,] ResourcesPermanent = []; //[[typ,value]]
   int[,] ResourcesMonthly = [];   //[[typ,value]]
   int[,] ResourcesDependent = []; //[[typ,minValue,maxValue,effects,mode]]
+
  }
 
  ID=0; // void
@@ -67,7 +69,7 @@
   name = "Deciduous"; diversity = 5; path = "../Data/texture/nature/Deciduous";buildMode = 1;
   canBuiltOn = [0,3,5];
   downgradeTyp = [7];
-    destroyTyp = [9];
+  destroyTyp = [9];
   AreaPermanent = [[area.pollution,3,2]];
   AreaDependent = [[area.pollution,0,inf+,effect.down ,1]];
  }
@@ -76,7 +78,7 @@
   name = "Palm"; diversity = 5; path = "../Data/texture/nature/Palm";buildMode = 1;
   canBuiltOn = [0,3,4];
   downgradeTyp = [8];
-    destroyTyp = [9];
+  destroyTyp = [9];
   AreaPermanent = [[area.pollution,3,2]];
   AreaDependent = [[area.pollution,0,inf+,effect.down ,1]];
  }
@@ -85,7 +87,7 @@
  {
   name = "Conifer dead"; diversity = 5; path = "../Data/texture/nature/ConiferDead";
   upgradeTyp = [3];
-    destroyTyp = [9];
+  destroyTyp = [9];
   AreaDependent = [[area.pollution,0,inf+,effect.up ,0]];
  }
  ID=7; // forest
@@ -110,7 +112,7 @@
 
  ID=10; // void
  {
-  name = "Stone Small";
+  name = "Stone Small";diversity = 3; path = "../Data/texture/nature/StoneSmall";
  }
  ID=11; // void
  {
@@ -155,6 +157,7 @@
   graphicMode = 2; groundMode = 1; graphicNeighbors = [21,22,23,24]; groundPath = "../Data/texture/urban/road/FW1_2";
   AreaPermanent = [[2,1,1]];
   ResourcesBuild = [[res.money,-8]];
+  ResourcesMonthly = [[res.money,-10]];
   buildMode = 1;
  }
  ID=22; //
@@ -164,6 +167,7 @@
   graphicMode = 2; groundMode = 1; graphicNeighbors = [21,22,23,24]; groundPath = "../Data/texture/urban/road/RS_2";
   AreaPermanent = [[2,1,1],[2,1,100]];
   ResourcesBuild = [[res.money,-24]];
+  ResourcesMonthly = [[res.money,-10]];
   buildMode = 1;
  }
  ID=23; // 
@@ -173,6 +177,7 @@
   graphicMode = 2; groundMode = 1; graphicNeighbors = [21,22,23,24]; groundPath = "../Data/texture/urban/road/RM_1";
   AreaPermanent = [[2,2,1],[2,1,100]];
   ResourcesBuild = [[res.money,-24]];
+  ResourcesMonthly = [[res.money,-10]];
   buildMode = 1;
  }
  ID=24; // 
@@ -182,6 +187,7 @@
   graphicMode = 2; groundMode = 1; graphicNeighbors = [21,22,23,24]; groundPath = "../Data/texture/urban/road/RL_1";
   AreaPermanent = [[2,3,1],[2,1,100]];
   ResourcesBuild = [[res.money,-48]];
+  ResourcesMonthly = [[res.money,-10]];
   buildMode = 1;
  }
  ID=25; // 
@@ -249,6 +255,7 @@
   AreaDependent = [[area.road,100,inf+,effect.deacy, 1]];
   ResourcesPermanent = [[res.energy,3000]];
   ResourcesBuild = [[res.money,-4500]];
+  ResourcesMonthly = [[res.money,-10]];
  }
  ID=43; // nuclear power plant
  {
@@ -256,6 +263,7 @@
   AreaDependent = [[area.road,100,inf+,effect.deacy, 1]];
   ResourcesPermanent = [[res.energy,15000]];
   ResourcesBuild = [[res.money,-20000]];
+  ResourcesMonthly = [[res.money,-10]];
  }
  ID=44; // 
  {
@@ -263,12 +271,14 @@
   AreaDependent = [[area.road,100,inf+,effect.deacy, 1]];
   ResourcesPermanent = [[res.energy,2000]];
   ResourcesBuild = [[res.money,-15000]];
+  ResourcesMonthly = [[res.money,-10]];
  }
  ID=45; // 
  {
   name = "wind power plant"; size = 1; path = "../Data/texture/urban/power/WKW";
   ResourcesPermanent = [[res.energy,600]];
-    ResourcesBuild = [[res.money,-2500]];
+  ResourcesBuild = [[res.money,-2500]];
+  ResourcesMonthly = [[res.money,-10]];
  }
  ID=46; // void
  {
@@ -291,12 +301,14 @@
   AreaDependent = [[0,1,inf+,5, 1],[1,0,inf+,2 ,1]];
   ResourcesPermanent = [[res.water,1800]];
   ResourcesBuild = [[res.money,-300]];
+  ResourcesMonthly = [[res.money,-10]];
   downgradeTyp = [52];
  }
  ID=52; // void
  {
   name = "polluted water pump";path = "../Data/texture/urban/water/WPp";
   AreaDependent = [[0,1,inf+,5, 1],[1,0,inf+,1 ,0]];
+  ResourcesMonthly = [[res.money,-10]];
   upgradeTyp = [51];
  }
  ID=53; // void
@@ -306,11 +318,13 @@
   downgradeTyp = [54];
   ResourcesPermanent = [[res.water,1400]];
   ResourcesBuild = [[res.money,-600]];
+  ResourcesMonthly = [[res.money,-10]];
  }
  ID=54; // void
  {
   name = "polluted water tower";path = "../Data/texture/urban/water/WTp";
   AreaDependent = [[1,0,inf+,1 ,0]];
+  ResourcesMonthly = [[res.money,-10]];
   upgradeTyp = [53];
  }
  ID=55; // void
@@ -318,6 +332,7 @@
   name = "sewage plant"; size = 3; path = "../Data/texture/urban/water/KW";
   AreaDependent = [[2,100,inf+,5, 1]];
   ResourcesBuild = [[res.money,-15000]];
+  ResourcesMonthly = [[res.money,-10]];
  }
  ID=56; // void
  {
@@ -330,6 +345,7 @@
   name = "landfill"; groundPath = "../Data/texture/urban/disposal/MD";
   ResourcesDependent = [[res.waste,500,inf+,effect.up,0]];
   ResourcesEffect = [[effect.up,res.waste,-100]];
+  ResourcesMonthly = [[res.money,-10]];
   upgradeTyp = [59];
   ResourcesBuild = [[res.money,-50]];
  }
@@ -339,6 +355,7 @@
   AreaPermanent = [[1,5,-3]];
   ResourcesDependent = [[res.waste,inf-,100,effect.down,0]];
   ResourcesEffect = [[effect.down,res.waste,+100]];
+  ResourcesMonthly = [[res.money,-10]];
   downgradeTyp = [58];
  }
  ID=60;
@@ -346,7 +363,7 @@
   name = "incinerator";size = 2;path = "../Data/texture/urban/disposal/MV";
   AreaDependent = [[2,100,inf+,5, 1]];
   AreaPermanent = [[1,8,-15],[1,12,-15]];
-  ResourcesMonthly = [[res.waste,-1000]];
+  ResourcesMonthly = [[res.money,-10],[res.waste,-1000]];
   ResourcesBuild = [[res.money,-7000]];
  }
 
@@ -356,19 +373,22 @@
  ID=61; // Residential
  {
   name = "Residential"; path = "../Data/texture/urban/Residential/W0";diversity = 5;
-  AreaDependent = [[2,1,inf+,5, 1]];
+  AreaDependent = [[area.road,1,inf+,effect.deacy, 1]];
+  int[] decayTyp = [0];
   buildMode = 1;
  }
  ID=62;
  {
   name = "Residential"; path = "../Data/texture/urban/Residential/W1";diversity = 5;
-  AreaDependent = [[2,1,inf+,5, 1]];
+  AreaDependent = [[area.road,100,inf+,effect.deacy, 1]];
+  int[] downgradeTyp = [61];
   buildMode = 1;
  }
  ID=63;
  {
   name = "Residential"; path = "../Data/texture/urban/Residential/W2";diversity = 5;
-  AreaDependent = [[2,1,inf+,5, 1]];
+  AreaDependent = [[area.road,100,inf+,effect.deacy, 1]];
+  int[] downgradeTyp = [62];
   buildMode = 1;
  }
  ID=64;
@@ -412,7 +432,8 @@
  }
  ID=75;
  {
-  name = "Comercial"; path = "../Data/texture/urban/Comercial/G4";diversity = 5;
+  name = "Comercial"; path = "../Data/texture/urban/Comercial/G4";diversity = 3;
+  graphicMode = 3; graphicNeighbors = [21,22,23,24];
   AreaDependent = [[2,1,inf+,5, 1]];
   buildMode = 1;
  }

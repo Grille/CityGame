@@ -434,6 +434,7 @@
             this.pictureBox2.Size = new System.Drawing.Size(200, 183);
             this.pictureBox2.TabIndex = 9;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.renderMapPreview);
             // 
             // label9
             // 

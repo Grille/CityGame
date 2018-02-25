@@ -30,26 +30,25 @@ namespace CityGame
             loadGame.BackgroundImage = backgroundImage;
             saveGame.BackgroundImage = backgroundImage;
 
-            Image menuButten1 = new Bitmap("../Data/texture/gui/menuButton1.png");
-            Image menuButten2 = new Bitmap("../Data/texture/gui/menuButton2.png");
-            Image menuButten3 = new Bitmap("../Data/texture/gui/menuButton3.png");
+            Image menuButten = new Bitmap("../Data/texture/gui/menuButton1.png");
+            Image menuButtenDown = new Bitmap("../Data/texture/gui/menuButton3.png");
 
-            imageButton1.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton2.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton3.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton4.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton5.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton6.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton7.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton8.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton9.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton10.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton11.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton12.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton13.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton14.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton15.LoadImages(menuButten1, menuButten2, menuButten3);
-            imageButton16.LoadImages(menuButten1, menuButten2, menuButten3);
+            imageButton1.LoadImages(menuButten, menuButtenDown);
+            imageButton2.LoadImages(menuButten, menuButtenDown);
+            imageButton3.LoadImages(menuButten, menuButtenDown);
+            imageButton4.LoadImages(menuButten, menuButtenDown);
+            imageButton5.LoadImages(menuButten, menuButtenDown);
+            imageButton6.LoadImages(menuButten, menuButtenDown);
+            imageButton7.LoadImages(menuButten, menuButtenDown);
+            imageButton8.LoadImages(menuButten, menuButtenDown);
+            imageButton9.LoadImages(menuButten, menuButtenDown);
+            imageButton10.LoadImages(menuButten, menuButtenDown);
+            imageButton11.LoadImages(menuButten, menuButtenDown);
+            imageButton12.LoadImages(menuButten, menuButtenDown);
+            imageButton13.LoadImages(menuButten, menuButtenDown);
+            imageButton14.LoadImages(menuButten, menuButtenDown);
+            imageButton15.LoadImages(menuButten, menuButtenDown);
+            imageButton16.LoadImages(menuButten, menuButtenDown);
 
             this.Size = new Size(640, 400);
             this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer,true);
@@ -99,9 +98,9 @@ namespace CityGame
                 currentPanel.Location = new Point(0, 0);
                 currentPanel.Size = this.Size;
             }
-
-            this.ResumeLayout(true);
+            Refresh();
             currentPanel.Refresh();
+            this.ResumeLayout(true);
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -142,7 +141,7 @@ namespace CityGame
         }
         private void buttonSaveGame_Click(object sender, EventArgs e)
         {
-            Program.MainWindow.World.Save("../saves/game.txt");
+            Program.MainWindow.World.Save("../saves/game.city");
         }
 
         private void buttonStartGame_Click(object sender, EventArgs e)
@@ -184,7 +183,7 @@ namespace CityGame
         private void buttonLoadGame_Click(object sender, EventArgs e)
         {
             Hide();
-            Program.MainWindow.World.Load("../saves/game.txt");
+            Program.MainWindow.World.Load("../saves/game.city");
             Program.MainWindow.StartGame();
             Program.MenuOverlay.Show(Program.MainWindow);
         }

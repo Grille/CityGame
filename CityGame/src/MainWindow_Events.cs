@@ -6,7 +6,7 @@ using System.Text;
 using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
-//using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 using OpenTK;
@@ -18,11 +18,17 @@ using GGL.Graphic;
 
 namespace CityGame
 {
-    public partial class MainWindow : Form
+    public partial class MainWindow : Form // Event
     {
         private void timerRender_Tick(object sender, EventArgs e)
         {
             Render();
+            //if (!isRendering)
+            //{
+            //    renderTask = new Task(() => Render());
+            //    renderTask.Start();
+            //}
+
         }
         private void timerLogic_Tick(object sender, EventArgs e)
         {
@@ -32,7 +38,6 @@ namespace CityGame
         private void OnRenderControlResize(object sender, EventArgs e)
         {
             Program.MenuOverlay.Size = this.Size;
-            GL2D.UpdateSize(this.Size);
         }
         private void MainWindow_Shown(object sender, EventArgs e)
         {
@@ -98,7 +103,7 @@ namespace CityGame
             else if (e.KeyCode == Keys.Subtract)
             {
                 int pos = Cam.GetCenter();
-                if (Cam.Size >= 16) Cam.Size /= 2;
+                if (Cam.Size >= 4) Cam.Size /= 2;
                 //Cam.SetCenter(pos);
             }
             else if (e.KeyCode == Keys.Add)

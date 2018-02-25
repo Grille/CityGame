@@ -40,7 +40,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxMinimap = new System.Windows.Forms.PictureBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pictureBox12 = new System.Windows.Forms.PictureBox();
             this.pictureBox11 = new System.Windows.Forms.PictureBox();
@@ -56,7 +56,7 @@
             this.imageButton1 = new GGL.Control.ImageButton();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMinimap)).BeginInit();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
@@ -206,15 +206,15 @@
             this.label1.Text = "capital";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // pictureBox7
+            // pictureBoxMinimap
             // 
-            this.pictureBox7.BackColor = System.Drawing.Color.Black;
-            this.pictureBox7.Location = new System.Drawing.Point(13, 45);
-            this.pictureBox7.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(200, 200);
-            this.pictureBox7.TabIndex = 6;
-            this.pictureBox7.TabStop = false;
+            this.pictureBoxMinimap.BackColor = System.Drawing.Color.Black;
+            this.pictureBoxMinimap.Location = new System.Drawing.Point(13, 45);
+            this.pictureBoxMinimap.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBoxMinimap.Name = "pictureBoxMinimap";
+            this.pictureBoxMinimap.Size = new System.Drawing.Size(200, 200);
+            this.pictureBoxMinimap.TabIndex = 6;
+            this.pictureBoxMinimap.TabStop = false;
             // 
             // panel3
             // 
@@ -224,7 +224,7 @@
             this.panel3.Controls.Add(this.pictureBox11);
             this.panel3.Controls.Add(this.pictureBox10);
             this.panel3.Controls.Add(this.pictureBox9);
-            this.panel3.Controls.Add(this.pictureBox7);
+            this.panel3.Controls.Add(this.pictureBoxMinimap);
             this.panel3.Location = new System.Drawing.Point(12, 373);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(225, 257);
@@ -278,7 +278,7 @@
             this.debugLabel.Location = new System.Drawing.Point(9, 9);
             this.debugLabel.Margin = new System.Windows.Forms.Padding(0);
             this.debugLabel.Name = "debugLabel";
-            this.debugLabel.Size = new System.Drawing.Size(228, 75);
+            this.debugLabel.Size = new System.Drawing.Size(228, 124);
             this.debugLabel.TabIndex = 11;
             this.debugLabel.Text = "debug";
             // 
@@ -441,7 +441,7 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MenuOverlay_KeyDown);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMinimap)).EndInit();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
@@ -461,7 +461,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.PictureBox pictureBox12;
@@ -478,5 +477,6 @@
         public System.Windows.Forms.Label debugLabel;
         public System.Windows.Forms.Label label5;
         public System.Windows.Forms.Label label8;
+        public System.Windows.Forms.PictureBox pictureBoxMinimap;
     }
 }

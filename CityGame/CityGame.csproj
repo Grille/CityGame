@@ -75,7 +75,6 @@
     <Compile Include="src\GameClasses\GameObject.cs" />
     <Compile Include="src\GameClasses\World.cs" />
     <Compile Include="src\GameClasses\World_SaveLoad.cs" />
-    <Compile Include="src\LockBitmap.cs" />
     <Compile Include="src\MainWindow_Graphic.cs" />
     <Compile Include="src\MainWindow_Events.cs" />
     <Compile Include="src\ggl\LoadGD.cs" />

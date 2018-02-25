@@ -180,7 +180,7 @@ namespace CityGame
             int y = (pos - x) / width;
 
             int size = gameObjects[typ].Size;
-            if (x < 0 || y < 0 || x > width - size || y > width - size) return false;//is on map
+            if (x < 0 || y < 0 || x > width - size || y > height - size) return false;//is on map
             if (!loadMode&&!TestResourcesBuild(typ)) return false;
             if (TestResourcesDependet(typ) > 1) return false;
             if (TestAreaDependet(typ, pos) > 1) return false;
@@ -281,7 +281,7 @@ namespace CityGame
 
             int size = gameObjects[typ].Size;
 
-            if (x < 0 || y < 0 || x > width - size || y > width - size) return;
+            if (x < 0 || y < 0 || x > width - size || y > height - size) return;
 
             // clear & ref
             for (int ix = 0; ix < size; ix++)
@@ -339,7 +339,7 @@ namespace CityGame
             }
             else
             {
-                int[] graphicNeighbors = gameObjects[typ].graphicNeighbors;
+                int[] graphicNeighbors = gameObjects[typ].GraphicNeighbors;
                 bool l = true, u = true, r = true, o = true;
                 for (int i = 0; i < graphicNeighbors.Length; i++)
                 {
@@ -347,6 +347,21 @@ namespace CityGame
                     if (x+1 < width && Typ[pos + 1] == graphicNeighbors[i]) { code += 4; r = false; }//r
                     if (y > 0 && Typ[pos - Width] == graphicNeighbors[i]) { code += 8; o = false; }//o
                     if (y+1 < height && Typ[pos + Width] == graphicNeighbors[i]) { code += 2; u = false; }//u
+                }
+            }
+            if (gameObjects[typ].GraphicMode == 3)
+            {
+                switch (code)
+                {
+                    case 01:case 04:case 05:case 07:case 13:
+                        code = 0;
+                    break;
+                    case 02:case 08:case 10:case 11:case 14:
+                        code = 1;
+                    break;
+                    default:
+                        code = (byte)(1 * rnd.NextDouble()+0.5);
+                    break;
                 }
             }
             return code;
@@ -391,7 +406,7 @@ namespace CityGame
                 int dataEffects = gameObjects[typ].ResourcesDependent[i, 3];
                 int dataInvert = gameObjects[typ].ResourcesDependent[i, 4];
 
-                int curValue = resources[dataTyp].Value;
+                int curValue = (int)resources[dataTyp].Value;
                 bool fire = false;
                 fire = curValue >= dataMin && curValue <= dataMax;
                 if (dataInvert == 1) fire = !fire;
@@ -481,6 +496,47 @@ namespace CityGame
             return;
         }
 
+        private void autoGround(byte ground, int pos)
+        {
+            if (Ground[pos] == ground) return;
+            byte envCode = 0;
+            bool envO = false;
+            if (Ground[pos - width] == ground) {envO = true;envCode++;}
+            bool envU = false;
+            if (Ground[pos + width] == ground) {envU = true;envCode++;}
+            bool envR = false;
+            if (Ground[pos + 1] == ground) {envR = true;envCode++;}
+            bool envL = false;
+            if (Ground[pos - 1] == ground) {envL = true;envCode++;}
+
+            if (envCode == 0) { return; }
+            else if (envCode == 3 || envCode == 4 || (envO && envU) || (envL && envR))
+            {
+                Ground[pos] = ground;
+                return;
+            }
+            else if (envO & envR) Ground[pos] = (byte)(ground - 16 + 1);
+            else if (envR & envU) Ground[pos] = (byte)(ground + 16 + 1);
+            else if (envU & envL) Ground[pos] = (byte)(ground - 1 + 16);
+            else if (envL & envO) Ground[pos] = (byte)(ground - 1 - 16);
+
+            else if (envO) Ground[pos] = (byte)(ground - 16);
+            else if (envU) Ground[pos] = (byte)(ground + 16);
+            else if (envL) Ground[pos] = (byte)(ground - 1);
+            else if (envR) Ground[pos] = (byte)(ground + 1);
+        }
+        private void autoGround(byte ground)
+        {
+            for (int ix = 1; ix < width-1; ix++)
+            {
+                for (int iy = 1; iy < height-1; iy++)
+                {
+                    int pos = ix + iy * width;
+                    autoGround(ground, ix + iy * width);
+                }
+            }
+            //if (!envO
+        }
         public void GenerateMap(Image map)
         {
             Random rnd = new Random(1000);
@@ -505,9 +561,18 @@ namespace CityGame
                 {
                     Build(1, i);
                 }
+                if (rgbData[i * 4 + 0] == 112)
+                {
+                    Build(10, i);
+                }
+                if (rgbData[i * 4 + 0] == 151)
+                {
+                    Ground[i] = 52;
+                }
                 else if (rgbData[i * 4 + 0] == 254)
                 {
                     Build(2, i);
+                    Ground[i] = 52;
                 }
                 else if (rgbData[i * 4 + 1] == 80)
                 {
@@ -528,6 +593,10 @@ namespace CityGame
                 if (rnd.NextDouble() < 0.001) Ground[i] = 5;
                 //if (rgbData[i * 4 + 1] == 128) Build(1, i);
             }
+            autoGround(52);
+            autoGround(52);
+
+
             loadMode = false;
         }
     }

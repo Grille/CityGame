@@ -11,3 +11,34 @@ G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MenuOverlay.resources
 G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MenuWindow.resources
 G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.csproj.GenerateResource.Cache
 G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.exe
+G:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.csprojResolveAssemblyReference.cache
+I:\projecte\CityGame\CityGame\bin\CityGame.exe.config
+I:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.exe
+I:\projecte\CityGame\CityGame\bin\CityGame.exe
+I:\projecte\CityGame\CityGame\bin\GGL.dll
+I:\projecte\CityGame\CityGame\bin\OpenTK.dll
+I:\projecte\CityGame\CityGame\bin\OpenTK.GLControl.dll
+I:\projecte\CityGame\CityGame\bin\OpenTK.xml
+I:\projecte\CityGame\CityGame\bin\OpenTK.GLControl.xml
+I:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.csprojResolveAssemblyReference.cache
+I:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.Properties.Resources.resources
+I:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MainWindow.resources
+I:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MenuOverlay.resources
+I:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MenuWindow.resources
+I:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.csproj.GenerateResource.Cache
+E:\projecte\CityGame\CityGame\bin\CityGame.exe.config
+E:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.exe
+E:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.csprojResolveAssemblyReference.cache
+E:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.Properties.Resources.resources
+E:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MainWindow.resources
+E:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MenuOverlay.resources
+E:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.MenuWindow.resources
+E:\projecte\CityGame\CityGame\obj\x86\Release\CityGame.csproj.GenerateResource.Cache
+E:\projecte\CityGame\CityGame\bin\CityGame.exe
+E:\projecte\CityGame\CityGame\bin\GGL.dll
+E:\projecte\CityGame\CityGame\bin\OpenTK.dll
+E:\projecte\CityGame\CityGame\bin\OpenTK.GLControl.dll
+E:\projecte\CityGame\CityGame\bin\OpenTK.xml
+E:\projecte\CityGame\CityGame\bin\OpenTK.GLControl.xml
+I:\projecte\CityGame v0.2\CityGame\bin\CityGame.exe.config
+I:\projecte\CityGame v0.2\CityGame\obj\x86\Release\CityGame.exe

@@ -1,4 +1,5 @@
-#version 400
+#400
+
 
 uniform sampler2D uSampler;
 uniform vec2 uResolution;
@@ -6,7 +7,6 @@ uniform int uTime;
 
 in vec2 vPosition;
 in vec2 vTexturePos;
-in vec4 vTextureIndex;
 in vec4 vColor;
 
 

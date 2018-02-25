@@ -22,8 +22,8 @@ namespace CityGame
         private string name;
         private bool canBeNegative;
         private bool storable;
-        public int Value;
-        public int AddValue;
+        public double Value;
+        public double AddValue;
         private int storeSize;
 
 
@@ -39,7 +39,11 @@ namespace CityGame
         }
         public void Update()
         {
-            Value += AddValue;
+            Update(1);
+        }
+        public void Update(int divider)
+        {
+            Value += AddValue / divider;
             if (!canBeNegative && Value < 0) Value = 0;
         }
 
