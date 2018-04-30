@@ -34,12 +34,14 @@
             this.progressBarLoad = new System.Windows.Forms.ProgressBar();
             this.pictureBoxLoad = new System.Windows.Forms.PictureBox();
             this.timerLogic = new System.Windows.Forms.Timer(this.components);
+            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoad)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // timerRender
             // 
-            this.timerRender.Interval = 16;
+            this.timerRender.Interval = 5;
             this.timerRender.Tick += new System.EventHandler(this.timerRender_Tick);
             // 
             // progressBarLoad
@@ -62,8 +64,16 @@
             // 
             // timerLogic
             // 
-            this.timerLogic.Interval = 1;
+            this.timerLogic.Interval = 5;
             this.timerLogic.Tick += new System.EventHandler(this.timerLogic_Tick);
+            // 
+            // pictureBoxLogo
+            // 
+            this.pictureBoxLogo.Location = new System.Drawing.Point(147, 40);
+            this.pictureBoxLogo.Name = "pictureBoxLogo";
+            this.pictureBoxLogo.Size = new System.Drawing.Size(98, 52);
+            this.pictureBoxLogo.TabIndex = 6;
+            this.pictureBoxLogo.TabStop = false;
             // 
             // MainWindow
             // 
@@ -71,6 +81,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1034, 425);
+            this.Controls.Add(this.pictureBoxLogo);
             this.Controls.Add(this.progressBarLoad);
             this.Controls.Add(this.pictureBoxLoad);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -85,6 +96,7 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoad)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -94,5 +106,6 @@
         private System.Windows.Forms.PictureBox pictureBoxLoad;
         public System.Windows.Forms.Timer timerRender;
         public System.Windows.Forms.Timer timerLogic;
+        private System.Windows.Forms.PictureBox pictureBoxLogo;
     }
 }

@@ -23,6 +23,7 @@ namespace CityGame
 
         public string Name;
         public string Path;
+        public string GroundPath;
         
         public int BuildMode;
         private Texture[,] texture;
@@ -38,31 +39,33 @@ namespace CityGame
 
         private int graphicMode;  //0=nothing, 1=self, 2=useArray;
         public int GraphicMode { get { return graphicMode; } }
-        public int[] GraphicNeighbors;
+        public byte[] GraphicNeighbors;
+        public byte[] GroundNeighbors;
 
-        public int[] UpgradeTyp;
-        public int[] DowngradeTyp;
-        public int[] DemolitionTyp;
-        public int[] DecayTyp;
-        public int[] DestroyTyp;
-        public int[] CanBuiltOnTyp;          //[typ]
-        public int[,] ReplaceTyp;          //[typ]
+        public byte[] UpgradeTyp;
+        public byte[] DowngradeTyp;
+        public byte[] DemolitionTyp;
+        public byte[] DecayTyp;
+        public byte[] DestroyTyp;
+        public byte[] CanBuiltOnTyp;          //[typ]
+        public byte[] ReplaceTyp;          //[typ]
 
         //effects: 0=up, 1=down, 2=demolition, 3=deacy, 4=destroy 5=entf//
         //importance: 0=canNotWork, 1=canWork//
-        public int[,] AreaPermanent;      //[[typ,size,value]]
-        public int[,] AreaDependent;      //[[typ,minValue,maxValue,effects]]
-        public int[,] ResourcesEffect;    //[[firedEfffect,typ,value]]
-        public int[,] ResourcesBuild;     //[[typ,value]]
-        public int[,] ResourcesPermanent; //[[typ,value]]
-        public int[,] ResourcesMonthly;   //[[typ,value]]
-        public int[,] ResourcesDependent; //[[typ,minValue,maxValue,effects]]
+        public int[] AreaPermanent;      //[[typ,size,value]]
+        public int[] AreaDependent;      //[[typ,minValue,maxValue,effects]]
+        public int[] ResourcesEffect;    //[[firedEfffect,typ,value]]
+        public int[] ResourcesBuild;     //[[typ,value]]
+        public int[] ResourcesPermanent; //[[typ,value]]
+        public int[] ResourcesMonthly;   //[[typ,value]]
+        public int[] ResourcesDependent; //[[typ,minValue,maxValue,effects]]
 
-        public void LoadBasic(string name, string path, string groundPath, int buildMode,int slopeMode, int diversity, int size,int groundMode, int graphicMode, int[] graphicNeighbors)
+        public void LoadBasic(string name, string path, string groundPath, int buildMode,int slopeMode, int diversity, int size,int groundMode, int graphicMode, byte[] graphicNeighbors)
         {
 
             this.Name = name;
             this.Path = path;
+            this.GroundPath = groundPath;
             this.diversity = diversity;
             this.size = (byte)size;
             this.BuildMode = buildMode;
@@ -70,13 +73,13 @@ namespace CityGame
             this.graphicMode = graphicMode;
             this.GraphicNeighbors = graphicNeighbors;
 
-            if (groundPath != "-")
+            if (groundPath != null)
             {
                 ground = new Texture[1];
                 if (File.Exists(groundPath + "_g.png")) ground[0] = new Texture(groundPath+"_g.png");
                 else ground[0] = new Texture(groundPath + ".png"); 
             }
-            if (path != "-")
+            if (path != null)
             {
                 texture = new Texture[diversity, 16];
                 for (int i = 0; i < diversity; i++)
@@ -105,7 +108,7 @@ namespace CityGame
                 }
             }                     // GGL.LockBitmap lockBitmap1 = new LockBitmap()
         }
-        public void LoadTypRefs(int[] upgradeTyp, int[] downgradeTyp, int[] demolitionTyp, int[] decayTyp, int[] destroyTyp, int[] canBuiltOnTyp,int[,] replaceTyp) 
+        public void LoadTypRefs(byte[] upgradeTyp, byte[] downgradeTyp, byte[] demolitionTyp, byte[] decayTyp, byte[] destroyTyp, byte[] canBuiltOnTyp, byte[] replaceTyp) 
         {
             this.UpgradeTyp = upgradeTyp;
             this.DowngradeTyp = downgradeTyp;
@@ -115,7 +118,7 @@ namespace CityGame
             this.CanBuiltOnTyp = canBuiltOnTyp;
             this.ReplaceTyp = replaceTyp;
         }
-        public void LoadSimData(int[,] AreaPermanent,int[,] AreaDependent,int[,] ResourcesEffect,int[,] ResourcesBuild,int[,] ResourcesPermanent,int[,] ResourcesMonthly,int[,] ResourcesDependent)
+        public void LoadSimData(int[] AreaPermanent,int[] AreaDependent,int[] ResourcesEffect,int[] ResourcesBuild,int[] ResourcesPermanent,int[] ResourcesMonthly,int[] ResourcesDependent)
         {
             this.AreaPermanent = AreaPermanent;
             this.AreaDependent = AreaDependent;

@@ -417,7 +417,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.BackColor = System.Drawing.Color.Fuchsia;
             this.ClientSize = new System.Drawing.Size(1195, 642);
             this.Controls.Add(this.debugLabel);
             this.Controls.Add(this.imageButton6);
@@ -436,7 +436,7 @@
             this.Name = "MenuOverlay";
             this.ShowInTaskbar = false;
             this.Text = "MenuOverlay";
-            this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.Enter += new System.EventHandler(this.MenuOverlay_Enter);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MenuOverlay_KeyDown);
             this.panel2.ResumeLayout(false);

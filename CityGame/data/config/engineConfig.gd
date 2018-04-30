@@ -1,5 +1,5 @@
 {
- Template
+ Attributes
  {
   bool isometric = false;
   int TileRes = 64;

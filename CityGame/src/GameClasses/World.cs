@@ -21,6 +21,7 @@ namespace CityGame
     {
         private GameObject[] gameObjects;
         private GameResources[] resources;
+        private Camera camera;
         private Random rnd;
         private int width;
         public int Width { get { return width; } }
@@ -42,10 +43,11 @@ namespace CityGame
 
         private bool loadMode = false;
 
-        public World(GameObject[] gameObjects, GameResources[] resources)
+        public World(GameObject[] gameObjects, GameResources[] resources,Camera camera)
         {
             this.gameObjects = gameObjects;
             this.resources = resources;
+            this.camera = camera;
 
         }
         public void BuildWorld(int width, int height)
@@ -184,35 +186,38 @@ namespace CityGame
             if (!loadMode&&!TestResourcesBuild(typ)) return false;
             if (TestResourcesDependet(typ) > 1) return false;
             if (TestAreaDependet(typ, pos) > 1) return false;
-            if (gameObjects[typ].CanBuiltOnTyp.Length == 0) return true;//can build on all
+            if (gameObjects[typ].CanBuiltOnTyp == null || gameObjects[typ].CanBuiltOnTyp.Length == 0) return true;//can build on all
             bool returnValue = true;
 
 
 
-            for (int ix = 0; ix < size; ix++)
-            {
-                for (int iy = 0; iy < size; iy++)
+                
+                for (int ix = 0; ix < size; ix++)
                 {
-                    int curPos = pos + ix + iy * width;
-                    curPos = curPos - ReferenceX[curPos] - ReferenceY[curPos] * width;
-                    bool matching = false;
-                    for (int i = 0; i < gameObjects[typ].CanBuiltOnTyp.Length; i++)
+                    for (int iy = 0; iy < size; iy++)
                     {
-                        matching = matching || Typ[curPos] == gameObjects[typ].CanBuiltOnTyp[i];
+                        int curPos = pos + ix + iy * width;
+                        curPos = curPos - ReferenceX[curPos] - ReferenceY[curPos] * width;
+                        bool matching = false;
+                        for (int i = 0; gameObjects[typ].CanBuiltOnTyp != null && i < gameObjects[typ].CanBuiltOnTyp.Length; i++)
+                        {
+                            matching = matching || Typ[curPos] == gameObjects[typ].CanBuiltOnTyp[i];
+                        }
+                        returnValue = returnValue && matching;
                     }
-                    returnValue = returnValue && matching;
                 }
-            }
+                
+
             return returnValue;
         }
 
         private void buildCoasts(byte typ)
         {
             //resources
-                for (int i = 0; i < gameObjects[typ].ResourcesBuild.GetLength(0); i++)
+                for (int i = 0; gameObjects[typ].ResourcesBuild != null && i < gameObjects[typ].ResourcesBuild.Length/2; i++)
                 {
-                    int dataTyp = gameObjects[typ].ResourcesBuild[i, 0];
-                    int dataValue = gameObjects[typ].ResourcesBuild[i, 1];
+                    int dataTyp = gameObjects[typ].ResourcesBuild[i*2+ 0];
+                    int dataValue = gameObjects[typ].ResourcesBuild[i*2+1];
                     resources[dataTyp].Value += dataValue;
                 }
         }
@@ -225,28 +230,28 @@ namespace CityGame
             else objectCounter[typ]--;
 
             //resources
-            for (int i = 0; i < gameObjects[typ].ResourcesPermanent.GetLength(0); i++)
+            for (int i = 0; gameObjects[typ].ResourcesPermanent != null && i < gameObjects[typ].ResourcesPermanent.Length/2; i++)
             {
-                int dataTyp = gameObjects[typ].ResourcesPermanent[i, 0];
-                int dataValue = gameObjects[typ].ResourcesPermanent[i, 1];
+                int dataTyp = gameObjects[typ].ResourcesPermanent[i*2+ 0];
+                int dataValue = gameObjects[typ].ResourcesPermanent[i*2+ 1];
                 if (!add) dataValue = -dataValue;
                 resources[dataTyp].Value += dataValue;
             }
-            for (int i = 0; i < gameObjects[typ].ResourcesMonthly.GetLength(0); i++)
+            for (int i = 0; gameObjects[typ].ResourcesMonthly != null && i < gameObjects[typ].ResourcesMonthly.Length/2; i++)
             {
-                int dataTyp = gameObjects[typ].ResourcesMonthly[i, 0];
-                int dataValue = gameObjects[typ].ResourcesMonthly[i, 1];
+                int dataTyp = gameObjects[typ].ResourcesMonthly[i*2+ 0];
+                int dataValue = gameObjects[typ].ResourcesMonthly[i*2+ 1];
                 if (!add) dataValue = -dataValue;
                 resources[dataTyp].AddValue += dataValue;
             }
 
             //area
-            for (int i = 0; i < gameObjects[typ].AreaPermanent.GetLength(0); i++)
+            for (int i = 0; gameObjects[typ].AreaPermanent != null && i < gameObjects[typ].AreaPermanent.Length/3; i++)
             {
                 int typSize = gameObjects[typ].Size;
-                int dataTyp = gameObjects[typ].AreaPermanent[i,0];
-                int dataSize = gameObjects[typ].AreaPermanent[i, 1];
-                int dataValue = gameObjects[typ].AreaPermanent[i, 2];
+                int dataTyp = gameObjects[typ].AreaPermanent[i*3+0];
+                int dataSize = gameObjects[typ].AreaPermanent[i*3+ 1];
+                int dataValue = gameObjects[typ].AreaPermanent[i*3+ 2];
                 if (!add) dataValue = -dataValue;
 
                 int startX = x - dataSize;
@@ -339,9 +344,9 @@ namespace CityGame
             }
             else
             {
-                int[] graphicNeighbors = gameObjects[typ].GraphicNeighbors;
+                byte[] graphicNeighbors = gameObjects[typ].GraphicNeighbors;
                 bool l = true, u = true, r = true, o = true;
-                for (int i = 0; i < graphicNeighbors.Length; i++)
+                for (int i = 0; graphicNeighbors != null && i < graphicNeighbors.Length; i++)
                 {
                     if (x > 0 && Typ[pos - 1] == graphicNeighbors[i]) { code += 1; l = false; }//l
                     if (x+1 < width && Typ[pos + 1] == graphicNeighbors[i]) { code += 4; r = false; }//r
@@ -386,10 +391,11 @@ namespace CityGame
 
         public bool TestResourcesBuild(byte typ)
         {
-            for (int i = 0; i < gameObjects[typ].ResourcesBuild.GetLength(0); i++)
+            if (gameObjects[typ].ResourcesBuild == null) return true;
+            for (int i = 0; i < gameObjects[typ].ResourcesBuild.Length/2; i++)
             {
-                int dataTyp = gameObjects[typ].ResourcesBuild[i, 0];
-                int dataValue = gameObjects[typ].ResourcesBuild[i, 1];
+                int dataTyp = gameObjects[typ].ResourcesBuild[i*2+ 0];
+                int dataValue = gameObjects[typ].ResourcesBuild[i*2+ 1];
                 if (resources[dataTyp].Value + dataValue < 0) return false;
             }
             return true;
@@ -397,14 +403,15 @@ namespace CityGame
         }
         public int TestResourcesDependet(byte typ)
         {
+            if (gameObjects[typ].ResourcesDependent == null) return 0;
             int retValue = 0;
-            for (int i = 0; i < gameObjects[typ].ResourcesDependent.GetLength(0); i++)
+            for (int i = 0; i < gameObjects[typ].ResourcesDependent.Length/5; i++)
             {
-                int dataTyp = gameObjects[typ].ResourcesDependent[i, 0];
-                int dataMin = gameObjects[typ].ResourcesDependent[i, 1];
-                int dataMax = gameObjects[typ].ResourcesDependent[i, 2];
-                int dataEffects = gameObjects[typ].ResourcesDependent[i, 3];
-                int dataInvert = gameObjects[typ].ResourcesDependent[i, 4];
+                int dataTyp = gameObjects[typ].ResourcesDependent[i*5+ 0];
+                int dataMin = gameObjects[typ].ResourcesDependent[i*5+ 1];
+                int dataMax = gameObjects[typ].ResourcesDependent[i*5+ 2];
+                int dataEffects = gameObjects[typ].ResourcesDependent[i*5+ 3];
+                int dataInvert = gameObjects[typ].ResourcesDependent[i*5+ 4];
 
                 int curValue = (int)resources[dataTyp].Value;
                 bool fire = false;
@@ -417,16 +424,17 @@ namespace CityGame
         }
         public int TestAreaDependet(byte typ, int pos)
         {
+            if (gameObjects[typ].AreaDependent == null) return 0;
             int retValue = 0;
 
             int size = gameObjects[typ].Size;
-            for (int i = 0; i < gameObjects[typ].AreaDependent.GetLength(0); i++)
+            for (int i = 0; i < gameObjects[typ].AreaDependent.Length/5; i++)
             {
-                int dataTyp = gameObjects[typ].AreaDependent[i,0];
-                int dataMin = gameObjects[typ].AreaDependent[i, 1];
-                int dataMax = gameObjects[typ].AreaDependent[i, 2];
-                int dataEffects = gameObjects[typ].AreaDependent[i, 3];
-                int dataInvert = gameObjects[typ].AreaDependent[i, 4];
+                int dataTyp = gameObjects[typ].AreaDependent[i*5+0];
+                int dataMin = gameObjects[typ].AreaDependent[i*5+1];
+                int dataMax = gameObjects[typ].AreaDependent[i*5+ 2];
+                int dataEffects = gameObjects[typ].AreaDependent[i*5+ 3];
+                int dataInvert = gameObjects[typ].AreaDependent[i*5+ 4];
 
                 bool result = true;
                 for (int ix = 0; ix < size; ix++)
@@ -465,17 +473,17 @@ namespace CityGame
             else if (result == 4) replaceTyp(typ, pos, gameObjects[typ].DecayTyp);
             else if (result == 5) replaceTyp(typ, pos, gameObjects[typ].DestroyTyp);
             else if (result == 6) Clear(pos);
-            for (int i = 0; i < gameObjects[typ].ResourcesEffect.GetLength(0); i++)
+            for (int i = 0; gameObjects[typ].ResourcesEffect != null && i < gameObjects[typ].ResourcesEffect.Length/3; i++)
             {
-                if (gameObjects[typ].ResourcesEffect[i, 0] == result)
+                if (gameObjects[typ].ResourcesEffect[i*3+ 0] == result)
                 {
-                    resources[gameObjects[typ].ResourcesEffect[i, 1]].Value += gameObjects[typ].ResourcesEffect[i, 2];
+                    resources[gameObjects[typ].ResourcesEffect[i*3+ 1]].Value += gameObjects[typ].ResourcesEffect[i*3+ 2];
                 }
             }
             return;
         }
 
-        private void replaceTyp(byte typ, int pos,int[] replace)
+        private void replaceTyp(byte typ, int pos,byte[] replace)
         {
             int newTyp = (int)(replace.Length * rnd.NextDouble());
             if (gameObjects[typ].Size == gameObjects[replace[newTyp]].Size)
@@ -537,6 +545,7 @@ namespace CityGame
             }
             //if (!envO
         }
+
         public void GenerateMap(Image map)
         {
             Random rnd = new Random(1000);
@@ -544,9 +553,9 @@ namespace CityGame
             BuildWorld(map.Width, map.Height);
             LockBitmap data = new LockBitmap((Bitmap)map, true);
             byte[] rgbData = data.getData();
-            Console.WriteLine("Bitmap: " + (int)(map.Width * map.Height) + " Map: " + rgbData.Length/4);
+            Console.WriteLine("Bitmap: " + (int)(map.Width * map.Height) + " Map: " + rgbData.Length / 4);
             loadMode = true;
-            for (int i = 0; i < rgbData.Length/4; i++)
+            for (int i = 0; i < rgbData.Length / 4; i++)
             {
                 if (rnd.NextDouble() > 0.5)
                 {
@@ -560,6 +569,7 @@ namespace CityGame
                 if (rgbData[i * 4 + 0] == 255)
                 {
                     Build(1, i);
+                    Ground[i] = 49;
                 }
                 if (rgbData[i * 4 + 0] == 112)
                 {
@@ -568,6 +578,10 @@ namespace CityGame
                 if (rgbData[i * 4 + 0] == 151)
                 {
                     Ground[i] = 52;
+                }
+                if (rgbData[i * 4 + 0] == 77)
+                {
+                    Ground[i] = 49;
                 }
                 else if (rgbData[i * 4 + 0] == 254)
                 {
@@ -595,6 +609,8 @@ namespace CityGame
             }
             autoGround(52);
             autoGround(52);
+            autoGround(49);
+            autoGround(49);
 
 
             loadMode = false;

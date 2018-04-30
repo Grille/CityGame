@@ -130,7 +130,6 @@
             // 
             // imageButton2
             // 
-            this.imageButton2.BackColor = System.Drawing.Color.Transparent;
             this.imageButton2.DefaultImage = null;
             this.imageButton2.DownImage = null;
             this.imageButton2.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
@@ -678,7 +677,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(192)))), ((int)(((byte)(50)))));
+            this.BackColor = System.Drawing.Color.Fuchsia;
             this.ClientSize = new System.Drawing.Size(1932, 1092);
             this.Controls.Add(this.saveGame);
             this.Controls.Add(this.options);

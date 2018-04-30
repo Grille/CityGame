@@ -37,33 +37,37 @@ namespace CityGame
 
         private void OnRenderControlResize(object sender, EventArgs e)
         {
-            Program.MenuOverlay.Size = this.Size;
+            if (Program.MenuOverlay != null)Program.MenuOverlay.Size = this.Size;
         }
         private void MainWindow_Shown(object sender, EventArgs e)
         {
             initGame();
         }
 
+        private void MainWindow_MouseWheel(object sender, MouseEventArgs e)
+        {
+            Cam.Size += e.Delta;
+        }
         private void MainWindow_MouseMove(object sender, MouseEventArgs e)
         {
-            int oldPos = CurField;
+            int oldPos = CurFieldPos;
             mouse = e;
-            if (timerLogic.Enabled == false) CurField = -1;
+            if (timerLogic.Enabled == false) CurFieldPos = -1;
             else
             {
                 float posX = e.X + Cam.DetailX;
                 float posY = e.Y + Cam.DetailY;
-                posX = (int)(posX / Cam.Size + Cam.PosX - 0.5 * (gameObject[CurBuild].Size - 1f));
-                posY = (int)(posY / Cam.Size + Cam.PosY - 0.5 * (gameObject[CurBuild].Size - 1f));
-                CurField = (int)(posX + posY * World.Width);
+                posX = (int)(posX / Cam.Size + Cam.PosX - 0.5 * (gameObject[CurBuildIndex].Size - 1f));
+                posY = (int)(posY / Cam.Size + Cam.PosY - 0.5 * (gameObject[CurBuildIndex].Size - 1f));
+                CurFieldPos = (int)(posX + posY * World.Width);
 
-                if (oldPos!=CurField) showCurBuild = true;
+                if (oldPos!=CurFieldPos) showCurBuild = true;
             }
             if (e.Button == MouseButtons.Left)
             {
-                if (World.CanBuild((byte)CurBuild, CurField) && gameObject[CurBuild].BuildMode == 1)
+                if (World.CanBuild((byte)CurBuildIndex, CurFieldPos) && gameObject[CurBuildIndex].BuildMode == 1)
                 {
-                    World.Build((byte)CurBuild, CurField);
+                    World.Build((byte)CurBuildIndex, CurFieldPos);
                     showCurBuild = false;
                 }
             }
@@ -72,24 +76,25 @@ namespace CityGame
         {
             mouse = e;
             mouseDownPos = e.Location;
-            if (World.CanBuild((byte)CurBuild, CurField) && (gameObject[CurBuild].BuildMode == 0 || gameObject[CurBuild].BuildMode == 1))
+            DownFieldPos = CurFieldPos;
+            if (World.CanBuild((byte)CurBuildIndex, CurFieldPos) && (gameObject[CurBuildIndex].BuildMode == 0 || gameObject[CurBuildIndex].BuildMode == 1))
             {
-                World.Build((byte)CurBuild, CurField);
+                World.Build((byte)CurBuildIndex, CurFieldPos);
                 showCurBuild = false;
             }
         }
         private void MainWindow_MouseUp(object sender, MouseEventArgs e)
         {
             mouse = e;
-            if (World.CanBuild((byte)CurBuild, CurField) && gameObject[CurBuild].BuildMode == 2)
+            if (World.CanBuild((byte)CurBuildIndex, CurFieldPos) && gameObject[CurBuildIndex].BuildMode == 2)
             {
-                World.Build((byte)CurBuild, CurField);
+                World.Build((byte)CurBuildIndex, CurFieldPos);
                 showCurBuild = false;
             }
         }
         private void MainWindow_MouseLeave(object sender, EventArgs e)
         {
-            CurField = -1;
+            CurFieldPos = -1;
         }
 
         public void MainWindow_KeyDown(object sender, KeyEventArgs e)

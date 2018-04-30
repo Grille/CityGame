@@ -29,7 +29,15 @@ namespace CityGame
         public int DetailX = 0;
         public int DetailY = 0;
 
+        public Camera()
+        {
+        }
         public Camera(World world,Control sender)
+        {
+            this.world = world;
+            this.sender = sender;
+        }
+        public void SetRef(World world, Control sender)
         {
             this.world = world;
             this.sender = sender;

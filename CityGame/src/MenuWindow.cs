@@ -16,6 +16,7 @@ namespace CityGame
         private Panel currentPanel;
         private Panel lastPanel;
         private Bitmap mapImage;
+        private int mode;
         public MenuWindow()
         {
             mapImage = new Bitmap(1, 1);
@@ -118,7 +119,6 @@ namespace CityGame
         }
         private void buttonNewGameMenu_Click(object sender, EventArgs e)
         {
-            switchPanel(3);
             listBoxNewGame.Items.Clear();
 
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("../Data/Maps");
@@ -127,16 +127,34 @@ namespace CityGame
             {
                 listBoxNewGame.Items.Add(f.Name);
             }
+            switchPanel(3); mode = 0;
             
         }
 
         private void buttonLoadGameMenu_Click(object sender, EventArgs e)
         {
-            switchPanel(4);
+            listBoxNewGame.Items.Clear();
+
+            System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("../saves");
+
+            foreach (System.IO.FileInfo f in ParentDirectory.GetFiles())
+            {
+                listBoxNewGame.Items.Add(f.Name);
+            }
+            switchPanel(3); mode = 1;
         }
 
         private void buttonSaveGameMenu_Click(object sender, EventArgs e)
         {
+           
+            listBoxSaveGame.Items.Clear();
+
+            System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("../saves");
+
+            foreach (System.IO.FileInfo f in ParentDirectory.GetFiles())
+            {
+                listBoxSaveGame.Items.Add(f.Name);
+            }
             switchPanel(5);
         }
         private void buttonSaveGame_Click(object sender, EventArgs e)
@@ -147,9 +165,19 @@ namespace CityGame
         private void buttonStartGame_Click(object sender, EventArgs e)
         {
             Hide();
-            Program.MainWindow.World.GenerateMap(mapImage);
-            Program.MainWindow.StartGame();
-            Program.MenuOverlay.Show(Program.MainWindow);
+            if (mode == 0)
+            {
+                Program.MainWindow.World.GenerateMap(mapImage);
+                Program.MainWindow.StartGame();
+                Program.MenuOverlay.Show(Program.MainWindow);
+            }
+            else
+            {
+                Console.WriteLine("../saves/" + listBoxNewGame.SelectedItem);
+                Program.MainWindow.World.Load("../saves/" + listBoxNewGame.SelectedItem);
+                Program.MainWindow.StartGame();
+                Program.MenuOverlay.Show(Program.MainWindow);
+            }
         }
         private void buttonBackToGame_Click(object sender, EventArgs e)
         {
@@ -166,9 +194,12 @@ namespace CityGame
 
         private void listBoxNewGame_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mapImage = new Bitmap("../data/maps/" + (string)listBoxNewGame.SelectedItem);
-            //pictureBoxNewGame.Image = bitmap;
-            pictureBoxNewGame.Refresh();
+            if (mode == 0)
+            {
+                mapImage = new Bitmap("../data/maps/" + (string)listBoxNewGame.SelectedItem);
+                //pictureBoxNewGame.Image = bitmap;
+                pictureBoxNewGame.Refresh();
+            }
         }
 
         private void renderMapPreview(object sender, PaintEventArgs e)

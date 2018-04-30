@@ -38,8 +38,9 @@ namespace CityGame
         Texture highViewMap;
         public World World;
         public Camera Cam;
-        public int CurField = -1;
-        public int CurBuild = 3;
+        public int DownFieldPos = -1;
+        public int CurFieldPos = -1;
+        public int CurBuildIndex = 3;
         private int CurBuildVersion = 3;
 
         bool isRendering = false;
@@ -65,23 +66,27 @@ namespace CityGame
         //init OpenGL
         public MainWindow()
         {
-            saveMiMap();
+            SaveMiniMap();
             InitializeComponent();
 
             DoubleBuffered = true;
             GL2D.SetRenderControl(this);
             Resize += new EventHandler(OnRenderControlResize);
-
-            highViewMap = new Texture(1, 1, new byte[] { 255, 255, 255, 255, 255, 255, 255, 255, 255 });
+            MouseWheel += new MouseEventHandler(MainWindow_MouseWheel);
             rnd = new Random();
             animatorTimer = new Stopwatch();
             animatorTimer.Start();
             timerDate = DateTime.Now.Ticks;
             animator = new int[20];
             date = new DateTime(2000, 1, 1);
+
+            Console.WriteLine("initGame()");
+
+
+            //initGame();
         }
 
-        public void saveMiMap()
+        public void SaveMiniMap()
         {
             Random rnd = new Random();
             GGL.IO.ByteStream bs = new GGL.IO.ByteStream();
@@ -119,7 +124,6 @@ namespace CityGame
             }
             bs.Save("../Data/minimaps/default.mpd");
         }
-
         // init Game
         private void initGame()
         {
@@ -129,6 +133,9 @@ namespace CityGame
             pictureBoxLoad.Image = new Bitmap("../Data/texture/gui/load.png");
             pictureBoxLoad.Location = new Point(0, 0);
             pictureBoxLoad.Size = this.Size;
+            pictureBoxLogo.Image = new Bitmap("../Data/texture/gui/grille.png");
+            pictureBoxLogo.Location = new Point(560 + 40 - 128, 320-128);
+            pictureBoxLogo.Size = new Size(128,96);
             progressBarLoad.Location = new Point(40, 320);
             progressBarLoad.Size = new Size(560, 40);
             this.Refresh();
@@ -140,6 +147,7 @@ namespace CityGame
             Console.WriteLine("Vendor: "+ GL.GetString(StringName.Vendor));
             
             //int game
+            Console.WriteLine("initOpenGL()");
             int code;
             if ((code = initOpenGL()) != 0)
             {
@@ -149,45 +157,62 @@ namespace CityGame
                 else if (code == 4) MessageBox.Show("Could not initialize OpenGL\n\nShader compilation failed\n" + GL2D.GetError(), "Error by init OpenGL", MessageBoxButtons.OK,MessageBoxIcon.Error);
                 Application.Exit();return;
             }
+
             Console.WriteLine("loadData()");
             loadData();
             GGL.IO.ByteStream bs = new GGL.IO.ByteStream();
             bs.ResetIndex();
+
             for (int i = 0; i < gameObject.Length; i++)
             {
-                if (gameObject[i].Name == "-") continue;
+                if (gameObject[i].Name == "-" || gameObject[i].Name == "") continue;
                 bs.WriteByte((byte)i);
-                bs.WriteString(gameObject[i].Name);
-                bs.WriteString(gameObject[i].Path);
-                bs.WriteByte((byte)gameObject[i].BuildMode);
-                bs.WriteByte((byte)gameObject[i].BuildMode);
-                bs.WriteByte((byte)gameObject[i].Diversity);
-                bs.WriteByte((byte)gameObject[i].Size);
-                bs.WriteByte((byte)gameObject[i].GroundMode);
-                bs.WriteByte((byte)gameObject[i].GraphicMode);
-                bs.WriteByteArray(gameObject[i].GraphicNeighbors);
+                bs.WriteByte(0);//refEnabeld
+                bs.WriteByte(0);//refID
+                //bs.WriteString(gameObject[i].Name);
+                //bs.WriteString(gameObject[i].Path);
+                //bs.WriteString(gameObject[i].GroundPath);
+                //bs.WriteByte((byte)gameObject[i].BuildMode);
+                //bs.WriteByte((byte)gameObject[i].BuildMode);
+                //bs.WriteByte((byte)gameObject[i].Diversity);
+                //bs.WriteByte((byte)gameObject[i].Size);
+                //bs.WriteByte((byte)gameObject[i].GroundMode);
+                //bs.WriteByte((byte)gameObject[i].GraphicMode);
+                //bs.WriteByteArray(gameObject[i].GraphicNeighbors);
+                //bs.WriteByteArray(gameObject[i].GroundNeighbors);
 
-                bs.WriteByteArray(gameObject[i].UpgradeTyp);
-                bs.WriteByteArray(gameObject[i].DowngradeTyp);
-                bs.WriteByteArray(gameObject[i].DemolitionTyp);
-                bs.WriteByteArray(gameObject[i].DecayTyp);
-                bs.WriteByteArray(gameObject[i].DestroyTyp);
-                bs.WriteByteArray(gameObject[i].CanBuiltOnTyp);
+                //bs.WriteByteArray(gameObject[i].UpgradeTyp);
+                //bs.WriteByteArray(gameObject[i].DowngradeTyp);
+                //bs.WriteByteArray(gameObject[i].DemolitionTyp);
+                //bs.WriteByteArray(gameObject[i].DecayTyp);
+                //bs.WriteByteArray(gameObject[i].DestroyTyp);
+                //bs.WriteByteArray(gameObject[i].CanBuiltOnTyp);
+                //bs.WriteIntArray2D(gameObject[i].ReplaceTyp);
+
+                //bs.WriteIntArray2D(gameObject[i].AreaPermanent);
+                //bs.WriteIntArray2D(gameObject[i].AreaDependent);
+                //bs.WriteIntArray2D(gameObject[i].ResourcesEffect);
+                //bs.WriteIntArray2D(gameObject[i].ResourcesBuild);
+                //bs.WriteIntArray2D(gameObject[i].ResourcesPermanent);
+                //bs.WriteIntArray2D(gameObject[i].ResourcesMonthly);
+                //bs.WriteIntArray2D(gameObject[i].ResourcesDependent);
 
                
                 //bs.WriteByteArray(gameObject[i].graphicNeighbors);
             }
             bs.Save("../test.txt");
 
-            World = new World(gameObject, resources);
+            Cam = new Camera();
+            World = new World(gameObject, resources,Cam);
             World.BuildWorld(32, 32);
-            Cam = new Camera(World, this);
+            Cam.SetRef(World, this);
 
             //set fullscreen
             this.Visible = false;
             this.Location = new Point(0, 0);
             this.Size = SystemInformation.VirtualScreen.Size;
             pictureBoxLoad.Visible = false;
+            pictureBoxLogo.Visible = false;
             progressBarLoad.Visible = false;
             this.timerRender.Enabled = true;
             SetForegroundWindow(this.Handle);
@@ -204,14 +229,17 @@ namespace CityGame
         private int initOpenGL()
         {
             int code;
+            //GL2D.WaitRendererReady();
             if ((code=GL2D.IsRendererReady())>0) return code;
 
             Console.WriteLine(GL.GetString(StringName.Renderer));
             Console.WriteLine(GL.GetString(StringName.Version));
+
             basicShader = GL2D.CreateShader(File.ReadAllText("../Data/Shaders/basicVS.glsl"), File.ReadAllText("../Data/Shaders/basicFS.glsl"));
             if (basicShader < 0) return 4;
             glowShader = GL2D.CreateShader(File.ReadAllText("../Data/Shaders/glowVS.glsl"), File.ReadAllText("../Data/Shaders/glowFS.glsl"));
             if (glowShader < 0) return 4;
+            
             GL2D.UseShader(basicShader);
             GL2D.CreateBuffer(2265536);
             // Other state
@@ -223,66 +251,69 @@ namespace CityGame
         }
         private void loadData()
         {
+            highViewMap = new Texture(4, 4, new byte[] { 255, 0, 0});
             //effects: 0=not, 1=up, 2=down, 3=break, 4=deacy, 5=destroy 6=entf//
             //AreaPermanent->typ: 0=water, 1=nature, 2=road,3=saltwater
-            Pharse.ReplaceList = new string[] {
-                "effect.not", "0","effect.up", "1","effect.down", "2","effect.break", "3","effect.deacy", "4","effect.destroy", "5","effect.entf", "6",
-                "res.money", "0", "res.energy", "1", "res.water", "2", "res.waste", "3",
-                "area.water", "0","area.pollution", "1","area.road", "2","area.saltwater", "3"
-            };
+            GGL.IO.Parser parser = new GGL.IO.Parser();
+            resources = new GameResources[256];
+            gameObject = new GameObject[256];
+
             Console.WriteLine("//load: gameResourcesData");
-            object[,] gameResourcesData = Pharse.Load("../Data/config/gameResources.gd");
-            resources = new GameResources[gameResourcesData.GetLength(0)];
-            for (int i = 0; i < gameResourcesData.GetLength(0); i++)
+            parser.LoadData("../Data/config/gameResources.gd");
+            parser.Parse();
+            for (int i = 0; i < resources.Length; i++)
             {
                 int index = 0;
                 resources[i] = new GameResources();
+                
                 resources[i].Load(
-                    (string)gameResourcesData[i, index++],
-                    (int)gameResourcesData[i, index++],
-                    (bool)gameResourcesData[i, index++],
-                    (bool)gameResourcesData[i, index++]);
-            }
-            Console.WriteLine("//load: gameObjectData");
-            object[,] gameObjectData = Pharse.Load("../Data/config/gameObject.gd");
-            gameObject = new GameObject[gameObjectData.GetLength(0)];
-            this.progressBarLoad.Maximum = gameObjectData.GetLength(0) + 2;
-            for (int i = 0; i < gameObjectData.GetLength(0); i++)
-            {
-                int index = 0;
-                this.progressBarLoad.Value += 1;
-                gameObject[i] = new GameObject();
-                gameObject[i].LoadBasic(
-                    (string)gameObjectData[i, index++], 
-                    (string)gameObjectData[i, index++],
-                    (string)gameObjectData[i, index++],
-                    (int)gameObjectData[i, index++], //buildMode 
-                    (int)gameObjectData[i, index++],
-                    (int)gameObjectData[i, index++], 
-                    (int)gameObjectData[i, index++],
-                    (int)gameObjectData[i, index++],
-                    (int)gameObjectData[i, index++],
-                    (int[])gameObjectData[i, index++]);
-                gameObject[i].LoadTypRefs(
-                    (int[])gameObjectData[i, index++], 
-                    (int[])gameObjectData[i, index++], 
-                    (int[])gameObjectData[i, index++], 
-                    (int[])gameObjectData[i, index++], 
-                    (int[])gameObjectData[i, index++], 
-                    (int[])gameObjectData[i, index++],
-                    (int[,])gameObjectData[i, index++]
-                    );
-                gameObject[i].LoadSimData(
-                    (int[,])gameObjectData[i, index++],
-                    (int[,])gameObjectData[i, index++],
-                    (int[,])gameObjectData[i, index++], 
-                    (int[,])gameObjectData[i, index++], 
-                    (int[,])gameObjectData[i, index++], 
-                    (int[,])gameObjectData[i, index++], 
-                    (int[,])gameObjectData[i, index++] 
-                    );
+                    parser.GetAttribute<string>(i, "name"),
+                    parser.GetAttribute<int>(i, "value"),
+                    false, false
+                    );        
             }
 
+            Console.WriteLine("//load: gameObjectData");
+            parser.LoadData("../Data/config/gameObject.gd");
+            parser.Parse();
+            for (int i = 0; i < gameObject.Length; i++)
+            {
+                int index = 0;
+                gameObject[i] = new GameObject();
+
+                if (!parser.IDUsed(i)) continue;
+                gameObject[i].LoadBasic(
+                    parser.GetAttribute<string>(i,"name"),
+                    parser.GetAttribute<string>(i, "path"),
+                    parser.GetAttribute<string>(i, "groundPath"),
+                    parser.GetAttribute<byte>(i, "buildMode"),0,
+                    parser.GetAttribute<byte>(i, "diversity"),
+                    parser.GetAttribute<byte>(i, "size"),
+                    parser.GetAttribute<byte>(i, "groundMode"),
+                    parser.GetAttribute<byte>(i, "graphicMode"),
+                    parser.GetAttribute<byte[]>(i, "graphicNeighbors")
+                    );
+                gameObject[i].LoadTypRefs(
+                    parser.GetAttribute<byte[]>(i, "upgradeTyp"),
+                    parser.GetAttribute<byte[]>(i, "downgradeTyp"),
+                    parser.GetAttribute<byte[]>(i, "demolitionTyp"),
+                    parser.GetAttribute<byte[]>(i, "decayTyp"),
+                    parser.GetAttribute<byte[]>(i, "destroyTyp"),
+                    parser.GetAttribute<byte[]>(i, "canBuiltOn"),
+                    parser.GetAttribute<byte[]>(i, "RepalceTyp")
+                    );
+                gameObject[i].LoadSimData(
+                    parser.GetAttribute<int[]>(i, "AreaPermanent"),
+                    parser.GetAttribute<int[]>(i, "AreaDependent"),
+                    parser.GetAttribute<int[]>(i, "ResourcesEffect"),
+                    parser.GetAttribute<int[]>(i, "ResourcesBuild"),
+                    parser.GetAttribute<int[]>(i, "ResourcesPermanent"),
+                    parser.GetAttribute<int[]>(i, "ResourcesMonthly"),
+                    parser.GetAttribute<int[]>(i, "ResourcesDependent")
+                    );
+
+            }
+            
             texture = new Texture("../Data/texture/texture.png");
             groundTexture = new Texture("../Data/texture/ground/texture.png");
             gui = new Texture("../Data/texture/gui/aktivField.png");
@@ -297,18 +328,20 @@ namespace CityGame
 
         private void simulate()
         {
-            updateLabel();
+            //updateLabel();
             //date = new DateTime(1990, 1, 1);
             int ticks = (int)(DateTime.Now.Ticks - timerDate);
             timerDate = DateTime.Now.Ticks;
+
             timer010 += ticks;
             while (timer010 > 10 * TimeSpan.TicksPerMillisecond)
             {
+                int v = 32;
                 timer010 -= (int)(10 * TimeSpan.TicksPerMillisecond);
-                if (mouse.X < 1) Cam.Move(-32, 0);
-                if (mouse.Y < 1) Cam.Move(0, -32);
-                if (mouse.X >= this.Width - 1) Cam.Move(+32, 0);
-                if (mouse.Y >= this.Height - 1) Cam.Move(0, +32);
+                if (mouse.X < 1) Cam.Move(-v, 0);
+                if (mouse.Y < 1) Cam.Move(0, -v);
+                if (mouse.X >= this.Width - 1) Cam.Move(+v, 0);
+                if (mouse.Y >= this.Height - 1) Cam.Move(0, +v);
             }
             ticks *= 1;
             timer050 += ticks;
@@ -347,6 +380,7 @@ namespace CityGame
                     World.UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
                 }
                 date = date.AddDays(1);
+                UpdateMiniMap();
             }
         }
         private void updateLabel() 
