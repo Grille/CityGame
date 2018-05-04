@@ -336,12 +336,12 @@ namespace CityGame
             timer010 += ticks;
             while (timer010 > 10 * TimeSpan.TicksPerMillisecond)
             {
-                int v = 32;
+                int v = (int)(Cam.Speed/Cam.Scale);
                 timer010 -= (int)(10 * TimeSpan.TicksPerMillisecond);
-                if (mouse.X < 1) Cam.Move(-v, 0);
-                if (mouse.Y < 1) Cam.Move(0, -v);
-                if (mouse.X >= this.Width - 1) Cam.Move(+v, 0);
-                if (mouse.Y >= this.Height - 1) Cam.Move(0, +v);
+                if (mouse.X < 1 && Cam.PosX > 0) Cam.PosX-=v;
+                if (mouse.Y < 1 && Cam.PosY > 0) Cam.PosY-=v;
+                if (mouse.X >= this.Width - 1 && Cam.PosX < World.Width*Cam.Size) Cam.PosX+=v;
+                if (mouse.Y >= this.Height - 1 && Cam.PosY < World.Height * Cam.Size) Cam.PosY+=v;
             }
             ticks *= 1;
             timer050 += ticks;
@@ -365,7 +365,7 @@ namespace CityGame
             while (timer500 > 500 * TimeSpan.TicksPerMillisecond)
             {
                 timer500 -= (int)(500 * TimeSpan.TicksPerMillisecond);
-                Program.MenuOverlay.pictureBoxMinimap.Image = RenderMinimap();
+                Program.MenuOverlay.pictureBoxMinimap.Image = UpdateGDIMiniMap();
             }
             timer1000 += ticks;
             while (timer1000 > 1000 * TimeSpan.TicksPerMillisecond)
@@ -380,7 +380,7 @@ namespace CityGame
                     World.UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
                 }
                 date = date.AddDays(1);
-                UpdateMiniMap();
+                //UpdateMiniMap();
             }
         }
         private void updateLabel() 

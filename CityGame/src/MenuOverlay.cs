@@ -26,6 +26,7 @@ namespace CityGame
             imageButton5.LoadImages(new Bitmap("../Data/texture/gui/empty1.png"), new Bitmap("../Data/texture/gui/empty3.png"));
             imageButton6.LoadImages(new Bitmap("../Data/texture/gui/empty1.png"), new Bitmap("../Data/texture/gui/empty3.png"));
 
+            panelConect.BackgroundImage = new Bitmap("../Data/texture/gui/menuConect2.png");
             listBox.BackColor = Color.FromArgb(99, 139, 139);
             listBox.ItemHeight = 24;
             listBox.ItemDistance = 4;
@@ -45,10 +46,7 @@ namespace CityGame
             imageButton5.ResetButton();
             imageButton6.ResetButton();
 
-            ImageButton senderIB = ((ImageButton)(sender));
-
-            listBox.Location = new Point(senderIB.Location.X- listBox.Size.Width-16, senderIB.Location.Y);
-            listBox.Visible = true;
+            rePosListBox(sender);
             listBox.Clear();
             listBox.UseColor(Color.FromArgb(0));
             listBox.Add(" - tools - ");
@@ -70,17 +68,13 @@ namespace CityGame
             imageButton5.ResetButton();
             imageButton6.ResetButton();
 
-            ImageButton senderIB = ((ImageButton)(sender));
-
-           
-            listBox.Location = new Point(senderIB.Location.X - listBox.Size.Width - 16, senderIB.Location.Y);
-            listBox.Visible = true;
+            rePosListBox(sender);
             listBox.Clear();
             listBox.UseColor(Color.FromArgb(0));
             listBox.Add(" - Road - ");
             listBox.UseColor(Color.FromArgb(217, 142, 242));
             listBox.Add("dirt way",21);
-            listBox.Add("small road",22);
+            //listBox.Add("small road",22);
             listBox.Add("medium road",23);
             listBox.Add("large road",24);
             listBox.HeightToContent();
@@ -93,10 +87,7 @@ namespace CityGame
             imageButton5.ResetButton();
             imageButton6.ResetButton();
 
-            ImageButton senderIB = ((ImageButton)(sender));
-
-            listBox.Location = new Point(senderIB.Location.X - listBox.Size.Width - 16, senderIB.Location.Y);
-            listBox.Visible = true;
+            rePosListBox(sender);
             listBox.Clear();
             listBox.UseColor(Color.FromArgb(0));
             listBox.Add(" - Energy - ");
@@ -127,10 +118,7 @@ namespace CityGame
             imageButton5.ResetButton();
             imageButton6.ResetButton();
 
-            ImageButton senderIB = ((ImageButton)(sender));
-
-            listBox.Location = new Point(senderIB.Location.X - listBox.Size.Width - 16, senderIB.Location.Y);
-            listBox.Visible = true;
+            rePosListBox(sender);
             listBox.Clear();
             listBox.UseColor(Color.FromArgb(0));
             listBox.Add(" - Residential - ");
@@ -160,10 +148,7 @@ namespace CityGame
             imageButton4.ResetButton();
             imageButton6.ResetButton();
 
-            ImageButton senderIB = ((ImageButton)(sender));
-
-            listBox.Location = new Point(senderIB.Location.X - listBox.Size.Width - 16, senderIB.Location.Y);
-            listBox.Visible = true;
+            rePosListBox(sender);
             listBox.Clear();
             listBox.UseColor(Color.FromArgb(0));
             listBox.Add(" - Safety - ");
@@ -186,23 +171,25 @@ namespace CityGame
             imageButton4.ResetButton();
             imageButton5.ResetButton();
 
-            ImageButton senderIB = ((ImageButton)(sender));
-
-            listBox.Location = new Point(senderIB.Location.X - listBox.Size.Width - 16, senderIB.Location.Y);
-            listBox.Visible = true;
+            rePosListBox(sender);
             listBox.Clear();
             listBox.UseColor(Color.FromArgb(0));
             listBox.Add(" - Empty - ");
             listBox.HeightToContent();
         }
 
+        private void rePosListBox(object sender)
+        {
+            ImageButton senderIB = ((ImageButton)(sender));
 
-        private void imageButton1_ButtonUp(object sender, EventArgs e){listBox.Visible = false;}
-        private void imageButton2_ButtonUp(object sender, EventArgs e){listBox.Visible = false;}
-        private void imageButton3_ButtonUp(object sender, EventArgs e){listBox.Visible = false;}
-        private void imageButton4_ButtonUp(object sender, EventArgs e){listBox.Visible = false;}
-        private void imageButton6_ButtonUp(object sender, EventArgs e){listBox.Visible = false;}
-        private void imageButton5_ButtonUp(object sender, EventArgs e){listBox.Visible = false;}
+            listBox.Location = new Point(senderIB.Location.X - listBox.Size.Width - 16, senderIB.Location.Y);
+            panelConect.Location = new Point(senderIB.Location.X-15,senderIB.Location.Y+24);
+            panelConect.Visible = listBox.Visible = true;
+        }
+
+
+        private void imageButton_ButtonUp(object sender, EventArgs e){ panelConect.Visible = listBox.Visible = false;}
+
 
         private void listBox1_ChangeItem(object sender, EventArgs e)
         {

@@ -46,20 +46,36 @@ namespace CityGame
 
         private void MainWindow_MouseWheel(object sender, MouseEventArgs e)
         {
-            Cam.Size += e.Delta;
+
+            float posX = -Cam.PosX + (e.X - Width / 2) / Cam.Scale;
+            //float posY = -Cam.PosY + (e.Y - Height / 2) / scale;
+
+            Cam.Scale += (e.Delta / 500f) * Cam.Scale;
+
+            if (Cam.Scale < 0.01) Cam.Scale = 0.01f;
+            else if (Cam.Scale > 1f) Cam.Scale = 1f;
+
+            //Cam.PosX = -posX + (Width / 2 * (e.X / (float)Width * 2 - 1)) / Cam.Scale;
+            //Cam.PosY = -posY + (Height / 2 * (e.Y / (float)Height * 2 - 1)) / Cam.Scale;
+            
         }
         private void MainWindow_MouseMove(object sender, MouseEventArgs e)
         {
             int oldPos = CurFieldPos;
             mouse = e;
+            
             if (timerLogic.Enabled == false) CurFieldPos = -1;
             else
             {
-                float posX = e.X + Cam.DetailX;
-                float posY = e.Y + Cam.DetailY;
-                posX = (int)(posX / Cam.Size + Cam.PosX - 0.5 * (gameObject[CurBuildIndex].Size - 1f));
-                posY = (int)(posY / Cam.Size + Cam.PosY - 0.5 * (gameObject[CurBuildIndex].Size - 1f));
-                CurFieldPos = (int)(posX + posY * World.Width);
+                float size = Cam.Size, scale = Cam.Scale;
+
+                float posX = (int)(((e.X - Width / 2f) / scale + Cam.PosX) / size);
+                float posY = (int)(((e.Y - Height / 2f) / scale + Cam.PosY) / size);
+
+                posX -= 0.5f * gameObject[CurBuildIndex].Size - 1f;
+                posY -= 0.5f * gameObject[CurBuildIndex].Size - 1f;
+
+                CurFieldPos = ((int)posX + (int)posY * World.Width);
 
                 if (oldPos!=CurFieldPos) showCurBuild = true;
             }
@@ -71,6 +87,7 @@ namespace CityGame
                     showCurBuild = false;
                 }
             }
+            
         }
         private void MainWindow_MouseDown(object sender, MouseEventArgs e)
         {
@@ -102,9 +119,10 @@ namespace CityGame
             if (e.KeyCode == Keys.Escape)
             {
                 timerLogic.Enabled = false;
-                Program.MenuWindow.Show(1);
+                Program.MenuWindow.Show(NextPanel.GameMenu);
                 Program.MenuOverlay.Hide();
             }
+            /*
             else if (e.KeyCode == Keys.Subtract)
             {
                 int pos = Cam.GetCenter();
@@ -117,6 +135,7 @@ namespace CityGame
                 if (Cam.Size < 64) Cam.Size *= 2;
                 //Cam.SetCenter(pos);
             }
+            */
         }
         private void OnMouseWheel(object sender, MouseEventArgs e)
         {

@@ -29,9 +29,9 @@ namespace CityGame
 
             byteStream.WriteString("name");
             byteStream.WriteString("player");
-            byteStream.WriteInt(camera.PosX);
-            byteStream.WriteInt(camera.PosY);
-            byteStream.WriteInt((int)camera.Size);
+            byteStream.WriteFloat(camera.PosX);
+            byteStream.WriteFloat(camera.PosY);
+            byteStream.WriteFloat(camera.Scale);
 
 
             int i = 0;
@@ -42,9 +42,9 @@ namespace CityGame
 
             byteStream.WriteInt(width);
             byteStream.WriteInt(height);
-            byteStream.WriteByteArray(Ground,1);
-            byteStream.WriteByteArray(Typ,1);
-            byteStream.WriteByteArray(Version, 1);
+            byteStream.WriteByteArray(Ground,0);
+            byteStream.WriteByteArray(Typ,0);
+            byteStream.WriteByteArray(Version, 0);
 
             byteStream.Save(path);
         }
@@ -57,9 +57,9 @@ namespace CityGame
 
             byteStream.ReadString();//name
             byteStream.ReadString();//player
-            camera.PosX = byteStream.ReadInt();
-            camera.PosY = byteStream.ReadInt();
-            camera.Size = byteStream.ReadInt();
+            camera.PosX = byteStream.ReadFloat();
+            camera.PosY = byteStream.ReadFloat();
+            camera.Scale = byteStream.ReadFloat();
 
             int ir = 0;
             resources[ir++].Value = byteStream.ReadInt();
@@ -69,16 +69,12 @@ namespace CityGame
 
             BuildWorld(byteStream.ReadInt(), byteStream.ReadInt());
 
-            try
-            {
+
                 Ground = byteStream.ReadByteArray();
                 byte[] newTyp = byteStream.ReadByteArray();
                 for (int i = 0; i < width * height; i++) if (newTyp[i] != 0) Build(newTyp[i], i);
                 Version = byteStream.ReadByteArray();
-            }
-            catch
-            {
-            }
+
 
             loadMode = false;
         }

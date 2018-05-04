@@ -28,8 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuOverlay));
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelConect = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -64,17 +63,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox9)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel1
+            // panelConect
             // 
-            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
-            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel1.Location = new System.Drawing.Point(1087, 605);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(99, 35);
-            this.panel1.TabIndex = 0;
+            this.panelConect.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panelConect.BackColor = System.Drawing.Color.Fuchsia;
+            this.panelConect.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panelConect.Location = new System.Drawing.Point(985, 523);
+            this.panelConect.Margin = new System.Windows.Forms.Padding(0);
+            this.panelConect.Name = "panelConect";
+            this.panelConect.Size = new System.Drawing.Size(16, 16);
+            this.panelConect.TabIndex = 0;
+            this.panelConect.Visible = false;
             // 
             // panel2
             // 
@@ -299,7 +298,7 @@
             this.imageButton6.Text = null;
             this.imageButton6.TextDownOffset = 1;
             this.imageButton6.ButtonDown += new System.EventHandler(this.imageButton6_ButtonDown);
-            this.imageButton6.ButtonUp += new System.EventHandler(this.imageButton6_ButtonUp);
+            this.imageButton6.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
             // 
             // listBox
             // 
@@ -334,7 +333,7 @@
             this.imageButton5.Text = null;
             this.imageButton5.TextDownOffset = 1;
             this.imageButton5.ButtonDown += new System.EventHandler(this.imageButton5_ButtonDown);
-            this.imageButton5.ButtonUp += new System.EventHandler(this.imageButton5_ButtonUp);
+            this.imageButton5.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
             // 
             // imageButton4
             // 
@@ -353,7 +352,7 @@
             this.imageButton4.Text = null;
             this.imageButton4.TextDownOffset = 1;
             this.imageButton4.ButtonDown += new System.EventHandler(this.imageButton4_ButtonDown);
-            this.imageButton4.ButtonUp += new System.EventHandler(this.imageButton4_ButtonUp);
+            this.imageButton4.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
             // 
             // imageButton3
             // 
@@ -372,7 +371,7 @@
             this.imageButton3.Text = null;
             this.imageButton3.TextDownOffset = 1;
             this.imageButton3.ButtonDown += new System.EventHandler(this.imageButton3_ButtonDown);
-            this.imageButton3.ButtonUp += new System.EventHandler(this.imageButton3_ButtonUp);
+            this.imageButton3.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
             // 
             // imageButton2
             // 
@@ -391,7 +390,7 @@
             this.imageButton2.Text = null;
             this.imageButton2.TextDownOffset = 1;
             this.imageButton2.ButtonDown += new System.EventHandler(this.imageButton2_ButtonDown);
-            this.imageButton2.ButtonUp += new System.EventHandler(this.imageButton2_ButtonUp);
+            this.imageButton2.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
             // 
             // imageButton1
             // 
@@ -410,7 +409,7 @@
             this.imageButton1.Text = null;
             this.imageButton1.TextDownOffset = 1;
             this.imageButton1.ButtonDown += new System.EventHandler(this.imageButton1_ButtonDown);
-            this.imageButton1.ButtonUp += new System.EventHandler(this.imageButton1_ButtonUp);
+            this.imageButton1.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
             this.imageButton1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.imageButton1_MouseMove);
             // 
             // MenuOverlay
@@ -428,8 +427,8 @@
             this.Controls.Add(this.imageButton3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.imageButton2);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.imageButton1);
+            this.Controls.Add(this.panelConect);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.ImeMode = System.Windows.Forms.ImeMode.AlphaFull;
             this.KeyPreview = true;
@@ -453,7 +452,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelConect;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;

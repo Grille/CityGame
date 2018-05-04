@@ -1,17 +1,9 @@
 
 Enums{ 
-  effect{
-    not, up, down ,break ,deacy ,destroy ,entf
-  }
-  res{
-    money, energy, water, waste
-  }
-  area{
-    water, pollution, road, saltwater
-  }
-  i{
-    min=-32768, max=32767
-  }
+  effect{ not, up, down ,break ,deacy ,destroy ,entf}
+  res{ money, energy, water, waste}
+  area{ water, pollution, road, saltwater}
+  i{ min=-32768, max=32767}
 }
  Attributes
  {
@@ -43,6 +35,7 @@ Enums{
 
   buildMode = 0;groundMode = 0;graphicMode = 0;
 
+  demolitionTyp = [0];
   diversity = 1;
   size = 1;
   decayTyp = [13];
@@ -164,9 +157,9 @@ Enums{
   graphicMode = 2; groundMode = 1; 
   graphicNeighbors = [21,22,23,24]; 
   groundPath = "../Data/texture/urban/road/FW1_2";
-  AreaPermanent = [area.road,1,1];
+  AreaPermanent = [area.road,1,100]; //typ,size,value
   ResourcesBuild = [res.money,-8];
-  ResourcesMonthly = [res.money,-10];
+  ResourcesMonthly = [res.money,-2];
   buildMode = 1;
  }
 
@@ -175,25 +168,23 @@ Enums{
   canBuiltOn = [0,3,4,5,6,7,8,9,13,21,22];
   groundPath = "../Data/texture/urban/road/RM_1";
   AreaPermanent = [area.road,2,1,  area.road,1,100];
-  ResourcesBuild = [res.money,-24];
-  ResourcesMonthly = [res.money,-10];
+  ResourcesBuild = [res.money,-16];
+  ResourcesMonthly = [res.money,-4];
  }
  ID-24:21 {
   name = "large road"; 
   canBuiltOn = [0,3,4,5];
   //canBuiltOn = [0,3,4,5,6,7,8,9,13,21,22,23];
   groundPath = "../Data/texture/urban/road/RL_1";
-  AreaPermanent = [area.road,3,1,  area.road,1,100];
-  //ResourcesBuild = [res.money,-48];
-  ResourcesMonthly = [res.money,-10];
+  AreaPermanent = [area.road,4,1,  area.road,1,100];
+  //ResourcesBuild = [res.money,-24];
+  ResourcesMonthly = [res.money,-8];
  }
 
  // supply 41 to 60
 
  ID-41 {
-  name = "coal power plant"; 
-
-  size = 3; 
+  name = "coal power plant";size = 3; 
   path = "../Data/texture/urban/power/KKW";
 
   AreaPermanent = [[1,8,-15],[1,12,-15],[1,16,-15]];
@@ -202,7 +193,9 @@ Enums{
   ResourcesBuild = [[res.money,-5000]];
  }
  ID-42 {
-  name = "gas power plant"; size = 3; path = "../Data/texture/urban/power/GKW";
+  name = "gas power plant"; size = 3; 
+  path = "../Data/texture/urban/power/GKW";
+
   AreaPermanent = [[1,10,-15]];
   AreaDependent = [[area.road,100,i.max,effect.deacy, 1]];
   ResourcesPermanent = [[res.energy,3000]];
@@ -210,21 +203,27 @@ Enums{
   ResourcesMonthly = [[res.money,-10]];
  }
  ID-43 {
-  name = "nuclear power plant"; size = 3; path = "../Data/texture/urban/power/AKW";
+  name = "nuclear power plant"; size = 3; 
+  path = "../Data/texture/urban/power/AKW";
+
   AreaDependent = [[area.road,100,i.max,effect.deacy, 1]];
   ResourcesPermanent = [[res.energy,15000]];
   ResourcesBuild = [[res.money,-20000]];
   ResourcesMonthly = [[res.money,-10]];
  }
  ID-44 {
-  name = "solar power plant"; size = 3; path = "../Data/texture/urban/power/SKW";
+  name = "solar power plant"; size = 3; 
+  path = "../Data/texture/urban/power/SKW";
+
   AreaDependent = [[area.road,100,i.max,effect.deacy, 1]];
   ResourcesPermanent = [[res.energy,2000]];
   ResourcesBuild = [[res.money,-15000]];
   ResourcesMonthly = [[res.money,-10]];
  }
  ID-45 {
-  name = "wind power plant"; size = 1; path = "../Data/texture/urban/power/WKW";
+  name = "wind power plant"; size = 1; 
+  path = "../Data/texture/urban/power/WKW";
+
   ResourcesPermanent = [[res.energy,600]];
   ResourcesBuild = [[res.money,-2500]];
   ResourcesMonthly = [[res.money,-10]];

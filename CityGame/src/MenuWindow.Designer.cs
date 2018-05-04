@@ -42,17 +42,17 @@
             this.imageButton10 = new GGL.Control.ImageButton();
             this.label2 = new System.Windows.Forms.Label();
             this.newGame = new System.Windows.Forms.Panel();
-            this.imageButton6 = new GGL.Control.ImageButton();
-            this.imageButton5 = new GGL.Control.ImageButton();
-            this.listBoxNewGame = new System.Windows.Forms.ListBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.pictureBoxNewGame = new System.Windows.Forms.PictureBox();
+            this.ibBrowserNext = new GGL.Control.ImageButton();
+            this.ibBrowserBack = new GGL.Control.ImageButton();
+            this.lbBrowser = new System.Windows.Forms.ListBox();
+            this.lBrowser = new System.Windows.Forms.Label();
+            this.pbBrowser = new System.Windows.Forms.PictureBox();
             this.loadGame = new System.Windows.Forms.Panel();
             this.imageButton9 = new GGL.Control.ImageButton();
             this.imageButton8 = new GGL.Control.ImageButton();
             this.imageButton7 = new GGL.Control.ImageButton();
             this.textBox4 = new System.Windows.Forms.TextBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxLoad = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
             this.listBoxLoadGame = new System.Windows.Forms.ListBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -68,16 +68,16 @@
             this.imageButton15 = new GGL.Control.ImageButton();
             this.imageButton14 = new GGL.Control.ImageButton();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.listBoxSaveGame = new System.Windows.Forms.ListBox();
+            this.textBoxSaveName = new System.Windows.Forms.TextBox();
+            this.lbSaveGame = new System.Windows.Forms.ListBox();
             this.label6 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.mainMenu.SuspendLayout();
             this.gameMenu.SuspendLayout();
             this.newGame.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxNewGame)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBrowser)).BeginInit();
             this.loadGame.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoad)).BeginInit();
             this.options.SuspendLayout();
             this.saveGame.SuspendLayout();
             this.SuspendLayout();
@@ -110,7 +110,7 @@
             this.imageButton4.TabIndex = 8;
             this.imageButton4.Text = "New Game";
             this.imageButton4.TextDownOffset = 1;
-            this.imageButton4.Click += new System.EventHandler(this.buttonNewGameMenu_Click);
+            this.imageButton4.Click += new System.EventHandler(this.buttonGoToNewGameMenu_Click);
             // 
             // imageButton3
             // 
@@ -126,7 +126,7 @@
             this.imageButton3.TabIndex = 7;
             this.imageButton3.Text = "Load Game";
             this.imageButton3.TextDownOffset = 1;
-            this.imageButton3.Click += new System.EventHandler(this.buttonLoadGameMenu_Click);
+            this.imageButton3.Click += new System.EventHandler(this.buttonGoToLoadGameMenu_Click);
             // 
             // imageButton2
             // 
@@ -213,7 +213,7 @@
             this.imageButton12.TabIndex = 10;
             this.imageButton12.Text = "Load Game";
             this.imageButton12.TextDownOffset = 1;
-            this.imageButton12.Click += new System.EventHandler(this.buttonLoadGameMenu_Click);
+            this.imageButton12.Click += new System.EventHandler(this.buttonGoToLoadGameMenu_Click);
             // 
             // imageButton11
             // 
@@ -229,7 +229,7 @@
             this.imageButton11.TabIndex = 9;
             this.imageButton11.Text = "Save Game";
             this.imageButton11.TextDownOffset = 1;
-            this.imageButton11.Click += new System.EventHandler(this.buttonSaveGameMenu_Click);
+            this.imageButton11.Click += new System.EventHandler(this.buttonGoToSaveGameMenu_Click);
             // 
             // imageButton10
             // 
@@ -260,89 +260,89 @@
             // newGame
             // 
             this.newGame.BackColor = System.Drawing.Color.Transparent;
-            this.newGame.Controls.Add(this.imageButton6);
-            this.newGame.Controls.Add(this.imageButton5);
-            this.newGame.Controls.Add(this.listBoxNewGame);
-            this.newGame.Controls.Add(this.label3);
-            this.newGame.Controls.Add(this.pictureBoxNewGame);
+            this.newGame.Controls.Add(this.ibBrowserNext);
+            this.newGame.Controls.Add(this.ibBrowserBack);
+            this.newGame.Controls.Add(this.lbBrowser);
+            this.newGame.Controls.Add(this.lBrowser);
+            this.newGame.Controls.Add(this.pbBrowser);
             this.newGame.Location = new System.Drawing.Point(9, 423);
             this.newGame.Margin = new System.Windows.Forms.Padding(0);
             this.newGame.Name = "newGame";
             this.newGame.Size = new System.Drawing.Size(640, 400);
             this.newGame.TabIndex = 6;
             // 
-            // imageButton6
+            // ibBrowserNext
             // 
-            this.imageButton6.DefaultImage = null;
-            this.imageButton6.DownImage = null;
-            this.imageButton6.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
-            this.imageButton6.HoverImage = null;
-            this.imageButton6.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton6.Location = new System.Drawing.Point(113, 288);
-            this.imageButton6.Name = "imageButton6";
-            this.imageButton6.Size = new System.Drawing.Size(200, 50);
-            this.imageButton6.SwitchMode = false;
-            this.imageButton6.TabIndex = 16;
-            this.imageButton6.Text = "Next";
-            this.imageButton6.TextDownOffset = 1;
-            this.imageButton6.Click += new System.EventHandler(this.buttonStartGame_Click);
+            this.ibBrowserNext.DefaultImage = null;
+            this.ibBrowserNext.DownImage = null;
+            this.ibBrowserNext.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
+            this.ibBrowserNext.HoverImage = null;
+            this.ibBrowserNext.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.ibBrowserNext.Location = new System.Drawing.Point(113, 288);
+            this.ibBrowserNext.Name = "ibBrowserNext";
+            this.ibBrowserNext.Size = new System.Drawing.Size(200, 50);
+            this.ibBrowserNext.SwitchMode = false;
+            this.ibBrowserNext.TabIndex = 16;
+            this.ibBrowserNext.Text = "Next";
+            this.ibBrowserNext.TextDownOffset = 1;
+            this.ibBrowserNext.Click += new System.EventHandler(this.buttonStartGame_Click);
             // 
-            // imageButton5
+            // ibBrowserBack
             // 
-            this.imageButton5.DefaultImage = null;
-            this.imageButton5.DownImage = null;
-            this.imageButton5.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
-            this.imageButton5.HoverImage = null;
-            this.imageButton5.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton5.Location = new System.Drawing.Point(319, 288);
-            this.imageButton5.Name = "imageButton5";
-            this.imageButton5.Size = new System.Drawing.Size(200, 50);
-            this.imageButton5.SwitchMode = false;
-            this.imageButton5.TabIndex = 15;
-            this.imageButton5.Text = "Back";
-            this.imageButton5.TextDownOffset = 1;
-            this.imageButton5.Click += new System.EventHandler(this.buttonBack_Click);
+            this.ibBrowserBack.DefaultImage = null;
+            this.ibBrowserBack.DownImage = null;
+            this.ibBrowserBack.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
+            this.ibBrowserBack.HoverImage = null;
+            this.ibBrowserBack.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.ibBrowserBack.Location = new System.Drawing.Point(319, 288);
+            this.ibBrowserBack.Name = "ibBrowserBack";
+            this.ibBrowserBack.Size = new System.Drawing.Size(200, 50);
+            this.ibBrowserBack.SwitchMode = false;
+            this.ibBrowserBack.TabIndex = 15;
+            this.ibBrowserBack.Text = "Back";
+            this.ibBrowserBack.TextDownOffset = 1;
+            this.ibBrowserBack.Click += new System.EventHandler(this.buttonBack_Click);
             // 
-            // listBoxNewGame
+            // lbBrowser
             // 
-            this.listBoxNewGame.BackColor = System.Drawing.Color.CadetBlue;
-            this.listBoxNewGame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listBoxNewGame.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
-            this.listBoxNewGame.FormattingEnabled = true;
-            this.listBoxNewGame.IntegralHeight = false;
-            this.listBoxNewGame.ItemHeight = 21;
-            this.listBoxNewGame.Items.AddRange(new object[] {
+            this.lbBrowser.BackColor = System.Drawing.Color.CadetBlue;
+            this.lbBrowser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbBrowser.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
+            this.lbBrowser.FormattingEnabled = true;
+            this.lbBrowser.IntegralHeight = false;
+            this.lbBrowser.ItemHeight = 21;
+            this.lbBrowser.Items.AddRange(new object[] {
             "erh",
             "dsh",
             "dsfh"});
-            this.listBoxNewGame.Location = new System.Drawing.Point(115, 75);
-            this.listBoxNewGame.Name = "listBoxNewGame";
-            this.listBoxNewGame.ScrollAlwaysVisible = true;
-            this.listBoxNewGame.Size = new System.Drawing.Size(198, 200);
-            this.listBoxNewGame.TabIndex = 6;
-            this.listBoxNewGame.SelectedIndexChanged += new System.EventHandler(this.listBoxNewGame_SelectedIndexChanged);
+            this.lbBrowser.Location = new System.Drawing.Point(115, 75);
+            this.lbBrowser.Name = "lbBrowser";
+            this.lbBrowser.ScrollAlwaysVisible = true;
+            this.lbBrowser.Size = new System.Drawing.Size(198, 200);
+            this.lbBrowser.TabIndex = 6;
+            this.lbBrowser.SelectedIndexChanged += new System.EventHandler(this.lbBrowser_SelectedIndexChanged);
             // 
-            // label3
+            // lBrowser
             // 
-            this.label3.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(3, 23);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(634, 39);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Browser";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lBrowser.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lBrowser.Location = new System.Drawing.Point(3, 23);
+            this.lBrowser.Name = "lBrowser";
+            this.lBrowser.Size = new System.Drawing.Size(634, 39);
+            this.lBrowser.TabIndex = 4;
+            this.lBrowser.Text = "Browser";
+            this.lBrowser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // pictureBoxNewGame
+            // pbBrowserGame
             // 
-            this.pictureBoxNewGame.BackColor = System.Drawing.Color.Black;
-            this.pictureBoxNewGame.Location = new System.Drawing.Point(319, 75);
-            this.pictureBoxNewGame.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBoxNewGame.Name = "pictureBoxNewGame";
-            this.pictureBoxNewGame.Size = new System.Drawing.Size(200, 200);
-            this.pictureBoxNewGame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxNewGame.TabIndex = 5;
-            this.pictureBoxNewGame.TabStop = false;
-            this.pictureBoxNewGame.Paint += new System.Windows.Forms.PaintEventHandler(this.renderMapPreview);
+            this.pbBrowser.BackColor = System.Drawing.Color.Black;
+            this.pbBrowser.Location = new System.Drawing.Point(319, 75);
+            this.pbBrowser.Margin = new System.Windows.Forms.Padding(0);
+            this.pbBrowser.Name = "pbBrowserGame";
+            this.pbBrowser.Size = new System.Drawing.Size(200, 200);
+            this.pbBrowser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbBrowser.TabIndex = 5;
+            this.pbBrowser.TabStop = false;
+            this.pbBrowser.Paint += new System.Windows.Forms.PaintEventHandler(this.pbBrowser_Paint);
             // 
             // loadGame
             // 
@@ -351,7 +351,7 @@
             this.loadGame.Controls.Add(this.imageButton8);
             this.loadGame.Controls.Add(this.imageButton7);
             this.loadGame.Controls.Add(this.textBox4);
-            this.loadGame.Controls.Add(this.pictureBox2);
+            this.loadGame.Controls.Add(this.pictureBoxLoad);
             this.loadGame.Controls.Add(this.label9);
             this.loadGame.Controls.Add(this.listBoxLoadGame);
             this.loadGame.Controls.Add(this.textBox6);
@@ -392,7 +392,6 @@
             this.imageButton8.TabIndex = 17;
             this.imageButton8.Text = "Load Game";
             this.imageButton8.TextDownOffset = 1;
-            this.imageButton8.Click += new System.EventHandler(this.buttonLoadGame_Click);
             // 
             // imageButton7
             // 
@@ -424,16 +423,16 @@
             this.textBox4.Text = "1000000";
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // pictureBox2
+            // pictureBoxLoad
             // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Black;
-            this.pictureBox2.Location = new System.Drawing.Point(319, 75);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(200, 183);
-            this.pictureBox2.TabIndex = 9;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.renderMapPreview);
+            this.pictureBoxLoad.BackColor = System.Drawing.Color.Black;
+            this.pictureBoxLoad.Location = new System.Drawing.Point(319, 75);
+            this.pictureBoxLoad.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureBoxLoad.Name = "pictureBoxLoad";
+            this.pictureBoxLoad.Size = new System.Drawing.Size(200, 183);
+            this.pictureBoxLoad.TabIndex = 9;
+            this.pictureBoxLoad.TabStop = false;
+            this.pictureBoxLoad.Paint += new System.Windows.Forms.PaintEventHandler(this.pbBrowser_Paint);
             // 
             // label9
             // 
@@ -561,8 +560,8 @@
             this.saveGame.Controls.Add(this.imageButton15);
             this.saveGame.Controls.Add(this.imageButton14);
             this.saveGame.Controls.Add(this.label14);
-            this.saveGame.Controls.Add(this.textBox5);
-            this.saveGame.Controls.Add(this.listBoxSaveGame);
+            this.saveGame.Controls.Add(this.textBoxSaveName);
+            this.saveGame.Controls.Add(this.lbSaveGame);
             this.saveGame.Controls.Add(this.label6);
             this.saveGame.Location = new System.Drawing.Point(1291, 423);
             this.saveGame.Margin = new System.Windows.Forms.Padding(0);
@@ -628,35 +627,36 @@
             this.label14.Text = "Name";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // textBox5
+            // textBoxSaveName
             // 
-            this.textBox5.BackColor = System.Drawing.Color.CadetBlue;
-            this.textBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox5.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
-            this.textBox5.Location = new System.Drawing.Point(444, 188);
-            this.textBox5.Multiline = true;
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(120, 27);
-            this.textBox5.TabIndex = 15;
-            this.textBox5.Text = "Neustadt";
-            this.textBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxSaveName.BackColor = System.Drawing.Color.CadetBlue;
+            this.textBoxSaveName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxSaveName.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
+            this.textBoxSaveName.Location = new System.Drawing.Point(444, 188);
+            this.textBoxSaveName.Multiline = true;
+            this.textBoxSaveName.Name = "textBoxSaveName";
+            this.textBoxSaveName.Size = new System.Drawing.Size(120, 27);
+            this.textBoxSaveName.TabIndex = 15;
+            this.textBoxSaveName.Text = "Neustadt";
+            this.textBoxSaveName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // listBoxSaveGame
             // 
-            this.listBoxSaveGame.BackColor = System.Drawing.Color.CadetBlue;
-            this.listBoxSaveGame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listBoxSaveGame.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
-            this.listBoxSaveGame.FormattingEnabled = true;
-            this.listBoxSaveGame.IntegralHeight = false;
-            this.listBoxSaveGame.ItemHeight = 21;
-            this.listBoxSaveGame.Items.AddRange(new object[] {
+            this.lbSaveGame.BackColor = System.Drawing.Color.CadetBlue;
+            this.lbSaveGame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lbSaveGame.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F);
+            this.lbSaveGame.FormattingEnabled = true;
+            this.lbSaveGame.IntegralHeight = false;
+            this.lbSaveGame.ItemHeight = 21;
+            this.lbSaveGame.Items.AddRange(new object[] {
             "erh",
             "dsh",
             "dsfh"});
-            this.listBoxSaveGame.Location = new System.Drawing.Point(107, 75);
-            this.listBoxSaveGame.Name = "listBoxSaveGame";
-            this.listBoxSaveGame.Size = new System.Drawing.Size(190, 256);
-            this.listBoxSaveGame.TabIndex = 10;
+            this.lbSaveGame.Location = new System.Drawing.Point(107, 75);
+            this.lbSaveGame.Name = "listBoxSaveGame";
+            this.lbSaveGame.Size = new System.Drawing.Size(190, 256);
+            this.lbSaveGame.TabIndex = 10;
+            this.lbSaveGame.SelectedIndexChanged += new System.EventHandler(this.listBoxSaveGame_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -696,10 +696,10 @@
             this.mainMenu.ResumeLayout(false);
             this.gameMenu.ResumeLayout(false);
             this.newGame.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxNewGame)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBrowser)).EndInit();
             this.loadGame.ResumeLayout(false);
             this.loadGame.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoad)).EndInit();
             this.options.ResumeLayout(false);
             this.saveGame.ResumeLayout(false);
             this.saveGame.PerformLayout();
@@ -713,7 +713,7 @@
         private System.Windows.Forms.Panel gameMenu;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel newGame;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lBrowser;
         private System.Windows.Forms.Panel loadGame;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel options;
@@ -723,14 +723,14 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.PictureBox pictureBoxNewGame;
-        private System.Windows.Forms.ListBox listBoxNewGame;
+        private System.Windows.Forms.PictureBox pbBrowser;
+        private System.Windows.Forms.ListBox lbBrowser;
         private System.Windows.Forms.ListBox listBoxLoadGame;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.ListBox listBoxSaveGame;
+        private System.Windows.Forms.TextBox textBoxSaveName;
+        private System.Windows.Forms.ListBox lbSaveGame;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBoxLoad;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.Label label10;
@@ -738,8 +738,8 @@
         private GGL.Control.ImageButton imageButton4;
         private GGL.Control.ImageButton imageButton3;
         private GGL.Control.ImageButton imageButton2;
-        private GGL.Control.ImageButton imageButton6;
-        private GGL.Control.ImageButton imageButton5;
+        private GGL.Control.ImageButton ibBrowserNext;
+        private GGL.Control.ImageButton ibBrowserBack;
         private GGL.Control.ImageButton imageButton9;
         private GGL.Control.ImageButton imageButton8;
         private GGL.Control.ImageButton imageButton7;

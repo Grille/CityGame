@@ -16,5 +16,5 @@ void main(void)
   vPosition = aPosition;
   vTexturePos = aTexturePos;
   vColor = aColor;
-  gl_Position = vec4(vPosition,0, 1);
+  gl_Position = vec4(vPosition,1, 1);
 }

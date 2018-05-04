@@ -11,12 +11,15 @@ using System.Runtime.InteropServices;
 
 namespace CityGame
 {
+    public enum NextPanel { Nothing,Last,MainMenu,GameMenu,Options,NewGame,LoadGame,SaveGame}
     public partial class MenuWindow : Form
     {
         private Panel currentPanel;
         private Panel lastPanel;
         private Bitmap mapImage;
-        private int mode;
+        private int browserMode;
+        private NextPanel lastMode;
+        private NextPanel curMode;
         public MenuWindow()
         {
             mapImage = new Bitmap(1, 1);
@@ -38,8 +41,8 @@ namespace CityGame
             imageButton2.LoadImages(menuButten, menuButtenDown);
             imageButton3.LoadImages(menuButten, menuButtenDown);
             imageButton4.LoadImages(menuButten, menuButtenDown);
-            imageButton5.LoadImages(menuButten, menuButtenDown);
-            imageButton6.LoadImages(menuButten, menuButtenDown);
+            ibBrowserBack.LoadImages(menuButten, menuButtenDown);
+            ibBrowserNext.LoadImages(menuButten, menuButtenDown);
             imageButton7.LoadImages(menuButten, menuButtenDown);
             imageButton8.LoadImages(menuButten, menuButtenDown);
             imageButton9.LoadImages(menuButten, menuButtenDown);
@@ -58,18 +61,15 @@ namespace CityGame
         }
         public new void Show()
         {
-			// hallo
-            base.Show(Program.MainWindow);
             this.Location = new Point(SystemInformation.VirtualScreen.Width / 2 - 320, SystemInformation.VirtualScreen.Height / 2 - 200);
             this.Size = new Size(640, 400);
-            timer.Enabled = true;
+            base.Show(Program.MainWindow);
         }
-        public void Show(int mode)
+        public void Show(NextPanel mode)
         {
-            base.Show(Program.MainWindow);
             this.Location = new Point(SystemInformation.VirtualScreen.Width / 2 - 320, SystemInformation.VirtualScreen.Height / 2 - 200);
             this.Size = new Size(640, 400);
-            timer.Enabled = true;
+            base.Show(Program.MainWindow);
             switchPanel(mode);
         }
         public new void Hide()
@@ -77,31 +77,42 @@ namespace CityGame
             timer.Enabled = false;
             base.Hide();
         }
-        private void switchPanel(int mode)
+        private void switchPanel(NextPanel mode)
         {
-            this.SuspendLayout();
+            /*
+            if (lastMode == NextPanel.Nothing)
+            {
+                curMode = lastMode = mode;
+            }
+            */
+            Console.WriteLine("---------");
+            Console.WriteLine(mode+" | "+lastMode);
+            
+            
+            if (mode == NextPanel.Last) mode = lastMode;
+            lastMode = curMode;
+            if (mode != NextPanel.Last)curMode = mode;
+            
+            //this.SuspendLayout();
             //if (currentPanel != null) {
-            if (mode >= 0 )lastPanel = currentPanel;
             //}
             switch (mode) {
-                case -1: currentPanel = lastPanel; break;
-                case 0: currentPanel = mainMenu; break;
-                case 1: currentPanel = gameMenu; break;
-                case 2: currentPanel = options; break;
-                case 3: currentPanel = newGame; break;
-                case 4: currentPanel = loadGame; break;
-                case 5: currentPanel = saveGame; break;
+                case NextPanel.MainMenu: currentPanel = mainMenu; break;
+                case NextPanel.GameMenu: currentPanel = gameMenu; break;
+                case NextPanel.Options: currentPanel = options; break;
+                case NextPanel.NewGame: currentPanel = newGame; break;
+                case NextPanel.LoadGame: currentPanel = loadGame; break;
+                case NextPanel.SaveGame: currentPanel = saveGame; break;
             }
+            currentPanel.Location = new Point(0, 0);
+            currentPanel.Size = this.Size;
             currentPanel.Visible = true;
-            if (currentPanel != lastPanel)lastPanel.Visible = false;
-            if (currentPanel.Location.X != 0)
-            {
-                currentPanel.Location = new Point(0, 0);
-                currentPanel.Size = this.Size;
-            }
-            Refresh();
-            currentPanel.Refresh();
-            this.ResumeLayout(true);
+            if (lastPanel != null && currentPanel != lastPanel)lastPanel.Visible = false;
+            currentPanel.Invalidate();
+
+            lastPanel = currentPanel;
+            Console.WriteLine(lastMode);
+            //this.ResumeLayout(true);
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -111,61 +122,69 @@ namespace CityGame
 
         private void buttonBack_Click(object sender, EventArgs e)
         {
-            switchPanel(0);
+            switchPanel(NextPanel.Last);
         }
         private void buttonMainMenu_Click(object sender, EventArgs e)
         {
-            switchPanel(0);
+            switchPanel(NextPanel.MainMenu);
         }
-        private void buttonNewGameMenu_Click(object sender, EventArgs e)
+        private void buttonGoToNewGameMenu_Click(object sender, EventArgs e)
         {
-            listBoxNewGame.Items.Clear();
+            lbBrowser.Items.Clear();
 
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("../Data/Maps");
 
             foreach (System.IO.FileInfo f in ParentDirectory.GetFiles())
             {
-                listBoxNewGame.Items.Add(f.Name);
+                lbBrowser.Items.Add(f.Name);
             }
-            switchPanel(3); mode = 0;
+            switchPanel(NextPanel.NewGame); browserMode = 0;
             
         }
 
-        private void buttonLoadGameMenu_Click(object sender, EventArgs e)
+        private void buttonGoToLoadGameMenu_Click(object sender, EventArgs e)
         {
-            listBoxNewGame.Items.Clear();
+            lbBrowser.Items.Clear();
 
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("../saves");
 
             foreach (System.IO.FileInfo f in ParentDirectory.GetFiles())
             {
-                listBoxNewGame.Items.Add(f.Name);
+                string[] fileName = f.Name.Split(new char[] { '.' });
+                if (fileName[fileName.Length - 1] == "city")
+                    lbBrowser.Items.Add(fileName[0]);
             }
-            switchPanel(3); mode = 1;
+            switchPanel(NextPanel.NewGame); browserMode = 1;
         }
 
-        private void buttonSaveGameMenu_Click(object sender, EventArgs e)
+        private void buttonGoToSaveGameMenu_Click(object sender, EventArgs e)
         {
            
-            listBoxSaveGame.Items.Clear();
+            lbSaveGame.Items.Clear();
 
             System.IO.DirectoryInfo ParentDirectory = new System.IO.DirectoryInfo("../saves");
-
             foreach (System.IO.FileInfo f in ParentDirectory.GetFiles())
             {
-                listBoxSaveGame.Items.Add(f.Name);
+                string[]  fileName = f.Name.Split(new char[] { '.' });
+                if(fileName[fileName.Length-1] == "city")
+                lbSaveGame.Items.Add(fileName[0]);
             }
-            switchPanel(5);
+            switchPanel(NextPanel.SaveGame);
         }
         private void buttonSaveGame_Click(object sender, EventArgs e)
         {
-            Program.MainWindow.World.Save("../saves/game.city");
+            Program.MainWindow.World.Save("../saves/"+ textBoxSaveName.Text+".city");
+
+            File.Delete("../saves/" + textBoxSaveName.Text + ".png");
+            Bitmap bitmap = Program.MainWindow.UpdateGDIMiniMap();
+            bitmap.Save("../saves/" + textBoxSaveName.Text + ".png");
+            bitmap.Dispose();
         }
 
         private void buttonStartGame_Click(object sender, EventArgs e)
         {
             Hide();
-            if (mode == 0)
+            if (browserMode == 0)
             {
                 Program.MainWindow.World.GenerateMap(mapImage);
                 Program.MainWindow.StartGame();
@@ -173,8 +192,8 @@ namespace CityGame
             }
             else
             {
-                Console.WriteLine("../saves/" + listBoxNewGame.SelectedItem);
-                Program.MainWindow.World.Load("../saves/" + listBoxNewGame.SelectedItem);
+                Console.WriteLine("../saves/" + lbBrowser.SelectedItem);
+                Program.MainWindow.World.Load("../saves/" + lbBrowser.SelectedItem + ".city");
                 Program.MainWindow.StartGame();
                 Program.MenuOverlay.Show(Program.MainWindow);
             }
@@ -188,22 +207,27 @@ namespace CityGame
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            //Program.mainWindow.StartGame();
-            Program.MainWindow.Cam.Move(1, 1);
+
         }
 
-        private void listBoxNewGame_SelectedIndexChanged(object sender, EventArgs e)
+        private void lbBrowser_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (mode == 0)
+            string path = "";
+            if (browserMode == 0) path = ("../data/maps/" + (string)lbBrowser.SelectedItem);
+            else path = ("../saves/" + (string)lbBrowser.SelectedItem + ".png");
+            if (File.Exists(path))
             {
-                mapImage = new Bitmap("../data/maps/" + (string)listBoxNewGame.SelectedItem);
-                //pictureBoxNewGame.Image = bitmap;
-                pictureBoxNewGame.Refresh();
+                using (var bmpTemp = new Bitmap(path))
+                {
+                    mapImage = new Bitmap(bmpTemp);
+                }
+                pbBrowser.Refresh();
             }
         }
 
-        private void renderMapPreview(object sender, PaintEventArgs e)
+        private void pbBrowser_Paint(object sender, PaintEventArgs e)
         {
+            if (mapImage == null) return;
             PictureBox pbsender = (PictureBox)sender;
             Graphics g = e.Graphics;
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
@@ -211,12 +235,9 @@ namespace CityGame
             g.DrawString("Size: " + mapImage.Width + "x" + mapImage.Height, new Font(new FontFamily("Franklin Gothic Medium"), 12), new SolidBrush(Color.Black), new Point(0, pbsender.Height-12*2));
         }
 
-        private void buttonLoadGame_Click(object sender, EventArgs e)
+        private void listBoxSaveGame_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Hide();
-            Program.MainWindow.World.Load("../saves/game.city");
-            Program.MainWindow.StartGame();
-            Program.MenuOverlay.Show(Program.MainWindow);
+            textBoxSaveName.Text = (string)lbSaveGame.SelectedItem;
         }
 
     }
