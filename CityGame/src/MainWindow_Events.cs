@@ -48,15 +48,15 @@ namespace CityGame
         {
 
             float posX = -Cam.PosX + (e.X - Width / 2) / Cam.Scale;
-            //float posY = -Cam.PosY + (e.Y - Height / 2) / scale;
+            float posY = -Cam.PosY + (e.Y - Height / 2) / Cam.Scale;
 
             Cam.Scale += (e.Delta / 500f) * Cam.Scale;
 
             if (Cam.Scale < 0.01) Cam.Scale = 0.01f;
             else if (Cam.Scale > 1f) Cam.Scale = 1f;
 
-            //Cam.PosX = -posX + (Width / 2 * (e.X / (float)Width * 2 - 1)) / Cam.Scale;
-            //Cam.PosY = -posY + (Height / 2 * (e.Y / (float)Height * 2 - 1)) / Cam.Scale;
+            Cam.PosX += (Cam.PosX - (-posX + (Width / 2 * (e.X / (float)Width * 2 - 1)) / Cam.Scale));
+            Cam.PosY += (Cam.PosY - (-posY + (Height / 2 * (e.Y / (float)Height * 2 - 1)) / Cam.Scale));
             
         }
         private void MainWindow_MouseMove(object sender, MouseEventArgs e)

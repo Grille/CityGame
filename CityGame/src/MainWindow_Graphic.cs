@@ -196,7 +196,7 @@ namespace CityGame
             GL2D.UpdateBuffer();
             GL2D.UseShader(basicShader);
             GL2D.Render();
-            
+
 
             RenderPreview();
             

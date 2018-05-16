@@ -66,7 +66,6 @@ namespace CityGame
         //init OpenGL
         public MainWindow()
         {
-            SaveMiniMap();
             InitializeComponent();
 
             DoubleBuffered = true;
@@ -84,45 +83,6 @@ namespace CityGame
 
 
             //initGame();
-        }
-
-        public void SaveMiniMap()
-        {
-            Random rnd = new Random();
-            GGL.IO.ByteStream bs = new GGL.IO.ByteStream();
-            bs.ResetIndex();
-            byte mode = 1;
-            bs.WriteInt(mode);//mode
-            if (mode == 0)
-            {
-                for (int i = 0; i < 255; i++)
-                {
-                    bs.WriteByte((byte)(255 * rnd.NextDouble()));//r
-                    bs.WriteByte((byte)(255 * rnd.NextDouble()));//g
-                    bs.WriteByte((byte)(255 * rnd.NextDouble()));//b
-                }
-            }
-            else if (mode == 1)
-            {
-                //
-                bs.WriteByte((byte)(255 * rnd.NextDouble()));//r
-                bs.WriteByte((byte)(255 * rnd.NextDouble()));//g
-                bs.WriteByte((byte)(255 * rnd.NextDouble()));//b
-                //
-                bs.WriteByte((byte)(255 * rnd.NextDouble()));//r
-                bs.WriteByte((byte)(255 * rnd.NextDouble()));//g
-                bs.WriteByte((byte)(255 * rnd.NextDouble()));//b
-                //
-                bs.WriteByte((byte)(255 * rnd.NextDouble()));//r
-                bs.WriteByte((byte)(255 * rnd.NextDouble()));//g
-                bs.WriteByte((byte)(255 * rnd.NextDouble()));//b
-                for (int i = 0; i < 255; i++)
-                {
-                    bs.WriteByte((byte)(255 * rnd.NextDouble()));//r
-                    bs.WriteByte((byte)(255 * rnd.NextDouble()));//a
-                }
-            }
-            bs.Save("../Data/minimaps/default.mpd");
         }
         // init Game
         private void initGame()
