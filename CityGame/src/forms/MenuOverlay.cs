@@ -194,7 +194,7 @@ namespace CityGame
         private void listBox1_ChangeItem(object sender, EventArgs e)
         {
             GGL.Control.ListBox senderIB = ((GGL.Control.ListBox)(sender));
-            Program.MainWindow.CurBuildIndex = senderIB.getValue();
+            Program.MainWindow.Game.CurBuildIndex = senderIB.getValue();
         }
         private void MenuOverlay_Enter(object sender, EventArgs e)
         {

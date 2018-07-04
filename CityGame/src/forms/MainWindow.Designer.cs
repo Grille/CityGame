@@ -28,21 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.timerRender = new System.Windows.Forms.Timer(this.components);
             this.progressBarLoad = new System.Windows.Forms.ProgressBar();
             this.pictureBoxLoad = new System.Windows.Forms.PictureBox();
-            this.timerLogic = new System.Windows.Forms.Timer(this.components);
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.SuspendLayout();
-            // 
-            // timerRender
-            // 
-            this.timerRender.Interval = 5;
-            this.timerRender.Tick += new System.EventHandler(this.timerRender_Tick);
             // 
             // progressBarLoad
             // 
@@ -61,11 +53,6 @@
             this.pictureBoxLoad.Size = new System.Drawing.Size(98, 52);
             this.pictureBoxLoad.TabIndex = 5;
             this.pictureBoxLoad.TabStop = false;
-            // 
-            // timerLogic
-            // 
-            this.timerLogic.Interval = 5;
-            this.timerLogic.Tick += new System.EventHandler(this.timerLogic_Tick);
             // 
             // pictureBoxLogo
             // 
@@ -104,8 +91,6 @@
         #endregion
         private System.Windows.Forms.ProgressBar progressBarLoad;
         private System.Windows.Forms.PictureBox pictureBoxLoad;
-        public System.Windows.Forms.Timer timerRender;
-        public System.Windows.Forms.Timer timerLogic;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
     }
 }

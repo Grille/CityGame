@@ -173,10 +173,10 @@ namespace CityGame
         }
         private void buttonSaveGame_Click(object sender, EventArgs e)
         {
-            Program.MainWindow.World.Save("../saves/"+ textBoxSaveName.Text+".city");
+            Program.MainWindow.Game.Save("../saves/"+ textBoxSaveName.Text+".city");
 
             File.Delete("../saves/" + textBoxSaveName.Text + ".png");
-            Bitmap bitmap = Program.MainWindow.UpdateGDIMiniMap();
+            Bitmap bitmap = Program.MainWindow.Game.GenerateMiniMap();
             bitmap.Save("../saves/" + textBoxSaveName.Text + ".png");
             bitmap.Dispose();
         }
@@ -186,22 +186,22 @@ namespace CityGame
             Hide();
             if (browserMode == 0)
             {
-                Program.MainWindow.World.GenerateMap(mapImage);
-                Program.MainWindow.StartGame();
+                Program.MainWindow.Game.World.GenerateMap(mapImage);
+                Program.MainWindow.Game.Start();
                 Program.MenuOverlay.Show(Program.MainWindow);
             }
             else
             {
                 Console.WriteLine("../saves/" + lbBrowser.SelectedItem);
-                Program.MainWindow.World.Load("../saves/" + lbBrowser.SelectedItem + ".city");
-                Program.MainWindow.StartGame();
+                Program.MainWindow.Game.Load("../saves/" + lbBrowser.SelectedItem + ".city");
+                Program.MainWindow.Game.Start();
                 Program.MenuOverlay.Show(Program.MainWindow);
             }
         }
         private void buttonBackToGame_Click(object sender, EventArgs e)
         {
             Hide();
-            Program.MainWindow.StartGame();
+            Program.MainWindow.Game.Start();
             Program.MenuOverlay.Show(Program.MainWindow);
         }
 

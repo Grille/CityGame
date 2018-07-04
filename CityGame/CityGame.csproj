@@ -73,30 +73,35 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\GameClasses\Game.cs" />
-    <Compile Include="src\GameClasses\GameResources.cs" />
+    <Compile Include="src\Game.cs" />
+    <Compile Include="src\GameClasses\Resources.cs" />
     <Compile Include="src\GameClasses\Camera.cs" />
     <Compile Include="src\GameClasses\GameObject.cs" />
+    <Compile Include="src\Game_Init.cs" />
+    <Compile Include="src\Game_Logic.cs" />
+    <Compile Include="src\Game_MiniMap.cs" />
+    <Compile Include="src\Game_MouseEvent.cs" />
+    <Compile Include="src\Game_Renderer.cs" />
     <Compile Include="src\GameClasses\World.cs" />
-    <Compile Include="src\GameClasses\World_SaveLoad.cs" />
-    <Compile Include="src\MainWindow_Graphic.cs" />
-    <Compile Include="src\MainWindow_Events.cs" />
-    <Compile Include="src\MainWindow.cs" />
-    <Compile Include="src\MainWindow.Designer.cs">
+    <Compile Include="src\forms\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\forms\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\MenuOverlay.cs">
+    <Compile Include="src\forms\MenuOverlay.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="src\MenuOverlay.Designer.cs">
+    <Compile Include="src\forms\MenuOverlay.Designer.cs">
       <DependentUpon>MenuOverlay.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\MenuWindow.cs">
+    <Compile Include="src\forms\MenuWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="src\MenuWindow.Designer.cs">
+    <Compile Include="src\forms\MenuWindow.Designer.cs">
       <DependentUpon>MenuWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="src\Game_SaveLoad.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -129,18 +134,18 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\MainWindow.resx">
+    <EmbeddedResource Include="src\forms\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\MenuOverlay.resx">
+    <EmbeddedResource Include="src\forms\MenuOverlay.resx">
       <DependentUpon>MenuOverlay.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\MenuWindow.resx">
+    <EmbeddedResource Include="src\forms\MenuWindow.resx">
       <DependentUpon>MenuWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\ggl\" />
+    <Folder Include="src\forms\ggl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

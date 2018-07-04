@@ -20,9 +20,9 @@ namespace CityGame
 
     public class GameObject
     {
-
+        public readonly int ID;
         public string Name;
-        public string Path;
+        public string StructPath;
         public string GroundPath;
         
         public int BuildMode;
@@ -37,9 +37,9 @@ namespace CityGame
         private int groundMode;
         public int GroundMode { get { return groundMode; } }
 
-        private int graphicMode;  //0=nothing, 1=self, 2=useArray;
-        public int GraphicMode { get { return graphicMode; } }
-        public byte[] GraphicNeighbors;
+        private int structMode;  //0=nothing, 1=self, 2=useArray;
+        public int GraphicMode { get { return structMode; } }
+        public byte[] StructNeighbors;
         public byte[] GroundNeighbors;
 
         public byte[] UpgradeTyp;
@@ -60,18 +60,23 @@ namespace CityGame
         public int[] ResourcesMonthly;   //[[typ,value]]
         public int[] ResourcesDependent; //[[typ,minValue,maxValue,effects]]
 
-        public void LoadBasic(string name, string path, string groundPath, int buildMode,int slopeMode, int diversity, int size,int groundMode, int graphicMode, byte[] graphicNeighbors)
+        public GameObject(int id)
+        {
+            ID = id;
+        }
+        public void LoadBasic(string name, string groundPath, string path, int buildMode,int slopeMode, int diversity, int size,int groundMode, int graphicMode, byte[] groundNeighbors,byte[] structNeighbors)
         {
 
             this.Name = name;
-            this.Path = path;
+            this.StructPath = path;
             this.GroundPath = groundPath;
             this.diversity = diversity;
             this.size = (byte)size;
             this.BuildMode = buildMode;
             this.groundMode = groundMode;
-            this.graphicMode = graphicMode;
-            this.GraphicNeighbors = graphicNeighbors;
+            this.structMode = graphicMode;
+            this.GroundNeighbors = groundNeighbors;
+            this.StructNeighbors = structNeighbors;
 
             if (groundPath != null)
             {

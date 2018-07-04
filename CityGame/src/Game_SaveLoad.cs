@@ -4,21 +4,22 @@ using System.Collections.Generic;
 //using System.Linq;
 using System.Text;
 using System.Drawing;
-//using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
-using GGL.IO;
 using GGL.Graphic;
+using GGL.IO;
 
 namespace CityGame
 {
-    public partial class World 
+    public partial class Game
     {
         public void Save(string path)
         {
@@ -29,9 +30,9 @@ namespace CityGame
 
             byteStream.WriteString("name");
             byteStream.WriteString("player");
-            byteStream.WriteFloat(camera.PosX);
-            byteStream.WriteFloat(camera.PosY);
-            byteStream.WriteFloat(camera.Scale);
+            byteStream.WriteFloat(Cam.PosX);
+            byteStream.WriteFloat(Cam.PosY);
+            byteStream.WriteFloat(Cam.Scale);
 
 
             int i = 0;
@@ -40,26 +41,25 @@ namespace CityGame
             byteStream.WriteInt((int)resources[i++].Value);
             byteStream.WriteInt((int)resources[i++].Value);
 
-            byteStream.WriteInt(width);
-            byteStream.WriteInt(height);
-            byteStream.WriteByteArray(Ground,0);
-            byteStream.WriteByteArray(Typ,0);
-            byteStream.WriteByteArray(Version, 0);
+            byteStream.WriteInt(World.Width);
+            byteStream.WriteInt(World.Height);
+            byteStream.WriteByteArray(World.Ground, 0);
+            byteStream.WriteByteArray(World.Typ, 0);
+            byteStream.WriteByteArray(World.Version, 0);
 
             byteStream.Save(path);
         }
         public void Load(string path)
         {
-            loadMode = true;
             ByteStream byteStream = new ByteStream(path);
 
             byte saveV = byteStream.ReadByte();//v
 
             byteStream.ReadString();//name
             byteStream.ReadString();//player
-            camera.PosX = byteStream.ReadFloat();
-            camera.PosY = byteStream.ReadFloat();
-            camera.Scale = byteStream.ReadFloat();
+            Cam.PosX = byteStream.ReadFloat();
+            Cam.PosY = byteStream.ReadFloat();
+            Cam.Scale = byteStream.ReadFloat();
 
             int ir = 0;
             resources[ir++].Value = byteStream.ReadInt();
@@ -67,16 +67,13 @@ namespace CityGame
             resources[ir++].Value = byteStream.ReadInt();
             resources[ir++].Value = byteStream.ReadInt();
 
-            BuildWorld(byteStream.ReadInt(), byteStream.ReadInt());
+            World.BuildWorld(byteStream.ReadInt(), byteStream.ReadInt());
 
 
-                Ground = byteStream.ReadByteArray();
-                byte[] newTyp = byteStream.ReadByteArray();
-                for (int i = 0; i < width * height; i++) if (newTyp[i] != 0) Build(newTyp[i], i);
-                Version = byteStream.ReadByteArray();
-
-
-            loadMode = false;
+            World.Ground = byteStream.ReadByteArray();
+            byte[] newTyp = byteStream.ReadByteArray();
+            for (int i = 0; i < World.Width * World.Height; i++) if (newTyp[i] != 0) World.Build(newTyp[i], i);
+            World.Version = byteStream.ReadByteArray();
         }
     }
 }

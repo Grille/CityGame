@@ -41,9 +41,9 @@ namespace CityGame
         {
             Update(1);
         }
-        public void Update(int divider)
+        public void Update(float divfactor)
         {
-            Value += AddValue / divider;
+            Value += AddValue * divfactor;
             if (!canBeNegative && Value < 0) Value = 0;
         }
 

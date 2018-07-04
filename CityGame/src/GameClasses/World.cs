@@ -34,7 +34,7 @@ namespace CityGame
         public byte[] Tile;
         public byte[] ReferenceX;
         public byte[] ReferenceY;
-        public byte[] vertexHeight;
+        public byte[] VertexHeight;
         public byte[] vertexTexture;
         public int[,] Data;
 
@@ -61,11 +61,16 @@ namespace CityGame
             ReferenceX = new byte[width * height];
             ReferenceY = new byte[width * height];
             Version = new byte[width * height];
-            vertexHeight = new byte[(width + 1) * (height + 1)];
+            VertexHeight = new byte[(width + 1) * (height + 1)];
             vertexTexture = new byte[(width + 1) * (height + 1)];
             Data = new int[10, width * height];
             objectCounter = new int[256];
             rnd = new Random(1000);
+
+            for (int i = 0; i < VertexHeight.Length;i++)
+            {
+                VertexHeight[i] = (byte)(rnd.NextDouble()*1);
+            }
             //rndMap();
         }
         private void rndMap()
@@ -211,7 +216,7 @@ namespace CityGame
             return returnValue;
         }
 
-        private void buildCoasts(byte typ)
+        private void applyBuildResourceCosts(byte typ)
         {
             //resources
                 for (int i = 0; gameObjects[typ].ResourcesBuild != null && i < gameObjects[typ].ResourcesBuild.Length/2; i++)
@@ -221,7 +226,7 @@ namespace CityGame
                     resources[dataTyp].Value += dataValue;
                 }
         }
-        private void buildEffects(byte typ,int pos,bool add)
+        private void applyBuildAreaEffects(byte typ,int pos,bool add)
         {
             int x = pos % width;
             int y = (pos - x) / width;
@@ -303,8 +308,8 @@ namespace CityGame
             //build
             Typ[pos] = typ;
             Version[pos] = (byte)(rnd.NextDouble() * gameObjects[typ].Diversity);
-            if (!loadMode) buildCoasts(typ);
-            buildEffects(typ, pos, true);
+            if (!loadMode) applyBuildResourceCosts(typ);
+            applyBuildAreaEffects(typ, pos, true);
 
             //set Data
 
@@ -344,7 +349,7 @@ namespace CityGame
             }
             else
             {
-                byte[] graphicNeighbors = gameObjects[typ].GraphicNeighbors;
+                byte[] graphicNeighbors = gameObjects[typ].StructNeighbors;
                 bool l = true, u = true, r = true, o = true;
                 for (int i = 0; graphicNeighbors != null && i < graphicNeighbors.Length; i++)
                 {
@@ -375,7 +380,7 @@ namespace CityGame
         {
             pos = pos - ReferenceX[pos] - ReferenceY[pos] * width;
             int size = gameObjects[Typ[pos]].Size;
-            buildEffects(Typ[pos], pos, false);
+            applyBuildAreaEffects(Typ[pos], pos, false);
             for (int ix = 0; ix < size; ix++)
             {
                 for (int iy = 0; iy < size; iy++)
