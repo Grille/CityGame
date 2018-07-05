@@ -31,7 +31,8 @@ namespace CityGame
         public byte[] Zone;
         public byte[] Typ;
         public byte[] Version;
-        public byte[] Tile;
+        public byte[] TileGround;
+        public byte[] TileStruct;
         public byte[] ReferenceX;
         public byte[] ReferenceY;
         public byte[] VertexHeight;
@@ -57,7 +58,8 @@ namespace CityGame
             this.height = height;
             Ground = new byte[width * height];
             Typ = new byte[width * height];
-            Tile = new byte[width * height];
+            TileGround = new byte[width * height];
+            TileStruct = new byte[width * height];
             ReferenceX = new byte[width * height];
             ReferenceY = new byte[width * height];
             Version = new byte[width * height];
@@ -69,7 +71,7 @@ namespace CityGame
 
             for (int i = 0; i < VertexHeight.Length;i++)
             {
-                VertexHeight[i] = (byte)(rnd.NextDouble()*1);
+                //VertexHeight[i] = (byte)(rnd.NextDouble()*1);
             }
             //rndMap();
         }
@@ -305,42 +307,56 @@ namespace CityGame
                 }
             }
 
-            //build
             Typ[pos] = typ;
-            Version[pos] = (byte)(rnd.NextDouble() * gameObjects[typ].Diversity);
-            if (!loadMode) applyBuildResourceCosts(typ);
-            applyBuildAreaEffects(typ, pos, true);
-
-            //set Data
-
 
             //autoTile
             for (int ix = -1; ix <= size; ix++)
             {
                 for (int iy = -1; iy <= size; iy++)
                 {
-                     autoTile(pos + ix + iy * width);
+                    autoTile(pos + ix + iy * width);
                 }
             }
+
+            //build
+            if (gameObjects[typ].Texture != null) Version[pos] = (byte)(rnd.NextDouble() * gameObjects[typ].Texture[TileStruct[pos]].Length - 1);
+            else Version[pos] = 0;
+            if (!loadMode) applyBuildResourceCosts(typ);
+            applyBuildAreaEffects(typ, pos, true);
+
+            //set Data
         }
 
+        public int AutoTileStruct(byte typ, int pos)
+        {
+            return (byte)applyAutoTile(typ, pos, gameObjects[typ].StructMode, gameObjects[typ].StructNeighbors);
+        }
+        public int AutoTileGround(byte typ, int pos)
+        {
+            return (byte)applyAutoTile(typ, pos, gameObjects[typ].GroundMode, gameObjects[typ].GroundNeighbors);
+        }
         private void autoTile(int pos)
         {
             int x = pos % width;
             int y = (pos - x) / width;
             if (x >= 0 && y >= 0 && x <= width - 1 && y <= height - 1)
             {
-                Tile[pos] = (byte)AutoTile(Typ[pos], pos);
+                byte typ = Typ[pos];
+                TileStruct[pos] = (byte)AutoTileStruct(typ, pos);
+                TileGround[pos] = (byte)AutoTileGround(typ, pos);
             }
         }
-        public int AutoTile(byte typ,int pos)
+        private int applyAutoTile(byte typ,int pos,int graphicMode,byte[] graphicNeighbors)
         {
+            if (graphicMode == 0 || graphicNeighbors.Length == 0) return 0;
+
             int x = pos % width;
             int y = (pos - x) / width;
 
 
             byte code = 0;
-            if (gameObjects[typ].GraphicMode == 1)
+
+            if (graphicNeighbors.Length == 1 && graphicNeighbors[0] == typ)
             {
                 if (Typ[pos - 1] == typ) code += 1;//l
                 if (Typ[pos + Width] == typ) code += 2;//u
@@ -349,7 +365,6 @@ namespace CityGame
             }
             else
             {
-                byte[] graphicNeighbors = gameObjects[typ].StructNeighbors;
                 bool l = true, u = true, r = true, o = true;
                 for (int i = 0; graphicNeighbors != null && i < graphicNeighbors.Length; i++)
                 {
@@ -359,7 +374,7 @@ namespace CityGame
                     if (y+1 < height && Typ[pos + Width] == graphicNeighbors[i]) { code += 2; u = false; }//u
                 }
             }
-            if (gameObjects[typ].GraphicMode == 3)
+            if (graphicMode == 2)
             {
                 switch (code)
                 {

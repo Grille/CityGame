@@ -94,17 +94,15 @@ namespace CityGame
 
                     if (objects[typ].Ground != null)
                     {
-                        int tile = 0;
                         Texture texture = objects[typ].Ground[0];
                         int anim = animator[texture.Height / 64 - 1];
-                        if (objects[typ].GroundMode == 1) tile = World.Tile[worldPos];
-                        groundGraphics[groundGraphicsIndex++].Update(texture, 64 * tile, 64 * anim, 64, 64, drawPosX, drawPosY, scSize, scSize, Color.White);
+                        groundGraphics[groundGraphicsIndex++].Update(texture, 64 * World.TileGround[worldPos], 64 * anim, 64, 64, drawPosX, drawPosY, scSize, scSize, Color.White);
                     }
                     if (objects[typ].Texture != null)
                     {
-                        int tile = World.Tile[refPos];
+                        int tile = World.TileStruct[refPos];
                         int version = World.Version[refPos];
-                        Texture texture = objects[typ].Texture[version, tile];
+                        Texture texture = objects[typ].Texture[tile][version];
                         int objectSize = objects[typ].Size;
                         int anim = animator[texture.Height / texture.Width - 1];
                         int overdrawSrs = texture.Width - 64 * objectSize;
@@ -155,32 +153,33 @@ namespace CityGame
         {
             if (!buildPreviewEnabled) return;
 
-            int size = objects[CurBuildIndex].Size;
-            int builMode = objects[CurBuildIndex].BuildMode;
+            int size = objects[SelectetBuildIndex].Size;
+            int builMode = objects[SelectetBuildIndex].BuildMode;
             int width = World.Width;
             int height = World.Height;
             
             if (mouse.Button != MouseButtons.Left || builMode == 0 || builMode == 1)//single,rain
             {
-                int pos = CurFieldPos;
+                int pos = hoveredWorldPos;
                 int x = pos % width;
                 int y = (pos - x) / width;
 
+
                 if (x >= 0 && y >= 0 && x < width && y < height)
                 {
+                    byte buildTyp = replaceBuildTyp(SelectetBuildIndex, World.Typ[pos]);
+
                     Color color;
-                    if (World.CanBuild((byte)CurBuildIndex, pos) && World.TestAreaDependet((byte)CurBuildIndex, pos) == 0) color = Color.FromArgb(150, 0, 255, 0);
+                    if (World.CanBuild((byte)buildTyp, pos) && World.TestAreaDependet((byte)buildTyp, pos) == 0) color = Color.FromArgb(150, 0, 255, 0);
                     else color = Color.FromArgb(150, 255, 0, 0);
 
-                    int tile = 0;
-                    if (objects[CurBuildIndex].GraphicMode != 0) tile = World.AutoTile((byte)CurBuildIndex, pos);
-                    if (objects[CurBuildIndex].Ground != null) drawGroundOnPos(objects[CurBuildIndex].Ground[0], pos, objects[CurBuildIndex].GroundMode == 0 ? 0 : tile, color);
-                    if (objects[CurBuildIndex].Texture != null) drawObjectOnPos(CurBuildIndex, pos, color);
+                    if (objects[buildTyp].Ground != null) drawGroundOnPos(objects[buildTyp].Ground[0], pos, World.AutoTileGround((byte)buildTyp, pos), color);
+                    if (objects[buildTyp].Texture != null) drawObjectOnPos(buildTyp,0, World.AutoTileStruct(buildTyp, pos), pos, color);
                 }
             }
             else
             {
-                int pos = CurFieldPos;
+                int pos = hoveredWorldPos;
                 int x = pos % width;
                 int y = (pos - x) / width;
 
@@ -210,12 +209,11 @@ namespace CityGame
                             {
                                 pos = ix + iy * width;
                                 Color color;
-                                if (World.CanBuild((byte)CurBuildIndex, pos) && World.TestAreaDependet((byte)CurBuildIndex, pos) == 0) color = Color.FromArgb(150, 0, 255, 0);
+                                if (World.CanBuild((byte)SelectetBuildIndex, pos) && World.TestAreaDependet((byte)SelectetBuildIndex, pos) == 0) color = Color.FromArgb(150, 0, 255, 0);
                                 else color = Color.FromArgb(150, 255, 0, 0);
-                                int tile = 0;
-                                if (objects[CurBuildIndex].GraphicMode != 0) tile = World.AutoTile((byte)CurBuildIndex, pos);
-                                if (objects[CurBuildIndex].Ground != null) drawGroundOnPos(objects[CurBuildIndex].Ground[0], pos, objects[CurBuildIndex].GroundMode == 0 ? 0 : tile, color);
-                                if (objects[CurBuildIndex].Texture != null) drawObjectOnPos(CurBuildIndex, pos, color);
+
+                                if (objects[SelectetBuildIndex].Ground != null) drawGroundOnPos(objects[SelectetBuildIndex].Ground[0], pos, World.AutoTileGround((byte)SelectetBuildIndex, pos), color);
+                                if (objects[SelectetBuildIndex].Texture != null) drawObjectOnPos(SelectetBuildIndex, pos, color);
                             }
                             pos += 1;
                         }
@@ -261,8 +259,8 @@ namespace CityGame
         }
         private void drawObjectOnPos(int typ, int version, int tile, int pos, Color color)
         {
-            int offsetY = objects[typ].Texture[version, tile].Width - objects[typ].Size * Cam.Size;
-            drawObjectOnPos(objects[typ].Texture[version, tile], pos, offsetY, color);
+            int offsetY = objects[typ].Texture[tile][0].Width - objects[typ].Size * Cam.Size;
+            drawObjectOnPos(objects[typ].Texture[tile][0], pos, offsetY, color);
         }
         private void drawObjectOnPos(Texture texture, int pos, Color color)
         {

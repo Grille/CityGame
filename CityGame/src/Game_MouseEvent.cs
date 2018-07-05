@@ -39,10 +39,10 @@ namespace CityGame
         public void MouseMove(MouseEventArgs e)
         {
 
-            int oldPos = CurFieldPos;
+            int oldPos = hoveredWorldPos;
             mouse = e;
 
-            if (timerLogic.Enabled == false) CurFieldPos = -1;
+            if (timerLogic.Enabled == false) hoveredWorldPos = -1;
             else
             {
                 float size = Cam.Size, scale = Cam.Scale;
@@ -50,19 +50,18 @@ namespace CityGame
                 float posX = (int)(((e.X - window.Width / 2f) / scale + Cam.PosX) / size);
                 float posY = (int)(((e.Y - window.Height / 2f) / scale + Cam.PosY) / size);
 
-                posX -= 0.5f * objects[CurBuildIndex].Size - 1f;
-                posY -= 0.5f * objects[CurBuildIndex].Size - 1f;
+                posX -= 0.5f * objects[SelectetBuildIndex].Size - 1f;
+                posY -= 0.5f * objects[SelectetBuildIndex].Size - 1f;
 
-                CurFieldPos = ((int)posX + (int)posY * World.Width);
+                hoveredWorldPos = ((int)posX + (int)posY * World.Width);
 
-                if (oldPos != CurFieldPos) buildPreviewEnabled = true;
+                if (oldPos != hoveredWorldPos) buildPreviewEnabled = true;
             }
             if (e.Button == MouseButtons.Left)
             {
-                if (World.CanBuild((byte)CurBuildIndex, CurFieldPos) && objects[CurBuildIndex].BuildMode == 1)
+                if (objects[SelectetBuildIndex].BuildMode == 1)
                 {
-                    World.Build((byte)CurBuildIndex, CurFieldPos);
-                    buildPreviewEnabled = false;
+                    playerBuild(SelectetBuildIndex, hoveredWorldPos);
                 }
             }
 
@@ -71,19 +70,18 @@ namespace CityGame
         {
             mouse = e;
             mouseDownPos = e.Location;
-            DownFieldPos = CurFieldPos;
-            if (World.CanBuild((byte)CurBuildIndex, CurFieldPos) && (objects[CurBuildIndex].BuildMode == 0 || objects[CurBuildIndex].BuildMode == 1))
+            DownFieldPos = hoveredWorldPos;
+            if (objects[SelectetBuildIndex].BuildMode == 0 || objects[SelectetBuildIndex].BuildMode == 1)
             {
-                World.Build((byte)CurBuildIndex, CurFieldPos);
-                buildPreviewEnabled = false;
+                playerBuild(SelectetBuildIndex, hoveredWorldPos);
             }
         }
         public void MouseUp(MouseEventArgs e)
         {
             mouse = e;
-            if (World.CanBuild((byte)CurBuildIndex, CurFieldPos) && objects[CurBuildIndex].BuildMode == 2)
+            if (World.CanBuild((byte)SelectetBuildIndex, hoveredWorldPos) && objects[SelectetBuildIndex].BuildMode == 2)
             {
-                World.Build((byte)CurBuildIndex, CurFieldPos);
+                World.Build((byte)SelectetBuildIndex, hoveredWorldPos);
                 buildPreviewEnabled = false;
             }
         }

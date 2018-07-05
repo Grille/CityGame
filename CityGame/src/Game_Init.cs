@@ -79,8 +79,8 @@ namespace CityGame
                     parser.GetAttribute<string>(i, "name"),
                     parser.GetAttribute<string>(i, "groundPath"),
                     parser.GetAttribute<string>(i, "structPath"),
-                    parser.GetAttribute<byte>(i, "buildMode"), 0,
-                    parser.GetAttribute<byte>(i, "diversity"),
+                    parser.GetAttribute<byte>(i, "buildMode"),
+                    parser.GetAttribute<byte[]>(i, "repalceTyp"),
                     parser.GetAttribute<byte>(i, "size"),
                     parser.GetAttribute<byte>(i, "groundMode"),
                     parser.GetAttribute<byte>(i, "structMode"),
@@ -93,8 +93,7 @@ namespace CityGame
                     parser.GetAttribute<byte[]>(i, "demolitionTyp"),
                     parser.GetAttribute<byte[]>(i, "decayTyp"),
                     parser.GetAttribute<byte[]>(i, "destroyTyp"),
-                    parser.GetAttribute<byte[]>(i, "canBuiltOn"),
-                    parser.GetAttribute<byte[]>(i, "RepalceTyp")
+                    parser.GetAttribute<byte[]>(i, "canBuiltOn")
                     );
                 objects[i].LoadSimData(
                     parser.GetAttribute<int[]>(i, "AreaPermanent"),

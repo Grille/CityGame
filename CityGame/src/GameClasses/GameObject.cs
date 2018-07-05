@@ -26,10 +26,10 @@ namespace CityGame
         public string GroundPath;
         
         public int BuildMode;
-        private Texture[,] texture;
-        public Texture[,] Texture { get { return texture; } }
-        private int diversity;
-        public int Diversity { get { return diversity; } }
+        private Texture[][] texture;
+        public Texture[][] Texture { get { return texture; } }
+        private byte[] diversity;
+        //public byte[] Diversity { get { return diversity; } }
         private byte size;
         public byte Size { get { return size; } }
         private Texture[] ground;
@@ -38,7 +38,7 @@ namespace CityGame
         public int GroundMode { get { return groundMode; } }
 
         private int structMode;  //0=nothing, 1=self, 2=useArray;
-        public int GraphicMode { get { return structMode; } }
+        public int StructMode { get { return structMode; } }
         public byte[] StructNeighbors;
         public byte[] GroundNeighbors;
 
@@ -64,19 +64,32 @@ namespace CityGame
         {
             ID = id;
         }
-        public void LoadBasic(string name, string groundPath, string path, int buildMode,int slopeMode, int diversity, int size,int groundMode, int graphicMode, byte[] groundNeighbors,byte[] structNeighbors)
+        private Texture[] loadTiles(string path,int tile)
+        {
+            int lenght = 0;
+            while (File.Exists(path + "_" + lenght + "_" + tile + ".png")|| File.Exists(path + "_" + lenght + ".png")) lenght++;
+            Texture[] result = new Texture[lenght];
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (!File.Exists(path + "_" + i + "_" + tile + ".png")) result[i] = new Texture(path + "_" + i + ".png");
+                else result[i] = new Texture(path + "_" + i + "_" + tile + ".png");
+            }
+            return result;
+        }
+        public void LoadBasic(string name, string groundPath, string path, int buildMode, byte[] replaceTyp, int size,int groundMode, int graphicMode, byte[] groundNeighbors,byte[] structNeighbors)
         {
 
             this.Name = name;
             this.StructPath = path;
             this.GroundPath = groundPath;
-            this.diversity = diversity;
+            this.diversity = new byte[] { 0 };
             this.size = (byte)size;
             this.BuildMode = buildMode;
             this.groundMode = groundMode;
             this.structMode = graphicMode;
             this.GroundNeighbors = groundNeighbors;
             this.StructNeighbors = structNeighbors;
+            this.ReplaceTyp = replaceTyp;
 
             if (groundPath != null)
             {
@@ -86,34 +99,30 @@ namespace CityGame
             }
             if (path != null)
             {
-                texture = new Texture[diversity, 16];
-                for (int i = 0; i < diversity; i++)
-                {
+                int tiles = 0;
+                if (graphicMode == 0) tiles = 1;
+                else if (graphicMode == 1) tiles = 16;
+                else tiles = 2;
+                texture = new Texture[tiles][];
+
                     if (graphicMode == 0)
                     {
-                        if (!File.Exists(path + "_" + i + "_0.png")) texture[i, 0] = new Texture(path + "_" + i + ".png"); 
-                        else texture[i, 0] = new Texture(path + "_" + i + "_0.png");
+                        texture[0] = loadTiles(path,0);
                     }
-                    else if (graphicMode == 1 || graphicMode == 2)
+                    else if (graphicMode == 1)
                     {
-                        for (int i2 = 0; i2 < 16; i2++)
-                        {
-                            if (!File.Exists(path + "_" + i + "_" + i2 + ".png")) texture[i, i2] = texture[i, 0];
-                            else texture[i, i2] = new Texture(path + "_" + i + "_" + i2 + ".png");
-                        }
+                        for (int iTile = 0; iTile < 16; iTile++)
+                            texture[iTile] = loadTiles(path, iTile);
                     }
-                    else if (graphicMode == 3)
+                    else if (graphicMode == 2)
                     {
                         for (int i2 = 0; i2 < 2; i2++)
-                        {
-                            if (!File.Exists(path + "_" + i + "_" + i2 + ".png")) texture[i, i2] = texture[i, 0];
-                            else texture[i, i2] = new Texture(path + "_" + i + "_" + i2 + ".png");
-                        }
+                            texture[i2] = loadTiles(path, i2);
                     }
-                }
+                
             }                     // GGL.LockBitmap lockBitmap1 = new LockBitmap()
         }
-        public void LoadTypRefs(byte[] upgradeTyp, byte[] downgradeTyp, byte[] demolitionTyp, byte[] decayTyp, byte[] destroyTyp, byte[] canBuiltOnTyp, byte[] replaceTyp) 
+        public void LoadTypRefs(byte[] upgradeTyp, byte[] downgradeTyp, byte[] demolitionTyp, byte[] decayTyp, byte[] destroyTyp, byte[] canBuiltOnTyp) 
         {
             this.UpgradeTyp = upgradeTyp;
             this.DowngradeTyp = downgradeTyp;
@@ -121,7 +130,6 @@ namespace CityGame
             this.DecayTyp = decayTyp;
             this.DestroyTyp = destroyTyp;
             this.CanBuiltOnTyp = canBuiltOnTyp;
-            this.ReplaceTyp = replaceTyp;
         }
         public void LoadSimData(int[] AreaPermanent,int[] AreaDependent,int[] ResourcesEffect,int[] ResourcesBuild,int[] ResourcesPermanent,int[] ResourcesMonthly,int[] ResourcesDependent)
         {

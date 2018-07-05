@@ -4,22 +4,28 @@ Enums{
   res{ money, energy, water, waste}
   area{ water, pollution, road, saltwater}
   i{ min=-32768, max=32767}
+  gmode{ not=0, all=1, focu=2, foen=3, cuen=4, fo=5, cu=6, en=7, st=8}
+  bmode{ single, brush, rnline, eqline, rnarea, eqarea}
 }
  Attributes
  {
   //Basic;
   string name;
-  byte buildMode;
+  byte buildMode; //0 single,1 brush,2 rnd_line,3 equal_line,4 rnd_area, 5 equal_area
+  byte[] repalceTyp; //[[tileTyp,replaceTyp]]
 
   //Graphic
   string structPath, groundPath;
-  byte groundMode, structMode;  
+  byte groundMode, structMode; //0:(else),1:(all),2:(straight,fork,ends,else),3:(straight,curves,fork,else),4:(straight,curves,ends,else), 5:(straight,fork,else),6:(straight,curves,else),7:(straight,ends,else),8:(straight,else)
+  
+  //mode{not,all,focu,foen,cuen,fo,cu,en,st}
+  
   byte[] structNeighbors, groundNeighbors;
-  byte diversity, size;
+  byte size;
 
   //Simulation 1;
   byte[] upgradeTyp,downgradeTyp,demolitionTyp,decayTyp,destroyTyp;
-  byte[] canBuiltOn,RepalceTyp;
+  byte[] canBuiltOn;
 
   //Simulation 2;
   int[] AreaPermanent;      //[[typ,size,value]]
@@ -33,10 +39,14 @@ Enums{
 
  Init{
 
-  buildMode = 0;groundMode = 0;structMode = 0;
+  buildMode = 0;
+  repalceTyp = [];
+
+  groundMode = 0;structMode = 0;
+  groundNeighbors = [];
+  structNeighbors = [];
 
   demolitionTyp = [0];
-  diversity = 1;
   size = 1;
   decayTyp = [13];
   destroyTyp = [13];
@@ -53,9 +63,8 @@ Enums{
  // 1 to 20 nature
  ID-1 {
   name = "Water"; 
-  structMode = 2; 
-  groundMode = 1;
-  structNeighbors = [1,2]; 
+  groundMode = effect.up;
+  groundNeighbors = [1,2,25]; 
   groundPath = "../Data/texture/nature/water_0";
 
   AreaPermanent = [area.water,1,1];
@@ -72,7 +81,6 @@ Enums{
   
   name = "Conifer";  
   structPath = "../Data/texture/nature/Conifer";
-  diversity = 5;
   buildMode = 1;
   canBuiltOn = [0];
   
@@ -104,8 +112,6 @@ Enums{
   name = "Conifer dead"; 
   structPath = "../Data/texture/nature/ConiferDead";
   
-  diversity = 5; 
-
   upgradeTyp = [3];
   destroyTyp = [9];
  
@@ -133,12 +139,11 @@ Enums{
 
  ID-9 {
   name = "Destroyed forest"; 
-  diversity = 5; 
   structPath = "../Data/texture/nature/DestroyedForest";
  }
 
  ID-10 {
-  name = "Stone Small";diversity = 3; structPath = "../Data/texture/nature/StoneSmall";
+  name = "Stone Small"; structPath = "../Data/texture/nature/StoneSmall";
  }
  ID-11 {
   name = "Stone large";
@@ -147,20 +152,22 @@ Enums{
   name = "Garbage";
  }
  ID-13 {
-  name = "debris"; diversity = 5; structPath = "../Data/texture/urban/debris/debris";canBuiltOn = [];
+  name = "debris"; structPath = "../Data/texture/urban/debris/debris";canBuiltOn = [];
  }
 
 //	<---- Road ---->
 
  ID-21 {
   name = "dirt way"; 
-  structMode = 2; groundMode = 1; 
-  structNeighbors = [21,22,23,24]; 
+  buildMode = gmode.all;
+  repalceTyp = [1,25];
+
+  groundMode = 1; 
+  groundNeighbors = [21,22,23,24,25]; 
   groundPath = "../Data/texture/urban/road/FW1_2";
   AreaPermanent = [area.road,1,100]; //typ,size,value
   ResourcesBuild = [res.money,-8];
   ResourcesMonthly = [res.money,-2];
-  buildMode = 1;
  }
 
  ID-23:21 {
@@ -179,6 +186,13 @@ Enums{
   AreaPermanent = [area.road,4,1,  area.road,1,100];
   //ResourcesBuild = [res.money,-24];
   ResourcesMonthly = [res.money,-8];
+ }
+ ID-25:1 {
+  name = "wood bridge"; 
+  canBuiltOn = [1];
+  structMode = gmode.st;
+  structNeighbors = [21,22,23,24,25]; 
+  structPath = "../Data/texture/urban/road/WB";
  }
 
  // supply 41 to 60
@@ -277,7 +291,6 @@ Enums{
   structMode = 1; 
   groundMode = 1;
   groundPath = "../Data/texture/urban/disposal/MDF";
-  diversity = 5; 
   structPath = "../Data/texture/urban/disposal/rubbish";
 
   AreaPermanent = [[1,5,-3]];
@@ -298,60 +311,60 @@ Enums{
  // zones 61 to 90
 
  ID-61 {
-  name = "Residential"; structPath = "../Data/texture/urban/Residential/W0";diversity = 5;
+  name = "Residential"; structPath = "../Data/texture/urban/Residential/W0";
   AreaDependent = [[area.road,1,i.max,effect.deacy, 1]];
   int[] decayTyp = [0];
   buildMode = 1;
  }
  ID-62 {
-  name = "Residential"; structPath = "../Data/texture/urban/Residential/W1";diversity = 5;
+  name = "Residential"; structPath = "../Data/texture/urban/Residential/W1";
   AreaDependent = [[area.road,100,i.max,effect.deacy, 1]];
   int[] downgradeTyp = [61];
   buildMode = 1;
  }
  ID-63 {
-  name = "Residential"; structPath = "../Data/texture/urban/Residential/W2";diversity = 5;
+  name = "Residential"; structPath = "../Data/texture/urban/Residential/W2";
   AreaDependent = [[area.road,100,i.max,effect.deacy, 1]];
   int[] downgradeTyp = [62];
   buildMode = 1;
  }
 
  ID-71  {
-  name = "Comercial"; structPath = "../Data/texture/urban/Comercial/G0";diversity = 5;
-  AreaDependent = [[2,1,i.max,5, 1]];
+  name = "Comercial"; structPath = "../Data/texture/urban/Comercial/G0";
+  AreaDependent = [[area.road,100,i.max,5, 1]];
   buildMode = 1;
  }
  ID-72 {
-  name = "Comercial"; structPath = "../Data/texture/urban/Comercial/G1";diversity = 5;
-  AreaDependent = [[2,1,i.max,5, 1]];
+  name = "Comercial"; structPath = "../Data/texture/urban/Comercial/G1";
+  AreaDependent = [[area.road,100,i.max,5, 1]];
   buildMode = 1;
  }
 
  ID-75 {
-  name = "Comercial"; structPath = "../Data/texture/urban/Comercial/G4";diversity = 3;
-  structMode = 3; structNeighbors = [21,22,23,24];
-  AreaDependent = [[2,1,i.max,5, 1]];
+  name = "Comercial"; structPath = "../Data/texture/urban/Comercial/G4";
+  structMode = 2; structNeighbors = [21,22,23,24];
+  AreaDependent = [[area.road,100,i.max,5, 1]];
   buildMode = 1;
  }
 
  ID-81 {
-  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/B0";diversity = 6;
+  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/B0";
  }
 
  ID-83 {
-  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I0";diversity = 5;
+  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I0";
   AreaDependent = [[2,1,i.max,5, 1]];
   buildMode = 1;
  }
  ID-84 {
 
-  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I1";diversity = 5;
+  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I1";
   AreaDependent = [[2,1,i.max,5, 1]];
   buildMode = 1;
  }
 
  ID-87 {
-  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I2a";diversity = 5;
+  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I2a";
   AreaDependent = [[2,1,i.max,5, 1]];
   buildMode = 1;
  }

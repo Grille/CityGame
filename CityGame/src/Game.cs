@@ -32,8 +32,8 @@ namespace CityGame
         public Camera Cam;
 
         public int DownFieldPos = -1;
-        public int CurFieldPos = -1;
-        public int CurBuildIndex = 3;
+        public int hoveredWorldPos = -1;
+        public byte SelectetBuildIndex = 3;
         private int CurBuildVersion = 3;
 
         Texture groundTexture;

@@ -87,7 +87,6 @@ namespace CityGame
             Game.Cam = new Camera();
             Game.World = new World(Game.objects, Game.resources, Game.Cam);
             Game.World.BuildWorld(32, 32);
-            Game.Cam.SetRef(Game.World, this);
 
     
             //set fullscreen
@@ -143,7 +142,7 @@ namespace CityGame
         }
         private void MainWindow_MouseLeave(object sender, EventArgs e)
         {
-            Game.CurFieldPos = -1;
+            Game.hoveredWorldPos = -1;
         }
 
         public void MainWindow_KeyDown(object sender, KeyEventArgs e)

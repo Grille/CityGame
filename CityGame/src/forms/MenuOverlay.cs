@@ -77,6 +77,7 @@ namespace CityGame
             //listBox.Add("small road",22);
             listBox.Add("medium road",23);
             listBox.Add("large road",24);
+            listBox.Add("bridge", 25);
             listBox.HeightToContent();
         }
         private void imageButton3_ButtonDown(object sender, EventArgs e)
@@ -194,7 +195,7 @@ namespace CityGame
         private void listBox1_ChangeItem(object sender, EventArgs e)
         {
             GGL.Control.ListBox senderIB = ((GGL.Control.ListBox)(sender));
-            Program.MainWindow.Game.CurBuildIndex = senderIB.getValue();
+            Program.MainWindow.Game.SelectetBuildIndex = (byte)senderIB.getValue();
         }
         private void MenuOverlay_Enter(object sender, EventArgs e)
         {
