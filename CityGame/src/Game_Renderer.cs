@@ -1,20 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-//using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using GGL.Graphic;
+using System;
 using System.Diagnostics;
+//using System.Linq;
+using System.Drawing;
 using System.Windows.Forms;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-
-using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-
-using GGL;
-using GGL.Graphic;
 
 namespace CityGame
 {
@@ -151,6 +140,7 @@ namespace CityGame
         //private void RenderGround();
         unsafe private void renderBuildPreview()
         {
+            if (SelectetBuildIndex == 0) return;
             if (!buildPreviewEnabled) return;
 
             int size = objects[SelectetBuildIndex].Size;
@@ -167,7 +157,7 @@ namespace CityGame
 
                 if (x >= 0 && y >= 0 && x < width && y < height)
                 {
-                    byte buildTyp = replaceBuildTyp(SelectetBuildIndex, World.Typ[pos]);
+                    byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos]);
 
                     Color color;
                     if (World.CanBuild((byte)buildTyp, pos) && World.TestAreaDependet((byte)buildTyp, pos) == 0) color = Color.FromArgb(150, 0, 255, 0);
@@ -185,35 +175,79 @@ namespace CityGame
 
                 int pos2 = DownFieldPos;
                 int x2 = pos2 % width;
-                int y2 = (pos2 - x) / width;
+                int y2 = (pos2 - x2) / width;
 
-                int startX = Math.Min(x, x2);
-                int startY = Math.Min(y, y2);
-                int endX = Math.Max(x, x2);
-                int endY = Math.Max(y, y2);
-
-                int resetX = endX - startX;
-
-                pos = startX + startY * World.Width;
-                if (builMode == 2)//line
+                if (builMode == 2|| builMode == 3 || builMode == 4)//line
                 {
+                    byte l = 0, u = 0, r = 0, o = 0;
+                    int direction = (Math.Abs(x - x2) > Math.Abs(y-y2))?0:1;
+                    int dist = (direction == 0)? x - x2: y - y2;
+                    bool invert = false;
+                    if (dist < 0)
+                    {
+                        dist = -dist;
+                        invert = true;
+                    }
+                    if (direction == 0)
+                    {
+                        l = 1;r = 1;
+                    }
+                    else
+                    {
+                        u = 1;o = 1;
+                    }
+                    bool live = true;
+                    for (int i = 0; i <= dist; i++)
+                    {
+                        byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos2]);
 
+                        Color color = Color.FromArgb(150, 0, 255, 0);
+                        if (World.CanBuild((byte)buildTyp, pos2) && World.TestAreaDependet((byte)buildTyp, pos2) == 0)
+                        {
+                            if (objects[buildTyp].Ground != null)
+                                drawGroundOnPos(objects[buildTyp].Ground[0], pos2, World.applyAutoTile(buildTyp, pos2, objects[buildTyp].GroundMode, objects[buildTyp].GroundNeighbors, l, u, r, o), color);
+                            if (objects[buildTyp].Texture != null)
+                                drawObjectOnPos(buildTyp, 0, World.applyAutoTile(buildTyp, pos2, objects[buildTyp].StructMode, objects[buildTyp].StructNeighbors, l, u, r, o), pos2, color);
+                        }
+                        if (!invert)
+                            pos2 += (direction == 0) ? 1 : width;
+                        else pos2 -= (direction == 0) ? 1 : width;
+                        //if (builMode == 4 && !live) break;
+                    }
                 }
-                else if (builMode == 3)//area
+                else if (builMode == 5||builMode == 6)//area
                 {
+                    int startX = Math.Min(x, x2);
+                    int startY = Math.Min(y, y2);
+                    int endX = Math.Max(x, x2);
+                    int endY = Math.Max(y, y2);
+
+                    int resetX = endX - startX;
+
+                    pos = startX + startY * World.Width;
+
+                    byte l = 0, u = 0, r = 0, o = 0;
                     for (int iy = startY; iy <= endY; iy++)
                     {
                         for (int ix = startX; ix <= endX; ix++)
                         {
+                            l = (byte)((ix == startX) ? 0 : 1);
+                            r = (byte)((ix == endX) ? 0 : 1);
+                            o = (byte)((iy == startY) ? 0 : 1);
+                            u = (byte)((iy == endY) ? 0 : 1);
                             if (ix >= 0 && iy >= 0 && ix < width && iy < height)
                             {
-                                pos = ix + iy * width;
-                                Color color;
-                                if (World.CanBuild((byte)SelectetBuildIndex, pos) && World.TestAreaDependet((byte)SelectetBuildIndex, pos) == 0) color = Color.FromArgb(150, 0, 255, 0);
-                                else color = Color.FromArgb(150, 255, 0, 0);
+                                byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos]);
 
-                                if (objects[SelectetBuildIndex].Ground != null) drawGroundOnPos(objects[SelectetBuildIndex].Ground[0], pos, World.AutoTileGround((byte)SelectetBuildIndex, pos), color);
-                                if (objects[SelectetBuildIndex].Texture != null) drawObjectOnPos(SelectetBuildIndex, pos, color);
+                                pos = ix + iy * width;
+                                Color color = Color.FromArgb(150, 0, 255, 0);
+                                if (World.CanBuild((byte)buildTyp, pos) && World.TestAreaDependet((byte)buildTyp, pos) == 0)
+                                {
+                                    if (objects[buildTyp].Ground != null)
+                                        drawGroundOnPos(objects[buildTyp].Ground[0], pos, World.applyAutoTile(buildTyp, pos, objects[buildTyp].GroundMode, objects[buildTyp].GroundNeighbors, l, u, r, o), color);
+                                    if (objects[buildTyp].Texture != null)
+                                        drawObjectOnPos(buildTyp, 0, World.applyAutoTile(buildTyp, pos, objects[buildTyp].StructMode, objects[buildTyp].StructNeighbors, l, u, r, o), pos, color);
+                                }
                             }
                             pos += 1;
                         }

@@ -20,14 +20,23 @@ namespace CityGame
 {
     public partial class Game
     {
-        void playerBuild(byte typ,int pos)
+        void playerBuild(int typ,int pos)
         {
-            byte buildTyp = replaceBuildTyp(SelectetBuildIndex, World.Typ[hoveredWorldPos]);
-            if (World.CanBuild(buildTyp, hoveredWorldPos))
+            if (typ == 0)
             {
-
-                World.Build(buildTyp, hoveredWorldPos);
-                buildPreviewEnabled = false;
+                Console.WriteLine("fgh");
+                if (objects[World.Typ[pos]].DemolitionTyp.Length == 0) return;
+                byte newTyp = objects[World.Typ[pos]].DemolitionTyp[0];
+                World.Build(newTyp, pos);
+            }
+            else
+            {
+                byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos]);
+                if (World.CanBuild(buildTyp, pos))
+                {
+                    World.Build(buildTyp, pos);
+                    buildPreviewEnabled = false;
+                }
             }
         }
         byte replaceBuildTyp(byte typ, byte oldTyp)

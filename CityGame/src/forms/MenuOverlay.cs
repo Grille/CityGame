@@ -138,7 +138,7 @@ namespace CityGame
             listBox.UseColor(Color.FromArgb(237, 195, 137));
             listBox.Add("Light industrial",81);
             listBox.Add("Medium industrial",84);
-            listBox.Add("Dense industrial",85);
+            listBox.Add("Dense industrial",87);
             listBox.HeightToContent();
         }
         private void imageButton5_ButtonDown(object sender, EventArgs e)
@@ -195,7 +195,7 @@ namespace CityGame
         private void listBox1_ChangeItem(object sender, EventArgs e)
         {
             GGL.Control.ListBox senderIB = ((GGL.Control.ListBox)(sender));
-            Program.MainWindow.Game.SelectetBuildIndex = (byte)senderIB.getValue();
+            Program.MainWindow.Game.SelectetBuildIndex = senderIB.getValue();
         }
         private void MenuOverlay_Enter(object sender, EventArgs e)
         {
@@ -208,6 +208,13 @@ namespace CityGame
             Program.MainWindow.MainWindow_KeyDown(sender,e);
         }
 
-
+        private void pictureBoxMinimap_Paint(object sender, PaintEventArgs e)
+        {
+            PictureBox pbsender = (PictureBox)sender;
+            if (pbsender.Image == null) return;
+            Graphics g = e.Graphics;
+            //g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            g.DrawImage(pbsender.Image, new RectangleF(0, 0, pbsender.Width, pbsender.Height));
+        }
     }
 }

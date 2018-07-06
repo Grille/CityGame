@@ -62,7 +62,10 @@ namespace CityGame
             while (timer500 > 500 * TimeSpan.TicksPerMillisecond)
             {
                 timer500 -= (int)(500 * TimeSpan.TicksPerMillisecond);
-                //Program.MenuOverlay.pictureBoxMinimap.Image = UpdateGDIMiniMap();
+                Program.MenuOverlay.pictureBoxMinimap.Image = GenerateMiniMap();
+                Program.MenuOverlay.pictureBoxMinimap.Refresh();
+                Program.MenuOverlay.label5.Text = "" + (int)resources[0].Value + ",-";
+                Program.MenuOverlay.label8.Text = "" + resources[0].AddValue;
             }
             timer1000 += ticks;
             while (timer1000 > 1000 * TimeSpan.TicksPerMillisecond)

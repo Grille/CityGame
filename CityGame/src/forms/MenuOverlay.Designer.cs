@@ -208,12 +208,14 @@
             // pictureBoxMinimap
             // 
             this.pictureBoxMinimap.BackColor = System.Drawing.Color.Black;
+            this.pictureBoxMinimap.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBoxMinimap.Location = new System.Drawing.Point(13, 45);
             this.pictureBoxMinimap.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBoxMinimap.Name = "pictureBoxMinimap";
             this.pictureBoxMinimap.Size = new System.Drawing.Size(200, 200);
             this.pictureBoxMinimap.TabIndex = 6;
             this.pictureBoxMinimap.TabStop = false;
+            this.pictureBoxMinimap.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxMinimap_Paint);
             // 
             // panel3
             // 

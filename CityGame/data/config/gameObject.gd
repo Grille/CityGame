@@ -5,13 +5,13 @@ Enums{
   area{ water, pollution, road, saltwater}
   i{ min=-32768, max=32767}
   gmode{ not=0, all=1, focu=2, foen=3, cuen=4, fo=5, cu=6, en=7, st=8}
-  bmode{ single, brush, rnline, eqline, rnarea, eqarea}
+  bmode{ single, brush, rnline, eqline, cnline, rnarea, eqarea}
 }
  Attributes
  {
   //Basic;
   string name;
-  byte buildMode; //0 single,1 brush,2 rnd_line,3 equal_line,4 rnd_area, 5 equal_area
+  byte buildMode; //0 single,1 brush,2 rnd_line,3 con_line,4 equal_line,5 rnd_area, 6 equal_area
   byte[] repalceTyp; //[[tileTyp,replaceTyp]]
 
   //Graphic
@@ -159,10 +159,10 @@ Enums{
 
  ID-21 {
   name = "dirt way"; 
-  buildMode = gmode.all;
+  buildMode = 4;
   repalceTyp = [1,25];
 
-  groundMode = 1; 
+  groundMode = gmode.all; 
   groundNeighbors = [21,22,23,24,25]; 
   groundPath = "../Data/texture/urban/road/FW1_2";
   AreaPermanent = [area.road,1,100]; //typ,size,value
@@ -172,22 +172,24 @@ Enums{
 
  ID-23:21 {
   name = "medium road"; 
-  canBuiltOn = [0,3,4,5,6,7,8,9,13,21,22];
+  canBuiltOn + [21,22];
   groundPath = "../Data/texture/urban/road/RM_1";
-  AreaPermanent = [area.road,2,1,  area.road,1,100];
+  AreaPermanent + [area.road,2,1];
   ResourcesBuild = [res.money,-16];
   ResourcesMonthly = [res.money,-4];
  }
  ID-24:21 {
   name = "large road"; 
-  canBuiltOn = [0,3,4,5];
-  //canBuiltOn = [0,3,4,5,6,7,8,9,13,21,22,23];
+  canBuiltOn + [21,22,23];
   groundPath = "../Data/texture/urban/road/RL_1";
-  AreaPermanent = [area.road,4,1,  area.road,1,100];
+  AreaPermanent + [area.road,4,1];
   //ResourcesBuild = [res.money,-24];
   ResourcesMonthly = [res.money,-8];
  }
  ID-25:1 {
+  demolitionTyp = [1];
+  decayTyp = [1];
+  destroyTyp = [1];
   name = "wood bridge"; 
   canBuiltOn = [1];
   structMode = gmode.st;
@@ -288,8 +290,8 @@ Enums{
  }
  ID-59 {
   name = "filed landfill";
-  structMode = 1; 
   groundMode = 1;
+    groundNeighbors = [59]; 
   groundPath = "../Data/texture/urban/disposal/MDF";
   structPath = "../Data/texture/urban/disposal/rubbish";
 
@@ -314,37 +316,37 @@ Enums{
   name = "Residential"; structPath = "../Data/texture/urban/Residential/W0";
   AreaDependent = [[area.road,1,i.max,effect.deacy, 1]];
   int[] decayTyp = [0];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
  ID-62 {
   name = "Residential"; structPath = "../Data/texture/urban/Residential/W1";
   AreaDependent = [[area.road,100,i.max,effect.deacy, 1]];
   int[] downgradeTyp = [61];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
  ID-63 {
   name = "Residential"; structPath = "../Data/texture/urban/Residential/W2";
   AreaDependent = [[area.road,100,i.max,effect.deacy, 1]];
   int[] downgradeTyp = [62];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
 
  ID-71  {
   name = "Comercial"; structPath = "../Data/texture/urban/Comercial/G0";
   AreaDependent = [[area.road,100,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
  ID-72 {
   name = "Comercial"; structPath = "../Data/texture/urban/Comercial/G1";
   AreaDependent = [[area.road,100,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
 
  ID-75 {
   name = "Comercial"; structPath = "../Data/texture/urban/Comercial/G4";
-  structMode = 2; structNeighbors = [21,22,23,24];
+  structMode = gmode.st; structNeighbors = [21,22,23,24];
   AreaDependent = [[area.road,100,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
 
  ID-81 {
@@ -354,19 +356,19 @@ Enums{
  ID-83 {
   name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I0";
   AreaDependent = [[2,1,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
  ID-84 {
 
   name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I1";
   AreaDependent = [[2,1,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
 
  ID-87 {
-  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I2a";
+  name = "Industrieal"; structPath = "../Data/texture/urban/Industrieal/I2";
   AreaDependent = [[2,1,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
 
 
@@ -376,27 +378,27 @@ Enums{
  ID-91 {
   name = "small fire department"; size = 2; structPath = "../Data/texture/urban/public/FW1";
   AreaDependent = [[2,1,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
  ID-92 {
   name = "large fire department"; size = 3; structPath = "../Data/texture/urban/public/FW2";
   AreaDependent = [[2,1,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
  ID-93 {
   name = "small police department"; size = 2; structPath = "../Data/texture/urban/public/PW1";
   AreaDependent = [[2,1,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
  ID-94 {
   name = "large police departmen"; size = 3; structPath = "../Data/texture/urban/public/PW2";
   AreaDependent = [[2,1,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
  ID-95 {
   name = "Comercial"; size = 3; structPath = "../Data/texture/urban/public/G";
   AreaDependent = [[2,1,i.max,5, 1]];
-  buildMode = 1;
+  buildMode = bmode.rnarea;
  }
 
  ID-102 {

@@ -33,7 +33,7 @@ namespace CityGame
 
         public int DownFieldPos = -1;
         public int hoveredWorldPos = -1;
-        public byte SelectetBuildIndex = 3;
+        public int SelectetBuildIndex = 3;
         private int CurBuildVersion = 3;
 
         Texture groundTexture;

@@ -67,16 +67,16 @@ namespace CityGame
         private Texture[] loadTiles(string path,int tile)
         {
             int lenght = 0;
-            while (File.Exists(path + "_" + lenght + "_" + tile + ".png")|| File.Exists(path + "_" + lenght + ".png")) lenght++;
+            while (File.Exists(path + "_" + tile + "_" + lenght + ".png")|| File.Exists(path + "_" + lenght + ".png")) lenght++;
             Texture[] result = new Texture[lenght];
             for (int i = 0; i < result.Length; i++)
             {
-                if (!File.Exists(path + "_" + i + "_" + tile + ".png")) result[i] = new Texture(path + "_" + i + ".png");
-                else result[i] = new Texture(path + "_" + i + "_" + tile + ".png");
+                if (!File.Exists(path + "_" + tile + "_" + i + ".png")) result[i] = new Texture(path + "_" + i + ".png");
+                else result[i] = new Texture(path + "_" + tile + "_" + i + ".png");
             }
             return result;
         }
-        public void LoadBasic(string name, string groundPath, string path, int buildMode, byte[] replaceTyp, int size,int groundMode, int graphicMode, byte[] groundNeighbors,byte[] structNeighbors)
+        public void LoadBasic(string name, string groundPath, string path, int buildMode, byte[] replaceTyp, int size,int groundMode, int structMode, byte[] groundNeighbors,byte[] structNeighbors)
         {
 
             this.Name = name;
@@ -86,7 +86,7 @@ namespace CityGame
             this.size = (byte)size;
             this.BuildMode = buildMode;
             this.groundMode = groundMode;
-            this.structMode = graphicMode;
+            this.structMode = structMode;
             this.GroundNeighbors = groundNeighbors;
             this.StructNeighbors = structNeighbors;
             this.ReplaceTyp = replaceTyp;
@@ -100,27 +100,23 @@ namespace CityGame
             if (path != null)
             {
                 int tiles = 0;
-                if (graphicMode == 0) tiles = 1;
-                else if (graphicMode == 1) tiles = 16;
-                else tiles = 2;
+                //gmode{ not=0, all=1, focu=2, foen=3, cuen=4, fo=5, cu=6, en=7, st=8}
+                switch (structMode)
+                {
+                    case 0: tiles = 1;  break;
+                    case 1: tiles = 16; break;
+                    case 2: tiles = 12; break;
+                    case 3: tiles = 11; break;
+                    case 4: tiles = 11; break;
+                    case 5: tiles = 8; break;
+                    case 6: tiles = 7; break;
+                    case 7: tiles = 7; break;
+                    case 8: tiles = 3; break;
+                }
                 texture = new Texture[tiles][];
-
-                    if (graphicMode == 0)
-                    {
-                        texture[0] = loadTiles(path,0);
-                    }
-                    else if (graphicMode == 1)
-                    {
-                        for (int iTile = 0; iTile < 16; iTile++)
-                            texture[iTile] = loadTiles(path, iTile);
-                    }
-                    else if (graphicMode == 2)
-                    {
-                        for (int i2 = 0; i2 < 2; i2++)
-                            texture[i2] = loadTiles(path, i2);
-                    }
-                
-            }                     // GGL.LockBitmap lockBitmap1 = new LockBitmap()
+                for (int iTile = 0; iTile < tiles; iTile++)
+                    texture[iTile] = loadTiles(path, iTile);
+            }   
         }
         public void LoadTypRefs(byte[] upgradeTyp, byte[] downgradeTyp, byte[] demolitionTyp, byte[] decayTyp, byte[] destroyTyp, byte[] canBuiltOnTyp) 
         {

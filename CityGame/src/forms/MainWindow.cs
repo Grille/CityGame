@@ -109,12 +109,6 @@ namespace CityGame
             Program.MenuWindow.Show(0);
         }
 
-        private void updateLabel() 
-        {
-            //Program.MenuOverlay.label5.Text = "" + (int)resources[0].Value + ",-";
-            //Program.MenuOverlay.label8.Text = "" + resources[0].AddValue;
-        }
-
         private void OnRenderControlResize(object sender, EventArgs e)
         {
             if (Program.MenuOverlay != null) Program.MenuOverlay.Size = this.Size;

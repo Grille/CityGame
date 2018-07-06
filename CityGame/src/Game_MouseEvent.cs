@@ -53,6 +53,11 @@ namespace CityGame
                 posX -= 0.5f * objects[SelectetBuildIndex].Size - 1f;
                 posY -= 0.5f * objects[SelectetBuildIndex].Size - 1f;
 
+                if (posX < 0) posX = 0;
+                if (posY < 0) posY = 0;
+                if (posX > World.Width) posX = World.Width-1;
+                if (posY > World.Height) posY = World.Height-1;
+
                 hoveredWorldPos = ((int)posX + (int)posY * World.Width);
 
                 if (oldPos != hoveredWorldPos) buildPreviewEnabled = true;
@@ -61,7 +66,7 @@ namespace CityGame
             {
                 if (objects[SelectetBuildIndex].BuildMode == 1)
                 {
-                    playerBuild(SelectetBuildIndex, hoveredWorldPos);
+                    playerBuild((byte)SelectetBuildIndex, hoveredWorldPos);
                 }
             }
 
@@ -71,18 +76,79 @@ namespace CityGame
             mouse = e;
             mouseDownPos = e.Location;
             DownFieldPos = hoveredWorldPos;
-            if (objects[SelectetBuildIndex].BuildMode == 0 || objects[SelectetBuildIndex].BuildMode == 1)
+            if (objects[SelectetBuildIndex].BuildMode == 1)
             {
-                playerBuild(SelectetBuildIndex, hoveredWorldPos);
+                playerBuild((byte)SelectetBuildIndex, hoveredWorldPos);
             }
         }
         public void MouseUp(MouseEventArgs e)
         {
+            int builMode = objects[SelectetBuildIndex].BuildMode;
+            int width = World.Width;
+
             mouse = e;
-            if (World.CanBuild((byte)SelectetBuildIndex, hoveredWorldPos) && objects[SelectetBuildIndex].BuildMode == 2)
+            if (builMode == 0)
             {
-                World.Build((byte)SelectetBuildIndex, hoveredWorldPos);
-                buildPreviewEnabled = false;
+                playerBuild((byte)SelectetBuildIndex, hoveredWorldPos);
+            }
+            else
+            {
+
+                int pos = hoveredWorldPos;
+                int x = pos % width;
+                int y = (pos - x) / width;
+
+                int pos2 = DownFieldPos;
+                int x2 = pos2 % width;
+                int y2 = (pos2 - x2) / width;
+
+                if (builMode == 2 || builMode == 3 || builMode == 4)//line
+                {
+                    int direction = (Math.Abs(x - x2) > Math.Abs(y - y2)) ? 0 : 1;
+                    int dist = (direction == 0) ? x - x2 : y - y2;
+                    bool invert = false;
+                    if (dist < 0)
+                    {
+                        dist = -dist;
+                        invert = true;
+                    }
+                    bool live = true;
+                    for (int i = 0; i <= dist; i++)
+                    {
+                        playerBuild((byte)SelectetBuildIndex, pos2);
+                        if (!invert)
+                            pos2 += (direction == 0) ? 1 : width;
+                        else
+                            pos2 -= (direction == 0) ? 1 : width;
+                        //if (builMode == 4 && !live) break;
+                    }
+                }
+                else if (builMode == 5 || builMode == 6)//area
+                {
+                    int startX = Math.Min(x, x2);
+                    int startY = Math.Min(y, y2);
+                    int endX = Math.Max(x, x2);
+                    int endY = Math.Max(y, y2);
+
+                    int resetX = endX - startX;
+
+                    pos = startX + startY * World.Width;
+
+                    for (int iy = startY; iy <= endY; iy++)
+                    {
+                        for (int ix = startX; ix <= endX; ix++)
+                        {
+                            if (ix >= 0 && iy >= 0 && ix < width && iy < World.Height)
+                            {
+                                pos = ix + iy * width;
+                                playerBuild(SelectetBuildIndex, pos);
+                            }
+                            pos += 1;
+                        }
+                        pos += width - resetX;
+
+                    }
+                }
             }
         }
     }

@@ -307,7 +307,11 @@ namespace CityGame
                 }
             }
 
+            //build
             Typ[pos] = typ;
+            Version[pos] = 0;
+            if (!loadMode) applyBuildResourceCosts(typ);
+            applyBuildAreaEffects(typ, pos, true);
 
             //autoTile
             for (int ix = -1; ix <= size; ix++)
@@ -318,22 +322,16 @@ namespace CityGame
                 }
             }
 
-            //build
-            if (gameObjects[typ].Texture != null) Version[pos] = (byte)(rnd.NextDouble() * gameObjects[typ].Texture[TileStruct[pos]].Length - 1);
-            else Version[pos] = 0;
-            if (!loadMode) applyBuildResourceCosts(typ);
-            applyBuildAreaEffects(typ, pos, true);
-
             //set Data
         }
 
         public int AutoTileStruct(byte typ, int pos)
         {
-            return (byte)applyAutoTile(typ, pos, gameObjects[typ].StructMode, gameObjects[typ].StructNeighbors);
+            return (byte)applyAutoTile(typ, pos, gameObjects[typ].StructMode, gameObjects[typ].StructNeighbors,0,0,0,0);
         }
         public int AutoTileGround(byte typ, int pos)
         {
-            return (byte)applyAutoTile(typ, pos, gameObjects[typ].GroundMode, gameObjects[typ].GroundNeighbors);
+            return (byte)applyAutoTile(typ, pos, gameObjects[typ].GroundMode, gameObjects[typ].GroundNeighbors,0,0,0,0);
         }
         private void autoTile(int pos)
         {
@@ -344,9 +342,10 @@ namespace CityGame
                 byte typ = Typ[pos];
                 TileStruct[pos] = (byte)AutoTileStruct(typ, pos);
                 TileGround[pos] = (byte)AutoTileGround(typ, pos);
+                if (gameObjects[typ].Texture != null)Version[pos] = (byte)(rnd.NextDouble() * gameObjects[typ].Texture[TileStruct[pos]].Length);
             }
         }
-        private int applyAutoTile(byte typ,int pos,int graphicMode,byte[] graphicNeighbors)
+        public int applyAutoTile(byte typ,int pos,int graphicMode,byte[] graphicNeighbors,byte l, byte u, byte r, byte o)
         {
             if (graphicMode == 0 || graphicNeighbors.Length == 0) return 0;
 
@@ -356,40 +355,70 @@ namespace CityGame
 
             byte code = 0;
 
+            //byte l = 0, u = 0, r = 0, o = 0;
             if (graphicNeighbors.Length == 1 && graphicNeighbors[0] == typ)
             {
-                if (Typ[pos - 1] == typ) code += 1;//l
-                if (Typ[pos + Width] == typ) code += 2;//u
-                if (Typ[pos + 1] == typ) code += 4;//r
-                if (Typ[pos - Width] == typ) code += 8;//o
+                if (Typ[pos - 1] == typ) l= 1;//l
+                if (Typ[pos + Width] == typ) u=1;//u
+                if (Typ[pos + 1] == typ) r=1;//r
+                if (Typ[pos - Width] == typ) o=1;//o
             }
+
             else
             {
-                bool l = true, u = true, r = true, o = true;
                 for (int i = 0; graphicNeighbors != null && i < graphicNeighbors.Length; i++)
                 {
-                    if (x > 0 && Typ[pos - 1] == graphicNeighbors[i]) { code += 1; l = false; }//l
-                    if (x+1 < width && Typ[pos + 1] == graphicNeighbors[i]) { code += 4; r = false; }//r
-                    if (y > 0 && Typ[pos - Width] == graphicNeighbors[i]) { code += 8; o = false; }//o
-                    if (y+1 < height && Typ[pos + Width] == graphicNeighbors[i]) { code += 2; u = false; }//u
+                    if (x > 0 && Typ[pos - 1] == graphicNeighbors[i]) l = 1;//l
+                    if (x+1 < width && Typ[pos + 1] == graphicNeighbors[i]) r = 1;//r
+                    if (y > 0 && Typ[pos - Width] == graphicNeighbors[i]) o = 1;//o
+                    if (y+1 < height && Typ[pos + Width] == graphicNeighbors[i]) u = 1;//u
                 }
             }
-            if (graphicMode == 2)
+            code = (byte)(1 * l + 4 * r + 8 * o + 2 * u);
+            //gmode{ not=0, all=1, focu=2, foen=3, cuen=4, fo=5, cu=6, en=7, st=8}
+            switch (graphicMode)
             {
-                switch (code)
-                {
-                    case 01:case 04:case 05:case 07:case 13:
-                        code = 0;
+                case 1:return code;
+                case 2:
+                    switch (code)
+                    {
+                        default: return 0;
+                    }
+                case 3:
+                    switch (code)
+                    {
+                        default: return 0;
+                    }
+                case 4:
+                    switch (code)
+                    {
+                        default: return 0;
+                    }
                     break;
-                    case 02:case 08:case 10:case 11:case 14:
-                        code = 1;
-                    break;
-                    default:
-                        code = (byte)(1 * rnd.NextDouble()+0.5);
-                    break;
-                }
+                case 5:
+                    switch (code)
+                    {
+                        default: return 0;
+                    }
+                case 6:
+                    switch (code)
+                    {
+                        default: return 0;
+                    }
+                case 7:
+                    switch (code)
+                    {
+                        default:return 0;
+                    }
+                case 8:
+                    switch (code)
+                    {
+                        case 01: case 04: case 05: case 07: case 13: return 1;
+                        case 02: case 08: case 10: case 11: case 14: return code = 2;
+                        default: return code = 0;
+                    }
             }
-            return code;
+            return 0;
         }
         public void Clear(int pos) 
         {

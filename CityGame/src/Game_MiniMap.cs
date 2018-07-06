@@ -57,7 +57,7 @@ namespace CityGame
                 }
                 else
                 {
-                    Color color = objects[World.Typ[pos]].Texture[World.TileStruct[pos]][0].BaseColor;
+                    Color color = objects[World.Typ[pos]].Texture[World.TileStruct[pos]][World.Version[pos]].BaseColor;
                     float pz = (float)color.A / 255f;
                     data[iDst++] = (byte)(color.B * pz + 17 * (1 - pz));
                     data[iDst++] = (byte)(color.G * pz + 100 * (1 - pz));
