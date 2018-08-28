@@ -17,22 +17,25 @@ void dayTime(inout vec4 texture);
 
 void main(void)
 {
-  vec4 texture = texture(uSampler, vTexturePos);
+  vec4 textureColor = texture(uSampler, vTexturePos);
   vec4 color = (vColor/vec4(255,255,255,255));
-  dayTime(texture);
-  gl_FragColor = (vec4(texture * color));
+  //dayTime(texture);
+  //float durs = (float)(max(texture.r,max(texture.g,texture.b)))/3f+0.5f;
+  gl_FragColor = (vec4(textureColor * color));
 }
 
-void dayTime(inout vec4 texture)
+void dayTime(inout vec4 textureColor)
 {
+/*
   bool night = false;
-  if (uInt0 >= 20){
-    //replace(texture,vec3(105,147,255),vec3(255,255,255));
-    //replace(texture,vec3(74,125,255),vec3(240,240,222));
-    if (replace(texture,vec3(77,93,119),vec3(255,255,200)));
-    else if (replace(texture,vec3(62,75,96),vec3(128,128,100)));
-    else texture = vec4(texture.r*0.6,texture.g*0.6,texture.b*0.8,texture.a);
+  if (uInt0 >= 20|| uInt0 < 8=){
+    //replace(textureColor,vec3(105,147,255),vec3(255,255,255));
+    //replace(textureColor,vec3(74,125,255),vec3(240,240,222));
+    if (replace(textureColor,vec3(77,93,119),vec3(255,255,200)));
+    else if (replace(textureColor,vec3(62,75,96),vec3(128,128,100)));
+    else textureColor = vec4(textureColor.r*0.6,textureColor.g*0.6,textureColor.b*0.8,textureColor.a);
   }
+  */
 }
 
 bool equel(inout vec4 data,vec3 equel)

@@ -20,6 +20,10 @@ namespace CityGame
     public class GameResources 
     {
         private string name;
+        public string Name
+        {
+            get { return name; }
+        }
         private bool canBeNegative;
         private bool storable;
         public double Value;

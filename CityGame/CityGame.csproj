@@ -73,12 +73,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\Enums.cs" />
     <Compile Include="src\Game.cs" />
+    <Compile Include="src\GameClasses\Area.cs" />
     <Compile Include="src\GameClasses\Resources.cs" />
     <Compile Include="src\GameClasses\Camera.cs" />
     <Compile Include="src\GameClasses\GameObject.cs" />
+    <Compile Include="src\GameClasses\Zone.cs" />
     <Compile Include="src\Game_Build.cs" />
     <Compile Include="src\Game_Init.cs" />
+    <Compile Include="src\Game_KeyEvent.cs" />
     <Compile Include="src\Game_Logic.cs" />
     <Compile Include="src\Game_MiniMap.cs" />
     <Compile Include="src\Game_MouseEvent.cs" />
@@ -114,6 +118,7 @@
     <None Include="data\config\gameResources.gd" />
     <None Include="data\config\gui.gd" />
     <None Include="data\config\mapBuild.gd" />
+    <None Include="data\config\Zones.gd" />
     <None Include="data\shaders\basicFS.glsl" />
     <None Include="data\shaders\basicVS.glsl" />
     <None Include="data\shaders\glowFS.glsl" />

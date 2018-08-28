@@ -56,6 +56,7 @@ namespace CityGame
             {
                 timer200 -= (int)(200 * TimeSpan.TicksPerMillisecond);
                 date = date.AddMinutes(10);
+                GL2D.UniformInt(0, date.Hour);
 
             }
             timer500 += ticks;
@@ -73,6 +74,7 @@ namespace CityGame
                 timer1000 -= (int)(1000 * TimeSpan.TicksPerMillisecond);
                 for (int i = 0; i < resources.Length; i++)
                 {
+                    if (resources[i] == null) continue;
                     resources[i].Update(1f/30f);
                 }
                 for (int i = 0; i < (World.Width + World.Height) / 1; i++)

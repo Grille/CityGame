@@ -27,6 +27,7 @@ namespace CityGame
         
         public int BuildMode;
         private Texture[][] texture;
+        /// <summary>/// Textures of the object [tile][version]/// </summary>
         public Texture[][] Texture { get { return texture; } }
         private byte[] diversity;
         //public byte[] Diversity { get { return diversity; } }

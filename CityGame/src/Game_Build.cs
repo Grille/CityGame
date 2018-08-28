@@ -22,21 +22,51 @@ namespace CityGame
     {
         void playerBuild(int typ,int pos)
         {
-            if (typ == 0)
+            switch (typ)
             {
-                Console.WriteLine("fgh");
-                if (objects[World.Typ[pos]].DemolitionTyp.Length == 0) return;
-                byte newTyp = objects[World.Typ[pos]].DemolitionTyp[0];
-                World.Build(newTyp, pos);
-            }
-            else
-            {
-                byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos]);
-                if (World.CanBuild(buildTyp, pos))
-                {
-                    World.Build(buildTyp, pos);
-                    buildPreviewEnabled = false;
-                }
+                case 0:
+                    Console.WriteLine("fgh");
+                    if (objects[World.Typ[pos]].DemolitionTyp.Length == 0) return;
+                    byte newTyp = objects[World.Typ[pos]].DemolitionTyp[0];
+                    World.Build(newTyp, pos);
+                    break;
+                    /*
+                case 61:
+                    World.Zone[pos] = 1;
+                    break;
+                case 62:
+                    World.Zone[pos] = 2;
+                    break;
+                case 63:
+                    World.Zone[pos] = 3;
+                    break;
+                case 71:
+                    World.Zone[pos] = 4;
+                    break;
+                case 72:
+                    World.Zone[pos] = 5;
+                    break;
+                case 73:
+                    World.Zone[pos] = 6;
+                    break;
+                case 81:
+                    World.Zone[pos] = 7;
+                    break;
+                case 82:
+                    World.Zone[pos] = 8;
+                    break;
+                case 83:
+                    World.Zone[pos] = 9;
+                    break;
+                    */
+                default:
+                    byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos]);
+                    if (World.CanBuild(buildTyp, pos))
+                    {
+                        World.Build(buildTyp, pos);
+                        buildPreviewEnabled = false;
+                    }
+                    break;
             }
         }
         byte replaceBuildTyp(byte typ, byte oldTyp)

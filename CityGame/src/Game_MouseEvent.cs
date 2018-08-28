@@ -39,10 +39,10 @@ namespace CityGame
         public void MouseMove(MouseEventArgs e)
         {
 
-            int oldPos = hoveredWorldPos;
+            int oldWorldPos = HoveredWorldPos;
             mouse = e;
 
-            if (timerLogic.Enabled == false) hoveredWorldPos = -1;
+            if (timerLogic.Enabled == false) HoveredWorldPos = -1;
             else
             {
                 float size = Cam.Size, scale = Cam.Scale;
@@ -58,15 +58,15 @@ namespace CityGame
                 if (posX > World.Width) posX = World.Width-1;
                 if (posY > World.Height) posY = World.Height-1;
 
-                hoveredWorldPos = ((int)posX + (int)posY * World.Width);
+                HoveredWorldPos = ((int)posX + (int)posY * World.Width);
 
-                if (oldPos != hoveredWorldPos) buildPreviewEnabled = true;
+                if (oldWorldPos != HoveredWorldPos) buildPreviewEnabled = true;
             }
             if (e.Button == MouseButtons.Left)
             {
                 if (objects[SelectetBuildIndex].BuildMode == 1)
                 {
-                    playerBuild((byte)SelectetBuildIndex, hoveredWorldPos);
+                    playerBuild((byte)SelectetBuildIndex, HoveredWorldPos);
                 }
             }
 
@@ -75,10 +75,10 @@ namespace CityGame
         {
             mouse = e;
             mouseDownPos = e.Location;
-            DownFieldPos = hoveredWorldPos;
+            DownFieldPos = HoveredWorldPos;
             if (objects[SelectetBuildIndex].BuildMode == 1)
             {
-                playerBuild((byte)SelectetBuildIndex, hoveredWorldPos);
+                playerBuild((byte)SelectetBuildIndex, HoveredWorldPos);
             }
         }
         public void MouseUp(MouseEventArgs e)
@@ -89,12 +89,12 @@ namespace CityGame
             mouse = e;
             if (builMode == 0)
             {
-                playerBuild((byte)SelectetBuildIndex, hoveredWorldPos);
+                playerBuild((byte)SelectetBuildIndex, HoveredWorldPos);
             }
             else
             {
 
-                int pos = hoveredWorldPos;
+                int pos = HoveredWorldPos;
                 int x = pos % width;
                 int y = (pos - x) / width;
 

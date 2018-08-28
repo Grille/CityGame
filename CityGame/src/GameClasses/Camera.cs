@@ -19,10 +19,8 @@ namespace CityGame
 {
     public class Camera
     {
-        private World world;
-        private Control sender;
         public int Size = 64;
-        public int Speed = 30;
+        public float Speed = 30;
         public float Scale = 1;
         public float PosX = 0;
         public float PosY = 0;

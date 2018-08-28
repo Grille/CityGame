@@ -26,6 +26,7 @@ namespace CityGame
         }
         private void render(object sender, EventArgs e)
         {
+            
             updateAnimator();
 
             GL2D.ClearBuffer(Color.Blue);
@@ -54,8 +55,8 @@ namespace CityGame
 
                     if (!(worldPosX >= 0 && worldPosY >= 0 && worldPosX < width && worldPosY < height)) continue;
 
-                    float drawPosX = ((-posX + ix * size) * scale) + window.Width / 2;
-                    float drawPosY = ((-posY + iy * size) * scale) + window.Height / 2;
+                    float drawPosX = ((-posX + ix * size) * scale) + window.Width / 2f;
+                    float drawPosY = ((-posY + iy * size) * scale) + window.Height / 2f;
 
                     if (!(drawPosX > -64 && drawPosY > -64 && drawPosX < window.Width && drawPosY < window.Height)) continue;
 
@@ -81,6 +82,11 @@ namespace CityGame
                         */
                     GL2D.DrawImage(groundTexture, groundX * 64, groundY * 64, 64, 64, drawPosX, drawPosY, scSize, scSize, Color.White);
 
+
+                    if (World.Zone[worldPos] != 0)
+                    {
+                        groundGraphics[groundGraphicsIndex++].Update(zoneTexture, 0,0, 64, 64, drawPosX, drawPosY, scSize, scSize, zones[World.Zone[worldPos]].Color);
+                    }
                     if (objects[typ].Ground != null)
                     {
                         Texture texture = objects[typ].Ground[0];
@@ -97,7 +103,7 @@ namespace CityGame
                         int overdrawSrs = texture.Width - 64 * objectSize;
                         if (refX == objectSize - 1 || refY == 0)
                         {
-                            int overdrawDst = (int)(overdrawSrs * (scSize / 64f));
+                            float overdrawDst = (overdrawSrs * (scSize / 64f));
 
                             objectGraphics[objectGraphicsIndex++].Update(texture,
                                 64 * refX, 64 * refY + (texture.Width * anim), 64 + overdrawSrs, 64 + overdrawSrs,
@@ -132,6 +138,10 @@ namespace CityGame
             renderBuildPreview();
 
             rendertime.Stop();
+
+            Graphics g = GL2D.GetGDIContext();
+            g.DrawRectangle(new Pen(Color.Red, 10), new Rectangle(100, 100, 300, 300));
+
             GL2D.SwapBuffers();
 
             Program.MenuOverlay.debugLabel.Text = "fulltime in ms: " + "-" + "\ndrawtime in ms: " + drawtime.ElapsedMilliseconds + "\nrendertime in ms: " + rendertime.ElapsedMilliseconds + "\nFPS: " + "-" + "\ndrawedTiles: " + "-" + "\nTime: " + date;
@@ -150,7 +160,7 @@ namespace CityGame
             
             if (mouse.Button != MouseButtons.Left || builMode == 0 || builMode == 1)//single,rain
             {
-                int pos = hoveredWorldPos;
+                int pos = HoveredWorldPos;
                 int x = pos % width;
                 int y = (pos - x) / width;
 
@@ -169,7 +179,7 @@ namespace CityGame
             }
             else
             {
-                int pos = hoveredWorldPos;
+                int pos = HoveredWorldPos;
                 int x = pos % width;
                 int y = (pos - x) / width;
 

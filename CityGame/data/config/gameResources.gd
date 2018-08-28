@@ -2,18 +2,20 @@
  Attributes {
   string name;
   int value;
-  //bool CanBeNegative;
-  //bool storable;
+  bool physical;
+  bool storable;
  }
 
  Init {
   name = "";
   value = 0;
+  physical = false;
+  storable = false;
  }
 
  ID-0 {
-  value = 200000;
-  name = "Money";
+  value = 200000000;
+  name = "money";
   //storable = true;
   //CanBeNegative = true;
  }
@@ -30,5 +32,5 @@
 
  ID-3 {
   name = "waste";
-  value = 2000;
+  value = 0;
  }

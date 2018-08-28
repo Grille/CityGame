@@ -30,7 +30,7 @@ namespace CityGame
         public Game Game;
 
         //init OpenGL
-        public MainWindow()
+        public MainWindow()//0.28
         {
             InitializeComponent();
 
@@ -85,7 +85,7 @@ namespace CityGame
 
             
             Game.Cam = new Camera();
-            Game.World = new World(Game.objects, Game.resources, Game.Cam);
+            Game.World = new World(Game.objects, Game.resources, Game.Cam,Game.areas);
             Game.World.BuildWorld(32, 32);
 
     
@@ -136,22 +136,17 @@ namespace CityGame
         }
         private void MainWindow_MouseLeave(object sender, EventArgs e)
         {
-            Game.hoveredWorldPos = -1;
+            Game.HoveredWorldPos = -1;
         }
 
         public void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            switch (e.KeyCode) 
-            {
-                case Keys.Escape:
-                    Game.StopRendering();
-                    Program.MenuWindow.Show(NextPanel.GameMenu);
-                    Program.MenuOverlay.Hide();
-                    break;
-                case Keys.Q:
-                    if (e.Control) Application.Exit();
-                    break;
-            }
+            Game.KeyDown(e);
+        }
+
+        private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            Game.KeyUp(e);
         }
     }
 }

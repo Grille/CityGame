@@ -132,13 +132,13 @@ namespace CityGame
             listBox.UseColor(Color.FromArgb(137, 198, 237));
             listBox.Add("Light comercial",71);
             listBox.Add("Medium comercial",72);
-            listBox.Add("Dense comercial",75);
+            listBox.Add("Dense comercial",73);
             listBox.UseColor(Color.FromArgb(0));
             listBox.Add(" - Industrieal - ");
             listBox.UseColor(Color.FromArgb(237, 195, 137));
             listBox.Add("Light industrial",81);
-            listBox.Add("Medium industrial",84);
-            listBox.Add("Dense industrial",87);
+            listBox.Add("Medium industrial",82);
+            listBox.Add("Dense industrial",83);
             listBox.HeightToContent();
         }
         private void imageButton5_ButtonDown(object sender, EventArgs e)

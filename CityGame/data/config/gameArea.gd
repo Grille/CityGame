@@ -1,15 +1,23 @@
 
+//area{ water, pollution, road, saltwater}
+
  Attributes{
-  string name = " ";
-  bool CanBeNegative = false;
+  string name;
+  bool smooth;
  }
 
- ID-0 {
-  name = "road";
+ Init {
+  name = "";
+  smooth = true;
  }
 
- ID-1 {
+  ID-0 {
   name = "water";
+  smooth = false;
+ }
+  ID-1 {
+  name = "saltwater";
+  smooth = false;
  }
 
  ID-2 {
@@ -17,5 +25,9 @@
  }
 
  ID-3 {
+  name = "road";
+  smooth = false;
+ }
+ ID-4 {
   name = "radiation";
  }

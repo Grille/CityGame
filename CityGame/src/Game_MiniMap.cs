@@ -29,6 +29,12 @@ namespace CityGame
             for (int iSrc = 0; iSrc < size; iSrc++)
             {
                 int pos = iSrc - World.ReferenceX[iSrc] - World.ReferenceY[iSrc] * World.Width;
+
+                int value = (int)World.Data[2,pos];
+                data[iDst++] = (byte)(100- Math.Abs(value));//b
+                data[iDst++] = (byte)(100-(value < 0 ? (byte)Math.Abs(value) : (byte)0));//g
+                data[iDst++] = (byte)(100-(value > 0 ? (byte)Math.Abs(value) : (byte)0));//r
+                /*
                 if (objects[World.Typ[pos]].Texture == null)
                 {
                     if (objects[World.Typ[pos]].Ground == null)
@@ -64,6 +70,7 @@ namespace CityGame
                     data[iDst++] = (byte)(color.R * pz + 38 * (1 - pz));
 
                 }
+                */
                 data[iDst++] = 255;
             }
         }

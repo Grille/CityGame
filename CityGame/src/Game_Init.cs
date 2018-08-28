@@ -51,25 +51,63 @@ namespace CityGame
             //effects: 0=not, 1=up, 2=down, 3=break, 4=deacy, 5=destroy 6=entf//
             //AreaPermanent->typ: 0=water, 1=nature, 2=road,3=saltwater
             GGL.IO.Parser parser = new GGL.IO.Parser();
+            zones = new Zone[256];
             resources = new GameResources[256];
             objects = new GameObject[256];
+            areas = new GameArea[256];
+
+            
+            Console.WriteLine("//load: gameZonesData");
+            parser.ParseFile("../Data/config/Zones.gd");
+            for (int i = 0; i < zones.Length; i++)
+            {
+                if (!parser.IDUsed(i)) continue;
+                zones[i] = new Zone();
+                zones[i].Load(
+                    parser.GetAttribute<string>(i, "name"),
+                    parser.GetAttribute<byte[]>(i, "color"),
+                    parser.GetAttribute<byte[]>(i, "supportTyp")
+                    );
+            }
+            parser.Clear();
 
             Console.WriteLine("//load: gameResourcesData");
-            parser.LoadData("../Data/config/gameResources.gd");
-            parser.Parse();
+            parser.ParseFile("../Data/config/gameResources.gd");
             for (int i = 0; i < resources.Length; i++)
             {
+                if (!parser.IDUsed(i)) continue;
                 resources[i] = new GameResources();
                 resources[i].Load(
                     parser.GetAttribute<string>(i, "name"),
                     parser.GetAttribute<int>(i, "value"),
-                    false, false
+                    parser.GetAttribute<bool>(i, "physical"), 
+                    parser.GetAttribute<bool>(i, "storable")
                     );
             }
+            parser.Clear();
 
-            Console.WriteLine("//load: gameObjectData");
-            parser.LoadData("../Data/config/gameObject.gd");
-            parser.Parse();
+            Console.WriteLine("//load: gameAreaData");
+            parser.ParseFile("../Data/config/gameArea.gd");
+            for (int i = 0; i < resources.Length; i++)
+            {
+                if (!parser.IDUsed(i)) continue;
+                areas[i] = new GameArea();
+                areas[i].Load(
+                    parser.GetAttribute<string>(i, "name"),
+                    parser.GetAttribute<bool>(i, "smooth")
+                    );
+            }
+            parser.Clear();
+
+            //res{ money, energy, water, waste}
+            //area{ water, pollution, road, saltwater}
+
+            for (int i = 0;i< 256; i++)
+            {
+                if (resources[i] != null) parser.AddEnum("res", resources[i].Name.ToLower(), i);
+                if (areas[i] != null) parser.AddEnum("area", areas[i].Name.ToLower(), i);
+            }
+            parser.ParseFile("../Data/config/gameObject.gd");
             for (int i = 0; i < objects.Length; i++)
             {
                 bar.Value++;
@@ -105,8 +143,10 @@ namespace CityGame
                     parser.GetAttribute<int[]>(i, "ResourcesDependent")
                     );
             }
+            parser.Clear();
 
             groundTexture = new Texture("../Data/texture/ground/texture.png");
+            zoneTexture = new Texture("../Data/texture/effect/zoon.png");
             gui = new Texture("../Data/texture/gui/aktivField.png");
         }
     }

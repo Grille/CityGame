@@ -27,15 +27,18 @@ namespace CityGame
         DateTime date;
         Random rnd;
         public GameObject[] objects;
+        public Zone[] zones;
+        public GameArea[] areas;
         public GameResources[] resources;
         public World World;
         public Camera Cam;
 
         public int DownFieldPos = -1;
-        public int hoveredWorldPos = -1;
+        public int HoveredWorldPos = -1;
         public int SelectetBuildIndex = 3;
         private int CurBuildVersion = 3;
 
+        Texture zoneTexture;
         Texture groundTexture;
         Texture highViewMap;
         bool buildPreviewEnabled = true;
