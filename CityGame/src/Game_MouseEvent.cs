@@ -50,8 +50,8 @@ namespace CityGame
                 float posX = (int)(((e.X - window.Width / 2f) / scale + Cam.PosX) / size);
                 float posY = (int)(((e.Y - window.Height / 2f) / scale + Cam.PosY) / size);
 
-                posX -= 0.5f * objects[SelectetBuildIndex].Size - 1f;
-                posY -= 0.5f * objects[SelectetBuildIndex].Size - 1f;
+                posX -= 0.5f * objects[SelectetBuildIndex.Value].Size - 1f;
+                posY -= 0.5f * objects[SelectetBuildIndex.Value].Size - 1f;
 
                 if (posX < 0) posX = 0;
                 if (posY < 0) posY = 0;
@@ -64,9 +64,9 @@ namespace CityGame
             }
             if (e.Button == MouseButtons.Left)
             {
-                if (objects[SelectetBuildIndex].BuildMode == 1)
+                if (SelectetBuildIndex.BuildMode == 1)
                 {
-                    playerBuild((byte)SelectetBuildIndex, HoveredWorldPos);
+                    playerBuild(SelectetBuildIndex, HoveredWorldPos);
                 }
             }
 
@@ -75,21 +75,21 @@ namespace CityGame
         {
             mouse = e;
             mouseDownPos = e.Location;
-            DownFieldPos = HoveredWorldPos;
-            if (objects[SelectetBuildIndex].BuildMode == 1)
+            MouseDownWorldPos = HoveredWorldPos;
+            if (SelectetBuildIndex.BuildMode == 1)
             {
-                playerBuild((byte)SelectetBuildIndex, HoveredWorldPos);
+                playerBuild(SelectetBuildIndex, HoveredWorldPos);
             }
         }
         public void MouseUp(MouseEventArgs e)
         {
-            int builMode = objects[SelectetBuildIndex].BuildMode;
+            int buildMode = SelectetBuildIndex.BuildMode;
             int width = World.Width;
 
             mouse = e;
-            if (builMode == 0)
+            if (buildMode == 0)
             {
-                playerBuild((byte)SelectetBuildIndex, HoveredWorldPos);
+                playerBuild(SelectetBuildIndex, HoveredWorldPos);
             }
             else
             {
@@ -98,11 +98,11 @@ namespace CityGame
                 int x = pos % width;
                 int y = (pos - x) / width;
 
-                int pos2 = DownFieldPos;
+                int pos2 = MouseDownWorldPos;
                 int x2 = pos2 % width;
                 int y2 = (pos2 - x2) / width;
 
-                if (builMode == 2 || builMode == 3 || builMode == 4)//line
+                if (buildMode == 2 || buildMode == 3 || buildMode == 4)//line
                 {
                     int direction = (Math.Abs(x - x2) > Math.Abs(y - y2)) ? 0 : 1;
                     int dist = (direction == 0) ? x - x2 : y - y2;
@@ -115,7 +115,7 @@ namespace CityGame
                     bool live = true;
                     for (int i = 0; i <= dist; i++)
                     {
-                        playerBuild((byte)SelectetBuildIndex, pos2);
+                        playerBuild(SelectetBuildIndex, pos2);
                         if (!invert)
                             pos2 += (direction == 0) ? 1 : width;
                         else
@@ -123,7 +123,7 @@ namespace CityGame
                         //if (builMode == 4 && !live) break;
                     }
                 }
-                else if (builMode == 5 || builMode == 6)//area
+                else if (buildMode == 5 || buildMode == 6)//area
                 {
                     int startX = Math.Min(x, x2);
                     int startY = Math.Min(y, y2);

@@ -8,194 +8,140 @@ using System.Text;
 using System.Windows.Forms;
 using System.Media;
 
-using GGL.Control;
+//using GGL.Control;
+using CityGame.Control;
 
 
 namespace CityGame
 {
+    public struct BuildOption{
+        public int Typ;
+        public string Text;
+        public Color Color;
+        public int Value;
+        public int BuildMode;
+        public byte[] BuildReplace;
+
+        public BuildOption(string text, int typ)
+        {
+            Text = text; Typ = typ; Value = 0; Color = Color.Transparent; BuildMode = 0; BuildReplace = null;
+        }
+        public BuildOption(string text,int typ,int value,int buildMode,byte[] buildReplace,Color color)
+        {
+            Text = text;Typ = typ;Value = value;Color = color; BuildMode = buildMode; BuildReplace = buildReplace;
+        }
+    }
     public partial class MenuOverlay : Form
     {
+        Control.ListBox listBox;
+        BuildOption[][] buildOptions;
+        ImageButton[] imageButtons;
         public MenuOverlay()
         {
-
-            InitializeComponent();
-            imageButton1.LoadImages(new Bitmap("../Data/texture/gui/terrain1.png"),new Bitmap("../Data/texture/gui/terrain3.png"));
-            imageButton2.LoadImages(new Bitmap("../Data/texture/gui/traffic1.png"),new Bitmap("../Data/texture/gui/traffic3.png"));
-            imageButton3.LoadImages(new Bitmap("../Data/texture/gui/supply1.png"), new Bitmap("../Data/texture/gui/supply3.png"));
-            imageButton4.LoadImages(new Bitmap("../Data/texture/gui/zones1.png"), new Bitmap("../Data/texture/gui/zones3.png"));
-            imageButton5.LoadImages(new Bitmap("../Data/texture/gui/empty1.png"), new Bitmap("../Data/texture/gui/empty3.png"));
-            imageButton6.LoadImages(new Bitmap("../Data/texture/gui/empty1.png"), new Bitmap("../Data/texture/gui/empty3.png"));
-
-            panelConect.BackgroundImage = new Bitmap("../Data/texture/gui/menuConect2.png");
+            listBox = new Control.ListBox();
             listBox.BackColor = Color.FromArgb(99, 139, 139);
-            listBox.ItemHeight = 24;
+            listBox.ItemHeight = 26;
             listBox.ItemDistance = 4;
+            listBox.Font = new Font("Franklin Gothic Medium", 11.25f);
+            listBox.ChangeItem += new System.EventHandler(listBox_ChangeItem);
+            listBox.Enabled = true;
+            listBox.BorderImage = new Bitmap("../Data/texture/gui/border.png");
+            listBox.ButtonBorderImage = new Bitmap("../Data/texture/gui/border2.png");
+            listBox.ButtonDownBorderImage = new Bitmap("../Data/texture/gui/border3.png");
+            Controls.Add(listBox);
+
+            imageButtons = new ImageButton[10];
+            buildOptions = new BuildOption[10][];
+            InitializeComponent();
+            GGL.IO.Parser parser = new GGL.IO.Parser();
+            parser.AddAttribute("string", "name", "");
+            parser.AddAttribute("int", "value", "0");
+            parser.AddAttribute("int", "typ", "1");
+            parser.AddAttribute("int", "mode", "0");
+            parser.AddAttribute("byte[]", "replace", "[]");
+            parser.AddAttribute("byte[]", "color", "[]");
+            parser.AddEnum("mode", new string[] { "single", "brush", "line", "equalLine", "cnline", "area", "equalArea" });
+            parser.AddEnum("typ", new string[] { "label", "build", "zone" });
+            Console.WriteLine("//load: gui");
+            parser.ParseFile("../Data/config/gui.gd");
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (parser.Exists("button_" + i))
+                {
+                    imageButtons[i] = new ImageButton();
+                    imageButtons[i].Size = new Size(64, 64);
+                    imageButtons[i].Anchor = AnchorStyles.Right;
+                    imageButtons[i].Location = new Point(Width - 72, 72 * i);
+                    imageButtons[i].Visible = true;
+                    string btnname = parser.GetAttribute<string>("button_" + i, "name");
+                    imageButtons[i].LoadImages(new Bitmap("../Data/texture/gui/"+ btnname+"1.png"), new Bitmap("../Data/texture/gui/" + btnname + "3.png"));
+                    Controls.Add(imageButtons[i]);
+
+                    int size = -1;
+                    while (parser.Exists(btnname+"_" + ++size));
+                    buildOptions[i] = new BuildOption[size];
+                    for (int i2=0;i2< buildOptions[i].Length; i2++)
+                    {
+                        string name = btnname + "_" + i2;
+                        int typ = parser.GetAttribute<int>(name, "typ");
+                        int value = parser.GetAttribute<int>(name, "value");
+                        int mode = parser.GetAttribute<int>(name, "mode");
+                        var text = parser.GetAttribute<string>(name, "name");
+                        var replace = parser.GetAttribute<byte[]>(name, "replace");
+                        var bytes = parser.GetAttribute<byte[]>(name, "color");
+                        if (bytes.Length == 3)
+                            buildOptions[i][i2] = new BuildOption(text,typ, value, mode, replace,Color.FromArgb(bytes[0], bytes[1], bytes[2]));
+                        else
+                            buildOptions[i][i2] = new BuildOption(text, typ);
+                    }
+                    imageButtons[i].SwitchMode = true;
+                    imageButtons[i].ButtonDown += new System.EventHandler(imageButton_ButtonDown);
+                    imageButtons[i].ButtonUp += new System.EventHandler(imageButton_ButtonUp);
+                }
+            }
             this.DoubleBuffered = true;
-            //listBox1.BackSelectColor = Color.FromArgb(0, 0, 0);
         }
 
-        private void imageButton1_MouseMove(object sender, MouseEventArgs e)
+        private void imageButton_ButtonDown(object sender, EventArgs e)
         {
+            ImageButton btn = (ImageButton)sender;
+            int id = 0;
+            for (int i = 0; i < imageButtons.Length; i++)
+            {
+                if (imageButtons[i] != null)
+                    if (imageButtons[i] != btn)
+                        imageButtons[i].ResetButton();
+                    else id = i;
+            }
+            updateListBox(btn,id);
         }
 
-        private void imageButton1_ButtonDown(object sender, EventArgs e)
+        private void updateListBox(ImageButton btn,int id)
         {
-            imageButton2.ResetButton();
-            imageButton3.ResetButton();
-            imageButton4.ResetButton();
-            imageButton5.ResetButton();
-            imageButton6.ResetButton();
-
-            rePosListBox(sender);
             listBox.Clear();
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - tools - ");
-            listBox.UseColor(Color.FromArgb(115, 207, 92));
-            listBox.Add("demolish",0);
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Tree - ");
-            listBox.UseColor(Color.FromArgb(115, 207, 92));
-            listBox.Add("conifer",3);
-            listBox.Add("deciduous",4);
-            listBox.Add("palm",5);
+            listBox.Visible = true;
+            listBox.Location = new Point(btn.Left - 200, btn.Top);
+            listBox.Size = new Size(200, 200);
+
+            for (int i = 0; i < buildOptions[id].Length; i++)
+            {
+                listBox.UseColor(buildOptions[id][i].Color);
+                if (buildOptions[id][i].Color != Color.Transparent)
+                    listBox.Add(buildOptions[id][i].Text, buildOptions[id][i]);
+                else
+                    listBox.Add(buildOptions[id][i].Text);
+            }
             listBox.HeightToContent();
         }
-        private void imageButton2_ButtonDown(object sender, EventArgs e)
-        {
-            imageButton1.ResetButton();
-            imageButton3.ResetButton();
-            imageButton4.ResetButton();
-            imageButton5.ResetButton();
-            imageButton6.ResetButton();
-
-            rePosListBox(sender);
-            listBox.Clear();
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Road - ");
-            listBox.UseColor(Color.FromArgb(217, 142, 242));
-            listBox.Add("dirt way",21);
-            //listBox.Add("small road",22);
-            listBox.Add("medium road",23);
-            listBox.Add("large road",24);
-            listBox.Add("bridge", 25);
-            listBox.HeightToContent();
-        }
-        private void imageButton3_ButtonDown(object sender, EventArgs e)
-        {
-            imageButton1.ResetButton();
-            imageButton2.ResetButton();
-            imageButton4.ResetButton();
-            imageButton5.ResetButton();
-            imageButton6.ResetButton();
-
-            rePosListBox(sender);
-            listBox.Clear();
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Energy - ");
-            listBox.UseColor(Color.FromArgb(237, 232, 137));
-            listBox.Add("coal power plant",41);
-            listBox.Add("gas power plant", 42);
-            listBox.Add("nuclear power plant", 43);
-            listBox.Add("solar power plant", 44);
-            listBox.Add("wind power plant", 45);
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Water - ");
-            listBox.UseColor(Color.FromArgb(125, 143, 232));
-            listBox.Add("water pump", 51);
-            listBox.Add("water tower", 53);
-            listBox.Add("sewage plant", 55);
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Disposal - ");
-            listBox.UseColor(Color.FromArgb(198, 166, 113));
-            listBox.Add("landfill", 58);
-            listBox.Add("incinerator", 60);
-            listBox.HeightToContent();
-        }
-        private void imageButton4_ButtonDown(object sender, EventArgs e)
-        {
-            imageButton1.ResetButton();
-            imageButton2.ResetButton();
-            imageButton3.ResetButton();
-            imageButton5.ResetButton();
-            imageButton6.ResetButton();
-
-            rePosListBox(sender);
-            listBox.Clear();
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Residential - ");
-            listBox.UseColor(Color.FromArgb(148, 237, 137));
-            listBox.Add("Light residential",61);
-            listBox.Add("Medium residential",62);
-            listBox.Add("Dense residential",63);
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Comercial - ");
-            listBox.UseColor(Color.FromArgb(137, 198, 237));
-            listBox.Add("Light comercial",71);
-            listBox.Add("Medium comercial",72);
-            listBox.Add("Dense comercial",73);
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Industrieal - ");
-            listBox.UseColor(Color.FromArgb(237, 195, 137));
-            listBox.Add("Light industrial",81);
-            listBox.Add("Medium industrial",82);
-            listBox.Add("Dense industrial",83);
-            listBox.HeightToContent();
-        }
-        private void imageButton5_ButtonDown(object sender, EventArgs e)
-        {
-            imageButton1.ResetButton();
-            imageButton2.ResetButton();
-            imageButton3.ResetButton();
-            imageButton4.ResetButton();
-            imageButton6.ResetButton();
-
-            rePosListBox(sender);
-            listBox.Clear();
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Safety - ");
-            listBox.UseColor(Color.FromArgb(237, 137, 153));
-            listBox.Add("small fire department",91);
-            listBox.Add("large fire department",92);
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Safety - ");
-            listBox.UseColor(Color.FromArgb(137, 155, 237));
-            listBox.Add("small police department",93);
-            listBox.Add("large police department",94);
-            listBox.Add("hospital", 102);
-            listBox.HeightToContent() ;
-        }
-        private void imageButton6_ButtonDown(object sender, EventArgs e)
-        {
-            imageButton1.ResetButton();
-            imageButton2.ResetButton();
-            imageButton3.ResetButton();
-            imageButton4.ResetButton();
-            imageButton5.ResetButton();
-
-            rePosListBox(sender);
-            listBox.Clear();
-            listBox.UseColor(Color.FromArgb(0));
-            listBox.Add(" - Empty - ");
-            listBox.HeightToContent();
-        }
-
-        private void rePosListBox(object sender)
-        {
-            ImageButton senderIB = ((ImageButton)(sender));
-
-            listBox.Location = new Point(senderIB.Location.X - listBox.Size.Width - 16, senderIB.Location.Y);
-            panelConect.Location = new Point(senderIB.Location.X-15,senderIB.Location.Y+24);
-            panelConect.Visible = listBox.Visible = true;
+        private void imageButton_ButtonUp(object sender, EventArgs e){
+            panelConect.Visible = listBox.Visible = false;
         }
 
 
-        private void imageButton_ButtonUp(object sender, EventArgs e){ panelConect.Visible = listBox.Visible = false;}
-
-
-        private void listBox1_ChangeItem(object sender, EventArgs e)
+        private void listBox_ChangeItem(object sender, EventArgs e)
         {
-            GGL.Control.ListBox senderIB = ((GGL.Control.ListBox)(sender));
-            Program.MainWindow.Game.SelectetBuildIndex = senderIB.getValue();
+            Program.MainWindow.Game.SelectetBuildIndex = (BuildOption)((CityGame.Control.ListBox)sender).getValue();
         }
         private void MenuOverlay_Enter(object sender, EventArgs e)
         {

@@ -11,23 +11,23 @@
   smooth = true;
  }
 
-  ID-0 {
+<0> {
   name = "water";
   smooth = false;
  }
-  ID-1 {
+  <1> {
   name = "saltwater";
   smooth = false;
  }
 
- ID-2 {
+ <2> {
   name = "pollution";
  }
 
- ID-3 {
+ <3> {
   name = "road";
   smooth = false;
  }
- ID-4 {
+ <4> {
   name = "radiation";
  }

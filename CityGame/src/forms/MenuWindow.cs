@@ -9,6 +9,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
+using CityGame.Control;
+
 namespace CityGame
 {
     public enum NextPanel { Nothing,Last,MainMenu,GameMenu,Options,NewGame,LoadGame,SaveGame}

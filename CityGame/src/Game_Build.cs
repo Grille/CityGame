@@ -20,61 +20,39 @@ namespace CityGame
 {
     public partial class Game
     {
-        void playerBuild(int typ,int pos)
+        void playerBuild(BuildOption option,int pos)
         {
-            switch (typ)
+            if (option.Typ == 1)
             {
-                case 0:
-                    Console.WriteLine("fgh");
+                if (option.Value == 0)
+                {
                     if (objects[World.Typ[pos]].DemolitionTyp.Length == 0) return;
                     byte newTyp = objects[World.Typ[pos]].DemolitionTyp[0];
                     World.Build(newTyp, pos);
-                    break;
-                    /*
-                case 61:
-                    World.Zone[pos] = 1;
-                    break;
-                case 62:
-                    World.Zone[pos] = 2;
-                    break;
-                case 63:
-                    World.Zone[pos] = 3;
-                    break;
-                case 71:
-                    World.Zone[pos] = 4;
-                    break;
-                case 72:
-                    World.Zone[pos] = 5;
-                    break;
-                case 73:
-                    World.Zone[pos] = 6;
-                    break;
-                case 81:
-                    World.Zone[pos] = 7;
-                    break;
-                case 82:
-                    World.Zone[pos] = 8;
-                    break;
-                case 83:
-                    World.Zone[pos] = 9;
-                    break;
-                    */
-                default:
-                    byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos]);
+                }
+                else
+                {
+                    byte buildTyp = replaceBuildTyp(World.Typ[pos]);
                     if (World.CanBuild(buildTyp, pos))
                     {
                         World.Build(buildTyp, pos);
                         buildPreviewEnabled = false;
                     }
-                    break;
+                }
+            }
+            else if (option.Typ == 2)
+            {
+                World.Zone[pos] = (byte)option.Value;
             }
         }
-        byte replaceBuildTyp(byte typ, byte oldTyp)
+        byte replaceBuildTyp(byte oldTyp)
         {
-            if (objects[typ].ReplaceTyp.Length == 0) return typ;
-            for (int i = 0; i < objects[typ].ReplaceTyp.Length; i += 2)
+            byte typ = (byte)SelectetBuildIndex.Value;
+            byte[] replace = SelectetBuildIndex.BuildReplace;
+            if (replace.Length == 0) return typ;
+            for (int i = 0; i < replace.Length; i += 2)
             {
-                if (objects[typ].ReplaceTyp[i] == oldTyp) return objects[typ].ReplaceTyp[i+1];
+                if (replace[i] == oldTyp) return replace[i+1];
             }
             return typ;
         }

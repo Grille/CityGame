@@ -46,6 +46,7 @@ namespace CityGame
             byteStream.WriteByteArray(World.Ground, 0);
             byteStream.WriteByteArray(World.Typ, 0);
             byteStream.WriteByteArray(World.Version, 0);
+            byteStream.WriteByteArray(World.Zone, 0);
 
             byteStream.Save(path);
         }
@@ -74,6 +75,7 @@ namespace CityGame
             byte[] newTyp = byteStream.ReadByteArray();
             for (int i = 0; i < World.Width * World.Height; i++) if (newTyp[i] != 0) World.Build(newTyp[i], i);
             World.Version = byteStream.ReadByteArray();
+            World.Zone = byteStream.ReadByteArray();
         }
     }
 }

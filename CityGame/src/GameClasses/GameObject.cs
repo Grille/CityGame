@@ -25,7 +25,6 @@ namespace CityGame
         public string StructPath;
         public string GroundPath;
         
-        public int BuildMode;
         private Texture[][] texture;
         /// <summary>/// Textures of the object [tile][version]/// </summary>
         public Texture[][] Texture { get { return texture; } }
@@ -49,7 +48,6 @@ namespace CityGame
         public byte[] DecayTyp;
         public byte[] DestroyTyp;
         public byte[] CanBuiltOnTyp;          //[typ]
-        public byte[] ReplaceTyp;          //[typ]
 
         //effects: 0=up, 1=down, 2=demolition, 3=deacy, 4=destroy 5=entf//
         //importance: 0=canNotWork, 1=canWork//
@@ -77,7 +75,7 @@ namespace CityGame
             }
             return result;
         }
-        public void LoadBasic(string name, string groundPath, string path, int buildMode, byte[] replaceTyp, int size,int groundMode, int structMode, byte[] groundNeighbors,byte[] structNeighbors)
+        public void LoadBasic(string name, string groundPath, string path, int size,int groundMode, int structMode, byte[] groundNeighbors,byte[] structNeighbors)
         {
 
             this.Name = name;
@@ -85,12 +83,10 @@ namespace CityGame
             this.GroundPath = groundPath;
             this.diversity = new byte[] { 0 };
             this.size = (byte)size;
-            this.BuildMode = buildMode;
             this.groundMode = groundMode;
             this.structMode = structMode;
             this.GroundNeighbors = groundNeighbors;
             this.StructNeighbors = structNeighbors;
-            this.ReplaceTyp = replaceTyp;
 
             if (groundPath != null)
             {

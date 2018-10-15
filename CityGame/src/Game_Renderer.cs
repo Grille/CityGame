@@ -29,7 +29,7 @@ namespace CityGame
             
             updateAnimator();
 
-            GL2D.ClearBuffer(Color.Blue);
+            GL2D.ClearBuffer(Color.SkyBlue);
 
             int groundGraphicsIndex = 0, objectGraphicsIndex = 0;
 
@@ -134,8 +134,7 @@ namespace CityGame
             GL2D.UseShader(basicShader);
             GL2D.Render();
 
-
-            renderBuildPreview();
+            renderPreview();
 
             rendertime.Stop();
 
@@ -148,13 +147,13 @@ namespace CityGame
 
         }
         //private void RenderGround();
-        unsafe private void renderBuildPreview()
+        private void renderPreview()
         {
-            if (SelectetBuildIndex == 0) return;
+            if (SelectetBuildIndex.Value == 0) return;
             if (!buildPreviewEnabled) return;
 
-            int size = objects[SelectetBuildIndex].Size;
-            int builMode = objects[SelectetBuildIndex].BuildMode;
+            int size = objects[SelectetBuildIndex.Value].Size;
+            int builMode = SelectetBuildIndex.BuildMode;
             int width = World.Width;
             int height = World.Height;
             
@@ -167,14 +166,10 @@ namespace CityGame
 
                 if (x >= 0 && y >= 0 && x < width && y < height)
                 {
-                    byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos]);
-
-                    Color color;
-                    if (World.CanBuild((byte)buildTyp, pos) && World.TestAreaDependet((byte)buildTyp, pos) == 0) color = Color.FromArgb(150, 0, 255, 0);
-                    else color = Color.FromArgb(150, 255, 0, 0);
-
-                    if (objects[buildTyp].Ground != null) drawGroundOnPos(objects[buildTyp].Ground[0], pos, World.AutoTileGround((byte)buildTyp, pos), color);
-                    if (objects[buildTyp].Texture != null) drawObjectOnPos(buildTyp,0, World.AutoTileStruct(buildTyp, pos), pos, color);
+                    if (SelectetBuildIndex.Typ == 1)
+                        renderBuildPreview(pos, 0, 0, 0, 0);
+                    else if (SelectetBuildIndex.Typ == 2)
+                        renderZonePreview(pos);
                 }
             }
             else
@@ -183,7 +178,7 @@ namespace CityGame
                 int x = pos % width;
                 int y = (pos - x) / width;
 
-                int pos2 = DownFieldPos;
+                int pos2 = MouseDownWorldPos;
                 int x2 = pos2 % width;
                 int y2 = (pos2 - x2) / width;
 
@@ -198,27 +193,14 @@ namespace CityGame
                         dist = -dist;
                         invert = true;
                     }
-                    if (direction == 0)
-                    {
-                        l = 1;r = 1;
-                    }
-                    else
-                    {
-                        u = 1;o = 1;
-                    }
-                    bool live = true;
+                    if (direction == 0){l = 1;r = 1;}
+                    else { u = 1;o = 1; }
                     for (int i = 0; i <= dist; i++)
                     {
-                        byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos2]);
-
-                        Color color = Color.FromArgb(150, 0, 255, 0);
-                        if (World.CanBuild((byte)buildTyp, pos2) && World.TestAreaDependet((byte)buildTyp, pos2) == 0)
-                        {
-                            if (objects[buildTyp].Ground != null)
-                                drawGroundOnPos(objects[buildTyp].Ground[0], pos2, World.applyAutoTile(buildTyp, pos2, objects[buildTyp].GroundMode, objects[buildTyp].GroundNeighbors, l, u, r, o), color);
-                            if (objects[buildTyp].Texture != null)
-                                drawObjectOnPos(buildTyp, 0, World.applyAutoTile(buildTyp, pos2, objects[buildTyp].StructMode, objects[buildTyp].StructNeighbors, l, u, r, o), pos2, color);
-                        }
+                        if (SelectetBuildIndex.Typ == 1)
+                            renderBuildPreview(pos2, l, u, r, o);
+                        else if (SelectetBuildIndex.Typ == 2)
+                            renderZonePreview(pos2);
                         if (!invert)
                             pos2 += (direction == 0) ? 1 : width;
                         else pos2 -= (direction == 0) ? 1 : width;
@@ -247,17 +229,11 @@ namespace CityGame
                             u = (byte)((iy == endY) ? 0 : 1);
                             if (ix >= 0 && iy >= 0 && ix < width && iy < height)
                             {
-                                byte buildTyp = replaceBuildTyp((byte)SelectetBuildIndex, World.Typ[pos]);
-
                                 pos = ix + iy * width;
-                                Color color = Color.FromArgb(150, 0, 255, 0);
-                                if (World.CanBuild((byte)buildTyp, pos) && World.TestAreaDependet((byte)buildTyp, pos) == 0)
-                                {
-                                    if (objects[buildTyp].Ground != null)
-                                        drawGroundOnPos(objects[buildTyp].Ground[0], pos, World.applyAutoTile(buildTyp, pos, objects[buildTyp].GroundMode, objects[buildTyp].GroundNeighbors, l, u, r, o), color);
-                                    if (objects[buildTyp].Texture != null)
-                                        drawObjectOnPos(buildTyp, 0, World.applyAutoTile(buildTyp, pos, objects[buildTyp].StructMode, objects[buildTyp].StructNeighbors, l, u, r, o), pos, color);
-                                }
+                                if (SelectetBuildIndex.Typ == 1)
+                                    renderBuildPreview(pos, l, u, r, o);
+                                else if (SelectetBuildIndex.Typ == 2)
+                                    renderZonePreview(pos);
                             }
                             pos += 1;
                         }
@@ -268,9 +244,31 @@ namespace CityGame
             }
 
             GL2D.UpdateBuffer();
-            GL2D.UseShader(glowShader);
+            if (SelectetBuildIndex.Typ == 1)
+                GL2D.UseShader(glowShader);
+            else if (SelectetBuildIndex.Typ == 2)
+                GL2D.UseShader(basicShader);
             GL2D.Render();
             
+        }
+        private void renderZonePreview(int pos)
+        {
+            Zone zone = zones[SelectetBuildIndex.Value];
+            Color color = zone.Color;
+            drawGroundOnPos(zoneTexture, pos, color);
+        }
+        private void renderBuildPreview(int pos,byte l,byte u,byte r,byte o)
+        {
+            byte buildTyp = replaceBuildTyp(World.Typ[pos]);
+
+            Color color;
+            if (World.CanBuild((byte)buildTyp, pos) && World.TestAreaDependet((byte)buildTyp, pos) == 0)color = Color.FromArgb(150, 0, 255, 0);
+            else color = Color.FromArgb(150, 255, 0, 0);
+
+            if (objects[buildTyp].Ground != null)
+                drawGroundOnPos(objects[buildTyp].Ground[0], pos, World.applyAutoTile(buildTyp, pos, objects[buildTyp].GroundMode, objects[buildTyp].GroundNeighbors, l, u, r, o), color);
+            if (objects[buildTyp].Texture != null)
+                drawObjectOnPos(buildTyp, 0, World.applyAutoTile(buildTyp, pos, objects[buildTyp].StructMode, objects[buildTyp].StructNeighbors, l, u, r, o), pos, color);
         }
 
         private void drawPos(Texture texture, int pos, out float drawPosX, out float drawPosY)
@@ -303,6 +301,7 @@ namespace CityGame
         }
         private void drawObjectOnPos(int typ, int version, int tile, int pos, Color color)
         {
+            if (objects[typ].Texture[tile].Length == 0) return;
             int offsetY = objects[typ].Texture[tile][0].Width - objects[typ].Size * Cam.Size;
             drawObjectOnPos(objects[typ].Texture[tile][0], pos, offsetY, color);
         }

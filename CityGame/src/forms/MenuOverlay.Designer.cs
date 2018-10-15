@@ -46,13 +46,6 @@
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.pictureBox9 = new System.Windows.Forms.PictureBox();
             this.debugLabel = new System.Windows.Forms.Label();
-            this.imageButton6 = new GGL.Control.ImageButton();
-            this.listBox = new GGL.Control.ListBox();
-            this.imageButton5 = new GGL.Control.ImageButton();
-            this.imageButton4 = new GGL.Control.ImageButton();
-            this.imageButton3 = new GGL.Control.ImageButton();
-            this.imageButton2 = new GGL.Control.ImageButton();
-            this.imageButton1 = new GGL.Control.ImageButton();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMinimap)).BeginInit();
@@ -68,7 +61,7 @@
             this.panelConect.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.panelConect.BackColor = System.Drawing.Color.Fuchsia;
             this.panelConect.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panelConect.Location = new System.Drawing.Point(985, 523);
+            this.panelConect.Location = new System.Drawing.Point(975, 528);
             this.panelConect.Margin = new System.Windows.Forms.Padding(0);
             this.panelConect.Name = "panelConect";
             this.panelConect.Size = new System.Drawing.Size(16, 16);
@@ -88,7 +81,7 @@
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(240, 580);
+            this.panel2.Location = new System.Drawing.Point(235, 591);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(810, 50);
@@ -226,7 +219,7 @@
             this.panel3.Controls.Add(this.pictureBox10);
             this.panel3.Controls.Add(this.pictureBox9);
             this.panel3.Controls.Add(this.pictureBoxMinimap);
-            this.panel3.Location = new System.Drawing.Point(12, 373);
+            this.panel3.Location = new System.Drawing.Point(12, 384);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(225, 257);
             this.panel3.TabIndex = 7;
@@ -283,153 +276,15 @@
             this.debugLabel.TabIndex = 11;
             this.debugLabel.Text = "debug";
             // 
-            // imageButton6
-            // 
-            this.imageButton6.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.imageButton6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.imageButton6.DefaultImage = null;
-            this.imageButton6.DownImage = null;
-            this.imageButton6.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F);
-            this.imageButton6.HoverImage = null;
-            this.imageButton6.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton6.Location = new System.Drawing.Point(1119, 442);
-            this.imageButton6.Name = "imageButton6";
-            this.imageButton6.Size = new System.Drawing.Size(64, 64);
-            this.imageButton6.SwitchMode = true;
-            this.imageButton6.TabIndex = 13;
-            this.imageButton6.Text = null;
-            this.imageButton6.TextDownOffset = 1;
-            this.imageButton6.ButtonDown += new System.EventHandler(this.imageButton6_ButtonDown);
-            this.imageButton6.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
-            // 
-            // listBox
-            // 
-            this.listBox.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.listBox.BackColor = System.Drawing.SystemColors.Highlight;
-            this.listBox.BackSelectColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.listBox.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F);
-            this.listBox.ForeSelectColor = System.Drawing.Color.Black;
-            this.listBox.ItemDistance = 0;
-            this.listBox.ItemHeight = 20;
-            this.listBox.Location = new System.Drawing.Point(927, 92);
-            this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(186, 150);
-            this.listBox.TabIndex = 17;
-            this.listBox.Visible = false;
-            this.listBox.ChangeItem += new System.EventHandler(this.listBox1_ChangeItem);
-            // 
-            // imageButton5
-            // 
-            this.imageButton5.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.imageButton5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.imageButton5.DefaultImage = null;
-            this.imageButton5.DownImage = null;
-            this.imageButton5.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F);
-            this.imageButton5.HoverImage = null;
-            this.imageButton5.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton5.Location = new System.Drawing.Point(1119, 372);
-            this.imageButton5.Name = "imageButton5";
-            this.imageButton5.Size = new System.Drawing.Size(64, 64);
-            this.imageButton5.SwitchMode = true;
-            this.imageButton5.TabIndex = 12;
-            this.imageButton5.Text = null;
-            this.imageButton5.TextDownOffset = 1;
-            this.imageButton5.ButtonDown += new System.EventHandler(this.imageButton5_ButtonDown);
-            this.imageButton5.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
-            // 
-            // imageButton4
-            // 
-            this.imageButton4.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.imageButton4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.imageButton4.DefaultImage = null;
-            this.imageButton4.DownImage = null;
-            this.imageButton4.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F);
-            this.imageButton4.HoverImage = null;
-            this.imageButton4.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton4.Location = new System.Drawing.Point(1119, 232);
-            this.imageButton4.Name = "imageButton4";
-            this.imageButton4.Size = new System.Drawing.Size(64, 64);
-            this.imageButton4.SwitchMode = true;
-            this.imageButton4.TabIndex = 11;
-            this.imageButton4.Text = null;
-            this.imageButton4.TextDownOffset = 1;
-            this.imageButton4.ButtonDown += new System.EventHandler(this.imageButton4_ButtonDown);
-            this.imageButton4.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
-            // 
-            // imageButton3
-            // 
-            this.imageButton3.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.imageButton3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.imageButton3.DefaultImage = null;
-            this.imageButton3.DownImage = null;
-            this.imageButton3.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F);
-            this.imageButton3.HoverImage = null;
-            this.imageButton3.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton3.Location = new System.Drawing.Point(1119, 302);
-            this.imageButton3.Name = "imageButton3";
-            this.imageButton3.Size = new System.Drawing.Size(64, 64);
-            this.imageButton3.SwitchMode = true;
-            this.imageButton3.TabIndex = 10;
-            this.imageButton3.Text = null;
-            this.imageButton3.TextDownOffset = 1;
-            this.imageButton3.ButtonDown += new System.EventHandler(this.imageButton3_ButtonDown);
-            this.imageButton3.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
-            // 
-            // imageButton2
-            // 
-            this.imageButton2.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.imageButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.imageButton2.DefaultImage = null;
-            this.imageButton2.DownImage = null;
-            this.imageButton2.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F);
-            this.imageButton2.HoverImage = null;
-            this.imageButton2.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton2.Location = new System.Drawing.Point(1119, 162);
-            this.imageButton2.Name = "imageButton2";
-            this.imageButton2.Size = new System.Drawing.Size(64, 64);
-            this.imageButton2.SwitchMode = true;
-            this.imageButton2.TabIndex = 9;
-            this.imageButton2.Text = null;
-            this.imageButton2.TextDownOffset = 1;
-            this.imageButton2.ButtonDown += new System.EventHandler(this.imageButton2_ButtonDown);
-            this.imageButton2.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
-            // 
-            // imageButton1
-            // 
-            this.imageButton1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.imageButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
-            this.imageButton1.DefaultImage = null;
-            this.imageButton1.DownImage = null;
-            this.imageButton1.Font = new System.Drawing.Font("Franklin Gothic Medium", 11.25F);
-            this.imageButton1.HoverImage = null;
-            this.imageButton1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.imageButton1.Location = new System.Drawing.Point(1119, 92);
-            this.imageButton1.Name = "imageButton1";
-            this.imageButton1.Size = new System.Drawing.Size(64, 64);
-            this.imageButton1.SwitchMode = true;
-            this.imageButton1.TabIndex = 8;
-            this.imageButton1.Text = null;
-            this.imageButton1.TextDownOffset = 1;
-            this.imageButton1.ButtonDown += new System.EventHandler(this.imageButton1_ButtonDown);
-            this.imageButton1.ButtonUp += new System.EventHandler(this.imageButton_ButtonUp);
-            this.imageButton1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.imageButton1_MouseMove);
-            // 
             // MenuOverlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Fuchsia;
-            this.ClientSize = new System.Drawing.Size(1195, 642);
+            this.ClientSize = new System.Drawing.Size(1185, 653);
             this.Controls.Add(this.debugLabel);
-            this.Controls.Add(this.imageButton6);
-            this.Controls.Add(this.listBox);
-            this.Controls.Add(this.imageButton5);
-            this.Controls.Add(this.imageButton4);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.imageButton3);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.imageButton2);
-            this.Controls.Add(this.imageButton1);
             this.Controls.Add(this.panelConect);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.ImeMode = System.Windows.Forms.ImeMode.AlphaFull;
@@ -468,13 +323,6 @@
         private System.Windows.Forms.PictureBox pictureBox11;
         private System.Windows.Forms.PictureBox pictureBox10;
         private System.Windows.Forms.PictureBox pictureBox9;
-        private GGL.Control.ImageButton imageButton1;
-        private GGL.Control.ImageButton imageButton6;
-        private GGL.Control.ImageButton imageButton5;
-        private GGL.Control.ImageButton imageButton4;
-        private GGL.Control.ImageButton imageButton3;
-        private GGL.Control.ImageButton imageButton2;
-        private GGL.Control.ListBox listBox;
         public System.Windows.Forms.Label debugLabel;
         public System.Windows.Forms.Label label5;
         public System.Windows.Forms.Label label8;

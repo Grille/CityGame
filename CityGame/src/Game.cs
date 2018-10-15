@@ -20,9 +20,10 @@ namespace CityGame
 {
     public partial class Game
     {
-        Control window;
+        System.Windows.Forms.Control window;
         Texture texture;
         Texture gui;
+   
 
         DateTime date;
         Random rnd;
@@ -33,9 +34,9 @@ namespace CityGame
         public World World;
         public Camera Cam;
 
-        public int DownFieldPos = -1;
+        public int MouseDownWorldPos = -1;
         public int HoveredWorldPos = -1;
-        public int SelectetBuildIndex = 3;
+        public BuildOption SelectetBuildIndex;
         private int CurBuildVersion = 3;
 
         Texture zoneTexture;
@@ -60,7 +61,7 @@ namespace CityGame
         public Timer timerRender;
         public Timer timerLogic;
 
-        public Game(Control con)
+        public Game(System.Windows.Forms.Control con)
         {
             window = con;
             rnd = new Random();
