@@ -10,6 +10,8 @@ namespace CityGame
     static public class Program
     {
 
+        static public Game Game;
+
         static public MainWindow MainWindow;
         static public MenuWindow MenuWindow;
 

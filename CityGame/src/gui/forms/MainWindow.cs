@@ -26,9 +26,6 @@ namespace CityGame
         
         MouseEventArgs mouse = new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0);
 
-
-        public Game Game;
-
         //init OpenGL
         public MainWindow()//0.28
         {
@@ -46,7 +43,7 @@ namespace CityGame
         private void initGame()
         {
             Console.WriteLine("initGame()");
-            Game = new Game(this);
+            Program.Game = new Game(this);
             //show loading screen
             this.Location = new Point(SystemInformation.VirtualScreen.Width / 2 - 320, SystemInformation.VirtualScreen.Height / 2 - 200);
             this.Size = new Size(640, 400);
@@ -69,7 +66,7 @@ namespace CityGame
             //int game
             Console.WriteLine("initOpenGL()");
             int code;
-            if ((code = Game.InitOpenGL()) != 0)
+            if ((code = Program.Game.InitOpenGL()) != 0)
             {
                 if (code == 1) MessageBox.Show("Could not initialize OpenGL\n\nMinimum required OpenGL version: 2.0\nOpenGL version detectet: " + GL.GetString(StringName.Version), "Error by init OpenGL", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else if (code == 2) MessageBox.Show("Could not initialize OpenGL\n\nRender form == null\n", "Error by init OpenGL", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -79,14 +76,14 @@ namespace CityGame
             }
 
             Console.WriteLine("loadData()");
-            Game.LoadData(progressBarLoad);
+            Program.Game.LoadData(progressBarLoad);
             GGL.IO.ByteStream bs = new GGL.IO.ByteStream();
             bs.ResetIndex();
 
-            
-            Game.Cam = new Camera();
-            Game.World = new World(Game.objects, Game.resources, Game.Cam,Game.areas);
-            Game.World.BuildWorld(32, 32);
+
+            Program.Game.Cam = new Camera();
+            Program.Game.World = new World(Program.Game.objects, Program.Game.resources, Program.Game.Cam, Program.Game.areas);
+            Program.Game.World.BuildWorld(32, 32);
 
     
             //set fullscreen
@@ -96,7 +93,7 @@ namespace CityGame
             pictureBoxLoad.Visible = false;
             pictureBoxLogo.Visible = false;
             progressBarLoad.Visible = false;
-            Game.StartRendering();
+            Program.Game.StartRendering();
             SetForegroundWindow(this.Handle);
             BringToFront();
             Focus();
@@ -120,33 +117,33 @@ namespace CityGame
 
         private void MainWindow_MouseWheel(object sender, MouseEventArgs e)
         {
-            Game.MouseWheel(e);
+            Program.Game.MouseWheel(e);
         }
         private void MainWindow_MouseMove(object sender, MouseEventArgs e)
         {
-            Game.MouseMove(e);
+            Program.Game.MouseMove(e);
         }
         private void MainWindow_MouseDown(object sender, MouseEventArgs e)
         {
-            Game.MouseDown(e);
+            Program.Game.MouseDown(e);
         }
         private void MainWindow_MouseUp(object sender, MouseEventArgs e)
         {
-            Game.MouseUp(e);
+            Program.Game.MouseUp(e);
         }
         private void MainWindow_MouseLeave(object sender, EventArgs e)
         {
-            Game.HoveredWorldPos = -1;
+            Program.Game.HoveredWorldPos = -1;
         }
 
         public void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            Game.KeyDown(e);
+            Program.Game.KeyDown(e);
         }
 
         private void MainWindow_KeyUp(object sender, KeyEventArgs e)
         {
-            Game.KeyUp(e);
+            Program.Game.KeyUp(e);
         }
     }
 }
