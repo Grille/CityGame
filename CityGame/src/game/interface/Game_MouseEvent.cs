@@ -14,7 +14,6 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
-using GGL.Graphic;
 
 namespace CityGame
 {
@@ -27,9 +26,11 @@ namespace CityGame
             float posX = -Cam.PosX + (e.X - window.Width / 2) / Cam.Scale;
             float posY = -Cam.PosY + (e.Y - window.Height / 2) / Cam.Scale;
 
-            Cam.Scale += (e.Delta / 500f) * Cam.Scale;
+            if (e.Delta < 0) Cam.Scale /= 2;
+            else Cam.Scale *= 2;
+            //Cam.Scale += (e.Delta / 500f) * Cam.Scale;
 
-            if (Cam.Scale < 0.01) Cam.Scale = 0.01f;
+            if (Cam.Scale < 0.03125) Cam.Scale = 0.03125f;
             else if (Cam.Scale > 1f) Cam.Scale = 1f;
 
             Cam.PosX += (Cam.PosX - (-posX + (window.Width / 2 * (e.X / (float)window.Width * 2 - 1)) / Cam.Scale));
@@ -50,8 +51,8 @@ namespace CityGame
                 float posX = (int)(((e.X - window.Width / 2f) / scale + Cam.PosX) / size);
                 float posY = (int)(((e.Y - window.Height / 2f) / scale + Cam.PosY) / size);
 
-                posX -= 0.5f * objects[SelectetBuildIndex.Value].Size - 1f;
-                posY -= 0.5f * objects[SelectetBuildIndex.Value].Size - 1f;
+                posX -= 0.5f * Objects[SelectetBuildIndex.Value].Size - 1f;
+                posY -= 0.5f * Objects[SelectetBuildIndex.Value].Size - 1f;
 
                 if (posX < 0) posX = 0;
                 if (posY < 0) posY = 0;

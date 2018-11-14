@@ -626,17 +626,17 @@ namespace CityGame
             {
                 if (rnd.NextDouble() > 0.5)
                 {
-                    Ground[i] = 1;
+                    //Ground[i] = 1;
                     if (rnd.NextDouble() < 0.5)
                     {
-                        Ground[i] = 2;
+                        //Ground[i] = 2;
                     }
                 }
 
                 if (rgbData[i * 4 + 0] == 255)
                 {
                     Build(1, i);
-                    Ground[i] = 49;
+                    //Ground[i] = 49;
                 }
                 if (rgbData[i * 4 + 0] == 112)
                 {
@@ -644,31 +644,31 @@ namespace CityGame
                 }
                 if (rgbData[i * 4 + 0] == 151)
                 {
-                    Ground[i] = 52;
+                    //Ground[i] = 52;
                 }
                 if (rgbData[i * 4 + 0] == 77)
                 {
-                    Ground[i] = 49;
+                    //Ground[i] = 49;
                 }
                 else if (rgbData[i * 4 + 0] == 254)
                 {
                     Build(2, i);
-                    Ground[i] = 52;
+                    //Ground[i] = 52;
                 }
                 else if (rgbData[i * 4 + 1] == 80)
                 {
                     Build(3, i);
-                    Ground[i] = 3;
+                    //Ground[i] = 3;
                 }
                 else if (rgbData[i * 4 + 1] == 100)
                 {
                     Build(4, i);
-                    Ground[i] = 3;
+                    //Ground[i] = 3;
                 }
                 else if (rgbData[i * 4 + 1] == 160)
                 {
                     Build(5, i);
-                    Ground[i] = 3;
+                    //Ground[i] = 3;
                 }
 
                 if (rnd.NextDouble() < 0.001) Ground[i] = 5;

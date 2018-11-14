@@ -14,7 +14,6 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
-using GGL.Graphic;
 
 namespace CityGame
 {
@@ -26,8 +25,8 @@ namespace CityGame
             {
                 if (option.Value == 0)
                 {
-                    if (objects[World.Typ[pos]].DemolitionTyp.Length == 0) return;
-                    byte newTyp = objects[World.Typ[pos]].DemolitionTyp[0];
+                    if (Objects[World.Typ[pos]].DemolitionTyp.Length == 0) return;
+                    byte newTyp = Objects[World.Typ[pos]].DemolitionTyp[0];
                     World.Build(newTyp, pos);
                 }
                 else

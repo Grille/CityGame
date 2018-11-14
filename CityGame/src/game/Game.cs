@@ -14,7 +14,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
-using GGL.Graphic;
+using CsGL2D;
 
 namespace CityGame
 {
@@ -27,10 +27,10 @@ namespace CityGame
 
         DateTime date;
         Random rnd;
-        public GameObject[] objects;
-        public Zone[] zones;
-        public GameArea[] areas;
-        public GameResources[] resources;
+        public GameObject[] Objects;
+        public Zone[] Zones;
+        public GameArea[] Areas;
+        public GameResources[] Resources;
         public World World;
         public Camera Cam;
 
@@ -88,6 +88,11 @@ namespace CityGame
             timerDate = DateTime.Now.Ticks;
             timerRender.Enabled = true;
             timerLogic.Enabled = true;
+        }
+        public void NewGame()
+        {
+            for (int i = 0; i < Resources.Length; i++)
+                if (Resources[i]!=null)Resources[i].Value = Resources[i].InitValue;
         }
         public void StartRendering()
         {

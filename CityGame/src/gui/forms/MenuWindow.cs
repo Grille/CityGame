@@ -190,6 +190,7 @@ namespace CityGame
             {
                 Program.Game.World.GenerateMap(mapImage);
                 Program.Game.Start();
+                Program.Game.NewGame();
                 Program.MenuOverlay.Show(Program.MainWindow);
             }
             else

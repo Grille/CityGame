@@ -13,7 +13,6 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
-using GGL.Graphic;
 
 namespace CityGame
 {
@@ -27,6 +26,7 @@ namespace CityGame
         private bool canBeNegative;
         private bool storable;
         public double Value;
+        public double InitValue;
         public double AddValue;
         private int storeSize;
 
@@ -39,7 +39,7 @@ namespace CityGame
             this.name = name;
             this.canBeNegative = canBeNegative;
             this.storable = storable;
-            this.Value = value;
+            this.InitValue = value;
         }
         public void Update()
         {

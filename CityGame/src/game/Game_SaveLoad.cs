@@ -14,7 +14,6 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
-using GGL.Graphic;
 using GGL.IO;
 
 namespace CityGame
@@ -36,10 +35,10 @@ namespace CityGame
 
 
             int i = 0;
-            byteStream.WriteInt((int)resources[i++].Value);
-            byteStream.WriteInt((int)resources[i++].Value);
-            byteStream.WriteInt((int)resources[i++].Value);
-            byteStream.WriteInt((int)resources[i++].Value);
+            byteStream.WriteInt((int)Resources[i++].Value);
+            byteStream.WriteInt((int)Resources[i++].Value);
+            byteStream.WriteInt((int)Resources[i++].Value);
+            byteStream.WriteInt((int)Resources[i++].Value);
 
             byteStream.WriteInt(World.Width);
             byteStream.WriteInt(World.Height);
@@ -63,10 +62,10 @@ namespace CityGame
             Cam.Scale = byteStream.ReadFloat();
 
             int ir = 0;
-            resources[ir++].Value = byteStream.ReadInt();
-            resources[ir++].Value = byteStream.ReadInt();
-            resources[ir++].Value = byteStream.ReadInt();
-            resources[ir++].Value = byteStream.ReadInt();
+            Resources[ir++].Value = byteStream.ReadInt();
+            Resources[ir++].Value = byteStream.ReadInt();
+            Resources[ir++].Value = byteStream.ReadInt();
+            Resources[ir++].Value = byteStream.ReadInt();
 
             World.BuildWorld(byteStream.ReadInt(), byteStream.ReadInt());
 

@@ -13,8 +13,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
-using GGL.Graphic;
-
+using CsGL2D;
 namespace CityGame
 {
 

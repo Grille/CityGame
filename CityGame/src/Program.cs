@@ -20,10 +20,9 @@ namespace CityGame
         [STAThread]
         static void Main(string[] args)
         {
-            MainWindow = new MainWindow();
             MenuWindow = new MenuWindow();
-
             MenuOverlay = new MenuOverlay();
+            MainWindow = new MainWindow();
             //Console.WriteLine();
             Application.Run(MainWindow);
                 //new MainWindow().Run(60);

@@ -14,23 +14,6 @@ using CityGame.Control;
 
 namespace CityGame
 {
-    public struct BuildOption{
-        public int Typ;
-        public string Text;
-        public Color Color;
-        public int Value;
-        public int BuildMode;
-        public byte[] BuildReplace;
-
-        public BuildOption(string text, int typ)
-        {
-            Text = text; Typ = typ; Value = 0; Color = Color.Transparent; BuildMode = 0; BuildReplace = null;
-        }
-        public BuildOption(string text,int typ,int value,int buildMode,byte[] buildReplace,Color color)
-        {
-            Text = text;Typ = typ;Value = value;Color = color; BuildMode = buildMode; BuildReplace = buildReplace;
-        }
-    }
     public partial class MenuOverlay : Form
     {
         Control.ListBox listBox;
@@ -141,7 +124,7 @@ namespace CityGame
 
         private void listBox_ChangeItem(object sender, EventArgs e)
         {
-            Program.MainWindow.Game.SelectetBuildIndex = (BuildOption)((CityGame.Control.ListBox)sender).getValue();
+            Program.Game.SelectetBuildIndex = (BuildOption)((CityGame.Control.ListBox)sender).getValue();
         }
         private void MenuOverlay_Enter(object sender, EventArgs e)
         {

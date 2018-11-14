@@ -86,7 +86,7 @@ namespace CityGame
         {
             byte[] data = new byte[World.Width * World.Height * 3];
             renderMinimap(data);
-            highViewMap.Update(World.Width, World.Height, data);
+            //highViewMap.Update(World.Width, World.Height, data);
         }
 
 

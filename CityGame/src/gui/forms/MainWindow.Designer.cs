@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.progressBarLoad = new System.Windows.Forms.ProgressBar();
             this.pictureBoxLoad = new System.Windows.Forms.PictureBox();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLoad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.SuspendLayout();
@@ -93,5 +95,6 @@
         private System.Windows.Forms.ProgressBar progressBarLoad;
         private System.Windows.Forms.PictureBox pictureBoxLoad;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
+        private System.Windows.Forms.Timer timer1;
     }
 }

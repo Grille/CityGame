@@ -14,7 +14,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 using GGL;
-using GGL.Graphic;
+using CsGL2D;
 
 namespace CityGame
 {
@@ -26,17 +26,21 @@ namespace CityGame
         
         MouseEventArgs mouse = new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0);
 
+        Texture tex = new Texture("../Data/texture/ground/texture.png");
         //init OpenGL
         public MainWindow()//0.28
         {
             InitializeComponent();
 
+            
             DoubleBuffered = true;
-            GL2D.SetRenderControl(this);
+
             Resize += new EventHandler(OnRenderControlResize);
             MouseWheel += new MouseEventHandler(MainWindow_MouseWheel);
 
             Console.WriteLine("initWindow()");
+            initGame();
+            
         }
 
         // init Game
@@ -57,14 +61,10 @@ namespace CityGame
             progressBarLoad.Size = new Size(560, 40);
             this.Refresh();
 
-            Console.WriteLine("initOpenGL()");
-            Console.WriteLine("Renderer: "+ GL.GetString(StringName.Renderer));
-            Console.WriteLine("Version: "+ GL.GetString(StringName.Version));
-            Console.WriteLine("ShadingLanguageVersion: "+ GL.GetString(StringName.ShadingLanguageVersion));
-            Console.WriteLine("Vendor: "+ GL.GetString(StringName.Vendor));
-            
             //int game
+
             Console.WriteLine("initOpenGL()");
+            GL2D.SetRenderControl(this);
             int code;
             if ((code = Program.Game.InitOpenGL()) != 0)
             {
@@ -82,7 +82,7 @@ namespace CityGame
 
 
             Program.Game.Cam = new Camera();
-            Program.Game.World = new World(Program.Game.objects, Program.Game.resources, Program.Game.Cam, Program.Game.areas);
+            Program.Game.World = new World(Program.Game.Objects, Program.Game.Resources, Program.Game.Cam, Program.Game.Areas);
             Program.Game.World.BuildWorld(32, 32);
 
     
@@ -112,7 +112,7 @@ namespace CityGame
         }
         private void MainWindow_Shown(object sender, EventArgs e)
         {
-            initGame();
+
         }
 
         private void MainWindow_MouseWheel(object sender, MouseEventArgs e)
@@ -145,5 +145,6 @@ namespace CityGame
         {
             Program.Game.KeyUp(e);
         }
+
     }
 }

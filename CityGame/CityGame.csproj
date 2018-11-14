@@ -46,6 +46,9 @@
     <ApplicationIcon>CityIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsGL2D">
+      <HintPath>lib\CsGL2D.dll</HintPath>
+    </Reference>
     <Reference Include="GGL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\GGL.dll</HintPath>
@@ -76,15 +79,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\game\logic\Game_Simulation.cs" />
     <Compile Include="src\gui\controls\ImageButton.cs" />
     <Compile Include="src\gui\controls\ListBox.cs" />
     <Compile Include="src\gui\controls\SimpleListBox.cs" />
     <Compile Include="src\game\Game.cs" />
-    <Compile Include="src\GameClasses\Area.cs" />
-    <Compile Include="src\GameClasses\Resources.cs" />
-    <Compile Include="src\GameClasses\Camera.cs" />
-    <Compile Include="src\GameClasses\GameObject.cs" />
-    <Compile Include="src\GameClasses\Zone.cs" />
+    <Compile Include="src\structs\Area.cs" />
+    <Compile Include="src\structs\BuildOption.cs" />
+    <Compile Include="src\structs\Resources.cs" />
+    <Compile Include="src\structs\Camera.cs" />
+    <Compile Include="src\structs\GameObject.cs" />
+    <Compile Include="src\structs\Zone.cs" />
     <Compile Include="src\game\logic\Game_Build.cs" />
     <Compile Include="src\game\Game_Init.cs" />
     <Compile Include="src\game\interface\Game_KeyEvent.cs" />
@@ -92,7 +97,7 @@
     <Compile Include="src\game\graphic\Game_MiniMap.cs" />
     <Compile Include="src\game\interface\Game_MouseEvent.cs" />
     <Compile Include="src\game\graphic\Game_Renderer.cs" />
-    <Compile Include="src\GameClasses\World.cs" />
+    <Compile Include="src\structs\World.cs" />
     <Compile Include="src\gui\forms\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,8 +161,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\Controls\" />
     <Folder Include="src\ggl\" />
+    <Folder Include="src\graphic\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

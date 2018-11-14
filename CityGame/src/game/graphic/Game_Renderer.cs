@@ -1,16 +1,15 @@
-﻿using GGL.Graphic;
+﻿
 using System;
 using System.Diagnostics;
 //using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
 
+using CsGL2D;
 namespace CityGame
 {
     public partial class Game
     {
-        DrawData[] groundGraphics = new DrawData[262144];
-        DrawData[] objectGraphics = new DrawData[262144];
 
         private void updateAnimator()
         {
@@ -24,22 +23,32 @@ namespace CityGame
                 }
             }
         }
+
         private void render(object sender, EventArgs e)
         {
-            
+            /*
+            Console.WriteLine();
+            GL2D.ClearBuffer(Color.Gray);
+            GL2D.DrawImage(groundTexture, new Rectangle(64, 64, 64, 64), Color.Lime);
+            GL2D.DrawImage(groundTexture, new Rectangle(512, 512, 64, 64), Color.White);
+            GL2D.UpdateBuffer();
+            GL2D.Render();
+            Console.WriteLine(GL2D.GetError());
+            GL2D.SwapBuffers();
+
+            return;
+            */
             updateAnimator();
-
-            GL2D.ClearBuffer(Color.SkyBlue);
-
+            
+            GL2D.ClearBuffer(Color.Navy);
             int groundGraphicsIndex = 0, objectGraphicsIndex = 0;
 
             Stopwatch drawtime = new Stopwatch();
             drawtime.Start();
 
             float posX = Cam.PosX, posY = Cam.PosY, scale = Cam.Scale;
-
-            float size = Cam.Size;
-            float scSize = (size * scale);
+            float tileSize = Cam.Size;
+            float scSize = (tileSize * scale);
             int width = World.Width;
             int height = World.Height;
 
@@ -55,8 +64,8 @@ namespace CityGame
 
                     if (!(worldPosX >= 0 && worldPosY >= 0 && worldPosX < width && worldPosY < height)) continue;
 
-                    float drawPosX = ((-posX + ix * size) * scale) + window.Width / 2f;
-                    float drawPosY = ((-posY + iy * size) * scale) + window.Height / 2f;
+                    float drawPosX = ((-posX + ix * tileSize) * scale) + window.Width / 2f;
+                    float drawPosY = ((-posY + iy * tileSize) * scale) + window.Height / 2f;
 
                     if (!(drawPosX > -64 && drawPosY > -64 && drawPosX < window.Width && drawPosY < window.Height)) continue;
 
@@ -80,50 +89,51 @@ namespace CityGame
                         Color.White
                         );
                         */
-                    GL2D.DrawImage(groundTexture, groundX * 64, groundY * 64, 64, 64, drawPosX, drawPosY, scSize, scSize, Color.White);
+                    GL2D.DrawImage(groundTexture, new RectangleF((int)(groundX * 64), (int)(groundY * 64), 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Color.White);
 
 
                     if (World.Zone[worldPos] != 0)
                     {
-                        groundGraphics[groundGraphicsIndex++].Update(zoneTexture, 0,0, 64, 64, drawPosX, drawPosY, scSize, scSize, zones[World.Zone[worldPos]].Color);
+                        GL2D.DrawImage(zoneTexture, new RectangleF(0,0, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Zones[World.Zone[worldPos]].Color);
                     }
-                    if (objects[typ].Ground != null)
+                    if (Objects[typ].Ground != null)
                     {
-                        Texture texture = objects[typ].Ground[0];
+                        Texture texture = Objects[typ].Ground[0];
                         int anim = animator[texture.Height / 64 - 1];
-                        groundGraphics[groundGraphicsIndex++].Update(texture, 64 * World.TileGround[worldPos], 64 * anim, 64, 64, drawPosX, drawPosY, scSize, scSize, Color.White);
+                        GL2D.DrawImage(texture, new RectangleF(64 * World.TileGround[worldPos], 64 * anim, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Color.White);
                     }
-                    if (objects[typ].Texture != null)
+                    if (Objects[typ].Texture != null)
                     {
                         int tile = World.TileStruct[refPos];
-                        int version = World.Version[refPos];
-                        Texture texture = objects[typ].Texture[tile][version];
-                        int objectSize = objects[typ].Size;
-                        int anim = animator[texture.Height / texture.Width - 1];
-                        int overdrawSrs = texture.Width - 64 * objectSize;
-                        if (refX == objectSize - 1 || refY == 0)
+                        if (Objects[typ].Texture[tile].Length != 0)
                         {
-                            float overdrawDst = (overdrawSrs * (scSize / 64f));
-
-                            objectGraphics[objectGraphicsIndex++].Update(texture,
-                                64 * refX, 64 * refY + (texture.Width * anim), 64 + overdrawSrs, 64 + overdrawSrs,
-                                drawPosX, drawPosY - overdrawDst, scSize + overdrawDst, scSize + overdrawDst,
-                                Color.White);
-                        }
-                        else //if (refX == 0 && refY)
-                        {
-                            objectGraphics[objectGraphicsIndex++].Update(texture,
-                                64 * refX, 64 * refY + (texture.Width * anim) + overdrawSrs, 64, 64,
-                                drawPosX, drawPosY, scSize, scSize,
-                                Color.White);
+                            int version = World.Version[refPos];
+                            Texture texture = Objects[typ].Texture[tile][version];
+                            int objectSize = Objects[typ].Size;
+                            int anim = animator[texture.Height / texture.Width - 1];
+                            int overdrawSrs = texture.Width - 64 * objectSize;
+                            if (refX == objectSize - 1 || refY == 0)
+                            {
+                                float overdrawDst = (overdrawSrs * (scSize / 64f));
+                                
+                                GL2D.DrawImage(texture,
+                                    new RectangleF(64 * refX, 64 * refY + (texture.Width * anim), 64 + overdrawSrs, 64 + overdrawSrs),
+                                    new RectangleF(drawPosX, drawPosY - overdrawDst, scSize + overdrawDst, scSize + overdrawDst),
+                                    Color.White);
+                            }
+                            else //if (refX == 0 && refY)
+                            {
+                                
+                                GL2D.DrawImage(texture,
+                                    new RectangleF(64 * refX, 64 * refY + (texture.Width * anim) + overdrawSrs, 64, 64),
+                                    new RectangleF(drawPosX, drawPosY, scSize, scSize),
+                                    Color.White);
+                            }
                         }
                     }
 
                 }
             }
-
-            GL2D.DrawImage(groundGraphics, groundGraphicsIndex);
-            GL2D.DrawImage(objectGraphics, objectGraphicsIndex);
 
             drawtime.Stop();
 
@@ -138,8 +148,10 @@ namespace CityGame
 
             rendertime.Stop();
 
+            /*
             Graphics g = GL2D.GetGDIContext();
             g.DrawRectangle(new Pen(Color.Red, 10), new Rectangle(100, 100, 300, 300));
+            */
 
             GL2D.SwapBuffers();
 
@@ -152,7 +164,7 @@ namespace CityGame
             if (SelectetBuildIndex.Value == 0) return;
             if (!buildPreviewEnabled) return;
 
-            int size = objects[SelectetBuildIndex.Value].Size;
+            int size = Objects[SelectetBuildIndex.Value].Size;
             int builMode = SelectetBuildIndex.BuildMode;
             int width = World.Width;
             int height = World.Height;
@@ -244,16 +256,18 @@ namespace CityGame
             }
 
             GL2D.UpdateBuffer();
+            
             if (SelectetBuildIndex.Typ == 1)
                 GL2D.UseShader(glowShader);
             else if (SelectetBuildIndex.Typ == 2)
                 GL2D.UseShader(basicShader);
+
             GL2D.Render();
             
         }
         private void renderZonePreview(int pos)
         {
-            Zone zone = zones[SelectetBuildIndex.Value];
+            Zone zone = Zones[SelectetBuildIndex.Value];
             Color color = zone.Color;
             drawGroundOnPos(zoneTexture, pos, color);
         }
@@ -265,10 +279,10 @@ namespace CityGame
             if (World.CanBuild((byte)buildTyp, pos) && World.TestAreaDependet((byte)buildTyp, pos) == 0)color = Color.FromArgb(150, 0, 255, 0);
             else color = Color.FromArgb(150, 255, 0, 0);
 
-            if (objects[buildTyp].Ground != null)
-                drawGroundOnPos(objects[buildTyp].Ground[0], pos, World.applyAutoTile(buildTyp, pos, objects[buildTyp].GroundMode, objects[buildTyp].GroundNeighbors, l, u, r, o), color);
-            if (objects[buildTyp].Texture != null)
-                drawObjectOnPos(buildTyp, 0, World.applyAutoTile(buildTyp, pos, objects[buildTyp].StructMode, objects[buildTyp].StructNeighbors, l, u, r, o), pos, color);
+            if (Objects[buildTyp].Ground != null)
+                drawGroundOnPos(Objects[buildTyp].Ground[0], pos, World.applyAutoTile(buildTyp, pos, Objects[buildTyp].GroundMode, Objects[buildTyp].GroundNeighbors, l, u, r, o), color);
+            if (Objects[buildTyp].Texture != null)
+                drawObjectOnPos(buildTyp, 0, World.applyAutoTile(buildTyp, pos, Objects[buildTyp].StructMode, Objects[buildTyp].StructNeighbors, l, u, r, o), pos, color);
         }
 
         private void drawPos(Texture texture, int pos, out float drawPosX, out float drawPosY)
@@ -301,9 +315,9 @@ namespace CityGame
         }
         private void drawObjectOnPos(int typ, int version, int tile, int pos, Color color)
         {
-            if (objects[typ].Texture[tile].Length == 0) return;
-            int offsetY = objects[typ].Texture[tile][0].Width - objects[typ].Size * Cam.Size;
-            drawObjectOnPos(objects[typ].Texture[tile][0], pos, offsetY, color);
+            if (Objects[typ].Texture[tile].Length == 0) return;
+            int offsetY = Objects[typ].Texture[tile][0].Width - Objects[typ].Size * Cam.Size;
+            drawObjectOnPos(Objects[typ].Texture[tile][0], pos, offsetY, color);
         }
         private void drawObjectOnPos(Texture texture, int pos, Color color)
         {
