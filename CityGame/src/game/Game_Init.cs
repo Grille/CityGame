@@ -20,12 +20,20 @@ namespace CityGame
 {
     public partial class Game
     {
+
+
+        Shader basicShader, glowShader;
+        DrawBuffer buffer,groundBuffer;
+
         public int InitOpenGL()
         {
             int code;
-            
-            if ((code = GL2D.IsRendererReady()) > 0) return code;
 
+            //ctx = new Context();
+
+            //if ((code = GL2D.IsRendererReady()) > 0) return code;
+
+            
             //GL2D.UseShader(GL2D.CreateShader());
             //GL2D.CreateBuffer(512);
 
@@ -33,13 +41,13 @@ namespace CityGame
             Console.WriteLine(GL.GetString(StringName.Renderer));
             Console.WriteLine(GL.GetString(StringName.Version));
 
-            basicShader = GL2D.CreateShader();
-            if (basicShader < 0) return 4;
-            glowShader = GL2D.CreateShader(File.ReadAllText("../Data/Shaders/glowFS.glsl"));
-            if (glowShader < 0) return 4;
+            basicShader = new Shader();
+            //if (basicShader < 0) return 4;
+            glowShader = new Shader(File.ReadAllText("../Data/Shaders/glowFS.glsl"));
+            //if (glowShader < 0) return 4;
 
-            GL2D.UseShader(basicShader);
-            GL2D.CreateBuffer(2265536);
+            buffer = new DrawBuffer(2265536);
+            groundBuffer = new DrawBuffer(512 * 512);
             // Other state
 
 

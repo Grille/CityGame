@@ -24,6 +24,8 @@ namespace CityGame
             }
         }
 
+
+
         private void render(object sender, EventArgs e)
         {
             /*
@@ -39,8 +41,10 @@ namespace CityGame
             return;
             */
             updateAnimator();
-            
-            GL2D.ClearBuffer(Color.Navy);
+
+            buffer.Reset();
+            Program.MainWindow.Ctx.Clear(Color.Navy);
+            //GL2D.ClearBuffer(Color.Navy);
             int groundGraphicsIndex = 0, objectGraphicsIndex = 0;
 
             Stopwatch drawtime = new Stopwatch();
@@ -89,18 +93,17 @@ namespace CityGame
                         Color.White
                         );
                         */
-                    GL2D.DrawImage(groundTexture, new RectangleF((int)(groundX * 64), (int)(groundY * 64), 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Color.White);
-
+                    buffer.DrawImage(groundTexture, new RectangleF((int)(groundX * 64), (int)(groundY * 64), 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Color.White);
 
                     if (World.Zone[worldPos] != 0)
                     {
-                        GL2D.DrawImage(zoneTexture, new RectangleF(0,0, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Zones[World.Zone[worldPos]].Color);
+                        buffer.DrawImage(zoneTexture, new RectangleF(0,0, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Zones[World.Zone[worldPos]].Color);
                     }
                     if (Objects[typ].Ground != null)
                     {
                         Texture texture = Objects[typ].Ground[0];
                         int anim = animator[texture.Height / 64 - 1];
-                        GL2D.DrawImage(texture, new RectangleF(64 * World.TileGround[worldPos], 64 * anim, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Color.White);
+                        buffer.DrawImage(texture, new RectangleF(64 * World.TileGround[worldPos], 64 * anim, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Color.White);
                     }
                     if (Objects[typ].Texture != null)
                     {
@@ -115,16 +118,16 @@ namespace CityGame
                             if (refX == objectSize - 1 || refY == 0)
                             {
                                 float overdrawDst = (overdrawSrs * (scSize / 64f));
-                                
-                                GL2D.DrawImage(texture,
+
+                                buffer.DrawImage(texture,
                                     new RectangleF(64 * refX, 64 * refY + (texture.Width * anim), 64 + overdrawSrs, 64 + overdrawSrs),
                                     new RectangleF(drawPosX, drawPosY - overdrawDst, scSize + overdrawDst, scSize + overdrawDst),
                                     Color.White);
                             }
                             else //if (refX == 0 && refY)
                             {
-                                
-                                GL2D.DrawImage(texture,
+
+                                buffer.DrawImage(texture,
                                     new RectangleF(64 * refX, 64 * refY + (texture.Width * anim) + overdrawSrs, 64, 64),
                                     new RectangleF(drawPosX, drawPosY, scSize, scSize),
                                     Color.White);
@@ -140,9 +143,11 @@ namespace CityGame
             Stopwatch rendertime = new Stopwatch();
             rendertime.Start();
 
-            GL2D.UpdateBuffer();
-            GL2D.UseShader(basicShader);
-            GL2D.Render();
+            //GL2D.UpdateBuffer();
+            //GL2D.UseShader(basicShader);
+            //GL2D.Render();
+
+            Program.MainWindow.Ctx.Render(buffer, basicShader) ;
 
             renderPreview();
 
@@ -152,8 +157,7 @@ namespace CityGame
             Graphics g = GL2D.GetGDIContext();
             g.DrawRectangle(new Pen(Color.Red, 10), new Rectangle(100, 100, 300, 300));
             */
-
-            GL2D.SwapBuffers();
+            Program.MainWindow.Ctx.Refresh();
 
             Program.MenuOverlay.debugLabel.Text = "fulltime in ms: " + "-" + "\ndrawtime in ms: " + drawtime.ElapsedMilliseconds + "\nrendertime in ms: " + rendertime.ElapsedMilliseconds + "\nFPS: " + "-" + "\ndrawedTiles: " + "-" + "\nTime: " + date;
 
@@ -161,6 +165,7 @@ namespace CityGame
         //private void RenderGround();
         private void renderPreview()
         {
+            buffer.Reset();
             if (SelectetBuildIndex.Value == 0) return;
             if (!buildPreviewEnabled) return;
 
@@ -255,15 +260,18 @@ namespace CityGame
                 }
             }
 
-            GL2D.UpdateBuffer();
-            
-            if (SelectetBuildIndex.Typ == 1)
-                GL2D.UseShader(glowShader);
-            else if (SelectetBuildIndex.Typ == 2)
-                GL2D.UseShader(basicShader);
 
-            GL2D.Render();
-            
+            //GL2D.UpdateBuffer();
+
+            Shader usedShader = null;
+            if (SelectetBuildIndex.Typ == 1)
+                usedShader = glowShader;
+            else if (SelectetBuildIndex.Typ == 2)
+                usedShader = basicShader;
+
+            Program.MainWindow.Ctx.Render(buffer, usedShader);
+
+            Console.WriteLine(buffer.Index);
         }
         private void renderZonePreview(int pos)
         {
@@ -302,7 +310,7 @@ namespace CityGame
             float scSize = Cam.Size * Cam.Scale;
             float drawPosX, drawPosY;
             drawPos(texture, pos, out drawPosX, out drawPosY);
-            GL2D.DrawImage(texture, new RectangleF(64 * tile, 0, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), color);
+            buffer.DrawImage(texture, new RectangleF(64 * tile, 0, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), color);
         }
         private void drawGroundOnPos(Texture texture, int pos, Color color)
         {
@@ -328,7 +336,7 @@ namespace CityGame
             float scale = Cam.Scale;
             float drawPosX, drawPosY;
             drawPos(texture, pos, out drawPosX, out drawPosY);
-            GL2D.DrawImage(texture, new RectangleF(0, 0, texture.Width, texture.Width), new RectangleF(drawPosX, drawPosY - offsetY * scale, texture.Width * scale, texture.Width * scale), color);
+            buffer.DrawImage(texture, new RectangleF(0, 0, texture.Width, texture.Width), new RectangleF(drawPosX, drawPosY - offsetY * scale, texture.Width * scale, texture.Width * scale), color);
         }
     }
 }

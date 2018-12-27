@@ -60,6 +60,8 @@ namespace CityGame
             this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer,true);
 
             currentPanel = mainMenu;
+            
+
         }
         public new void Show()
         {
@@ -81,23 +83,10 @@ namespace CityGame
         }
         private void switchPanel(NextPanel mode)
         {
-            /*
-            if (lastMode == NextPanel.Nothing)
-            {
-                curMode = lastMode = mode;
-            }
-            */
-            Console.WriteLine("---------");
-            Console.WriteLine(mode+" | "+lastMode);
-            
-            
             if (mode == NextPanel.Last) mode = lastMode;
             lastMode = curMode;
-            if (mode != NextPanel.Last)curMode = mode;
-            
-            //this.SuspendLayout();
-            //if (currentPanel != null) {
-            //}
+            if (mode != NextPanel.Last) curMode = mode;
+
             switch (mode) {
                 case NextPanel.MainMenu: currentPanel = mainMenu; break;
                 case NextPanel.GameMenu: currentPanel = gameMenu; break;
@@ -113,8 +102,6 @@ namespace CityGame
             currentPanel.Invalidate();
 
             lastPanel = currentPanel;
-            Console.WriteLine(lastMode);
-            //this.ResumeLayout(true);
         }
 
         private void buttonClose_Click(object sender, EventArgs e)

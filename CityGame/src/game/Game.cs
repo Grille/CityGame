@@ -55,9 +55,6 @@ namespace CityGame
         int timer1000;
         int[] animator;
 
-        int basicShader;
-        int glowShader;
-
         public Timer timerRender;
         public Timer timerLogic;
 

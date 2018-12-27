@@ -294,7 +294,7 @@
 
  <58> {
   name = "landfill"; groundPath = "../Data/texture/urban/disposal/MD";
-  ResourcesDependent = [[res.waste,300,i.max,effect.up,0]];
+  ResourcesDependent = [[res.waste,200,i.max,effect.up,0]];
   ResourcesEffect = [[effect.up,res.waste,-200]];
   ResourcesMonthly = [[res.money,-10]];
   upgradeTyp = [59];

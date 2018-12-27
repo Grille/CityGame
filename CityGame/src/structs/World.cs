@@ -571,9 +571,9 @@ namespace CityGame
             return;
         }
 
-        private void autoGround(byte ground, int pos)
+        private bool autoGround(byte ground, int pos)
         {
-            if (Ground[pos] == ground) return;
+            if (Ground[pos] == ground) return false;
             byte envCode = 0;
             bool envO = false;
             if (Ground[pos - width] == ground) {envO = true;envCode++;}
@@ -584,11 +584,13 @@ namespace CityGame
             bool envL = false;
             if (Ground[pos - 1] == ground) {envL = true;envCode++;}
 
-            if (envCode == 0) { return; }
+            bool result = false;
+
+            if (envCode == 0) { return false; }
             else if (envCode == 3 || envCode == 4 || (envO && envU) || (envL && envR))
             {
                 Ground[pos] = ground;
-                return;
+                return false;
             }
             else if (envO & envR) Ground[pos] = (byte)(ground - 16 + 1);
             else if (envR & envU) Ground[pos] = (byte)(ground + 16 + 1);
@@ -599,17 +601,20 @@ namespace CityGame
             else if (envU) Ground[pos] = (byte)(ground + 16);
             else if (envL) Ground[pos] = (byte)(ground - 1);
             else if (envR) Ground[pos] = (byte)(ground + 1);
+            return result;
         }
         private void autoGround(byte ground)
         {
+            bool repeat = false;
             for (int ix = 1; ix < width-1; ix++)
             {
                 for (int iy = 1; iy < height-1; iy++)
                 {
                     int pos = ix + iy * width;
-                    autoGround(ground, ix + iy * width);
+                    repeat |= autoGround(ground, ix + iy * width);
                 }
             }
+            if (repeat) autoGround(ground);
             //if (!envO
         }
 
@@ -626,17 +631,17 @@ namespace CityGame
             {
                 if (rnd.NextDouble() > 0.5)
                 {
-                    //Ground[i] = 1;
+                    Ground[i] = 1;
                     if (rnd.NextDouble() < 0.5)
                     {
-                        //Ground[i] = 2;
+                        Ground[i] = 2;
                     }
                 }
 
                 if (rgbData[i * 4 + 0] == 255)
                 {
                     Build(1, i);
-                    //Ground[i] = 49;
+                    Ground[i] = 49;
                 }
                 if (rgbData[i * 4 + 0] == 112)
                 {
@@ -644,39 +649,37 @@ namespace CityGame
                 }
                 if (rgbData[i * 4 + 0] == 151)
                 {
-                    //Ground[i] = 52;
+                    Ground[i] = 52;
                 }
                 if (rgbData[i * 4 + 0] == 77)
                 {
-                    //Ground[i] = 49;
+                    Ground[i] = 49;
                 }
                 else if (rgbData[i * 4 + 0] == 254)
                 {
                     Build(2, i);
-                    //Ground[i] = 52;
+                    Ground[i] = 52;
                 }
                 else if (rgbData[i * 4 + 1] == 80)
                 {
                     Build(3, i);
-                    //Ground[i] = 3;
+                    Ground[i] = 3;
                 }
                 else if (rgbData[i * 4 + 1] == 100)
                 {
                     Build(4, i);
-                    //Ground[i] = 3;
+                    Ground[i] = 3;
                 }
                 else if (rgbData[i * 4 + 1] == 160)
                 {
                     Build(5, i);
-                    //Ground[i] = 3;
+                    Ground[i] = 3;
                 }
 
                 if (rnd.NextDouble() < 0.001) Ground[i] = 5;
                 //if (rgbData[i * 4 + 1] == 128) Build(1, i);
             }
             autoGround(52);
-            autoGround(52);
-            autoGround(49);
             autoGround(49);
 
 

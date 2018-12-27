@@ -126,7 +126,6 @@
     <None Include="data\config\gameArea.gd" />
     <None Include="data\config\gameObject.gd" />
     <None Include="data\config\gameResources.gd" />
-    <None Include="data\config\gui.gd" />
     <None Include="data\config\mapBuild.gd" />
     <None Include="data\config\Zones.gd" />
     <None Include="data\shaders\basicFS.glsl" />
@@ -143,6 +142,7 @@
   <ItemGroup>
     <Content Include="City.ico" />
     <Content Include="CityIcon.ico" />
+    <None Include="data\config\guiBuildMenu.gd" />
     <Content Include="data\texture\texture.png" />
   </ItemGroup>
   <ItemGroup>

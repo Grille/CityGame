@@ -46,7 +46,7 @@ namespace CityGame
             parser.AddEnum("mode", new string[] { "single", "brush", "line", "equalLine", "cnline", "area", "equalArea" });
             parser.AddEnum("typ", new string[] { "label", "build", "zone" });
             Console.WriteLine("//load: gui");
-            parser.ParseFile("../Data/config/gui.gd");
+            parser.ParseFile("../Data/config/guiBuildMenu.gd");
 
             for (int i = 0; i < 10; i++)
             {

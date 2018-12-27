@@ -48,11 +48,11 @@ namespace CityGame
             {
                 float size = Cam.Size, scale = Cam.Scale;
 
-                float posX = (int)(((e.X - window.Width / 2f) / scale + Cam.PosX) / size);
-                float posY = (int)(((e.Y - window.Height / 2f) / scale + Cam.PosY) / size);
+                float posX = (((e.X - window.Width / 2f) / scale + Cam.PosX) / size);
+                float posY = (((e.Y - window.Height / 2f) / scale + Cam.PosY) / size);
 
-                posX -= 0.5f * Objects[SelectetBuildIndex.Value].Size - 1f;
-                posY -= 0.5f * Objects[SelectetBuildIndex.Value].Size - 1f;
+                posX -= 0.5f * (Objects[SelectetBuildIndex.Value].Size - 1f);
+                posY -= 0.5f * (Objects[SelectetBuildIndex.Value].Size - 1f);
 
                 if (posX < 0) posX = 0;
                 if (posY < 0) posY = 0;

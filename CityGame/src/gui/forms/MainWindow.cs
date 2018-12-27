@@ -26,6 +26,7 @@ namespace CityGame
         
         MouseEventArgs mouse = new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0);
 
+        public Context Ctx;
         Texture tex = new Texture("../Data/texture/ground/texture.png");
         //init OpenGL
         public MainWindow()//0.28
@@ -64,14 +65,15 @@ namespace CityGame
             //int game
 
             Console.WriteLine("initOpenGL()");
-            GL2D.SetRenderControl(this);
+            //GL2D.SetRenderControl(this);
+            Ctx = new Context(this);
             int code;
             if ((code = Program.Game.InitOpenGL()) != 0)
             {
                 if (code == 1) MessageBox.Show("Could not initialize OpenGL\n\nMinimum required OpenGL version: 2.0\nOpenGL version detectet: " + GL.GetString(StringName.Version), "Error by init OpenGL", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else if (code == 2) MessageBox.Show("Could not initialize OpenGL\n\nRender form == null\n", "Error by init OpenGL", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else if (code == 3) MessageBox.Show("Could not initialize OpenGL\n\nOpenGL context could not be created\nPlease update graphic drivers", "Error by init OpenGL", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                else if (code == 4) MessageBox.Show("Could not initialize OpenGL\n\nShader compilation failed\n" + GL2D.GetError(), "Error by init OpenGL", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                //else if (code == 4) MessageBox.Show("Could not initialize OpenGL\n\nShader compilation failed\n" + GL2D.GetError(), "Error by init OpenGL", MessageBoxButtons.OK,MessageBoxIcon.Error);
                 Application.Exit();return;
             }
 
@@ -103,7 +105,7 @@ namespace CityGame
 
             Console.WriteLine("//startGame");
             //show menu
-            Program.MenuWindow.Show(0);
+            Program.MenuWindow.Show(NextPanel.MainMenu);
         }
 
         private void OnRenderControlResize(object sender, EventArgs e)
