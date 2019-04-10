@@ -15,7 +15,7 @@ namespace CityGame.Control
     /// Image rendered button
     /// </summary>
     [System.ComponentModel.DesignerCategory("code")]
-    public class ListBox : WF.Control
+    public class ButtonList : WF.Control
     {
         public event EventHandler ChangeItem;
 
@@ -47,8 +47,9 @@ namespace CityGame.Control
         [Browsable(true)]
         public Color BackSelectColor { get; set; }
 
-        public ListBox()
+        public ButtonList()
         {
+            DoubleBuffered = true;
             itemsText = new string[128];
             itemsValue = new object[128];
             itemsColor = new Color[128];
@@ -123,6 +124,7 @@ namespace CityGame.Control
                 }
             }
             
+            
             //else
             //{
             //    g.DrawRectangle(Pens.Black, new Rectangle(1, 1, this.Width-2, this.Height-2));
@@ -139,16 +141,18 @@ namespace CityGame.Control
                 {
 
                     Console.WriteLine("<" + ix + ":" + iy + ">");
-                    Rectangle dstRect, srcRect = new Rectangle(bSize * ix, bSize * iy, bSize, bSize);
+                    Rectangle dstRect, srcRect = new Rectangle(bSize*ix, bSize*iy, bSize, bSize);
                     switch (ix + iy * 3)
                     {
                         case 0: dstRect = new Rectangle(0, 0, bSize, bSize); break;
                         case 1: dstRect = new Rectangle(bSize, 0, width - bSize * 2, bSize); break;
                         case 2: dstRect = new Rectangle(width - bSize, 0, bSize, bSize); break;
 
-                        case 3: dstRect = new Rectangle(0, bSize, bSize, height - bSize); break;
+                        case 3: dstRect = new Rectangle(0, bSize, bSize, Height - bSize*2+1); break;
 
-                        case 5: dstRect = new Rectangle(width - bSize, bSize, bSize, height - bSize); break;
+                        case 4: dstRect = new Rectangle(bSize, bSize, width-bSize, Height - bSize*2+1); break;
+
+                        case 5: dstRect = new Rectangle(width - bSize, bSize, bSize, height - bSize*2+1); break;
 
                         case 6: dstRect = new Rectangle(0, height - bSize, bSize, bSize); break;
                         case 7: dstRect = new Rectangle(bSize, height - bSize, width - bSize * 2, bSize); break;
@@ -157,7 +161,7 @@ namespace CityGame.Control
                         default: dstRect = new Rectangle(0, 0, 0, 0); break;
 
                     }
-                    g.DrawImage(src, dstRect, srcRect, GraphicsUnit.Pixel);
+                    g.DrawImage(src, dstRect, srcRect,GraphicsUnit.Point);
 
                 }
             }

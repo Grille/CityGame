@@ -16,13 +16,13 @@ namespace CityGame
 {
     public partial class MenuOverlay : Form
     {
-        Control.ListBox listBox;
+        Control.ButtonList listBox;
         BuildOption[][] buildOptions;
         ImageButton[] imageButtons;
         public MenuOverlay()
         {
-            listBox = new Control.ListBox();
-            listBox.BackColor = Color.FromArgb(99, 139, 139);
+            listBox = new Control.ButtonList();
+            listBox.BackColor = Color.FromArgb(255, 0, 255);
             listBox.ItemHeight = 26;
             listBox.ItemDistance = 4;
             listBox.Font = new Font("Franklin Gothic Medium", 11.25f);
@@ -45,6 +45,8 @@ namespace CityGame
             parser.AddAttribute("byte[]", "color", "[]");
             parser.AddEnum("mode", new string[] { "single", "brush", "line", "equalLine", "cnline", "area", "equalArea" });
             parser.AddEnum("typ", new string[] { "label", "build", "zone" });
+            for (int i = 0; i < Program.Game.Objects.Length; i++)
+                parser.AddEnum("obj", Program.Game.Objects[i].Name, i);
             Console.WriteLine("//load: gui");
             parser.ParseFile("../Data/config/guiBuildMenu.gd");
 
@@ -84,6 +86,8 @@ namespace CityGame
                 }
             }
             this.DoubleBuffered = true;
+            Width = Program.MainWindow.Width;
+            Height = Program.MainWindow.Height;
         }
 
         private void imageButton_ButtonDown(object sender, EventArgs e)
@@ -124,7 +128,7 @@ namespace CityGame
 
         private void listBox_ChangeItem(object sender, EventArgs e)
         {
-            Program.Game.SelectetBuildIndex = (BuildOption)((CityGame.Control.ListBox)sender).getValue();
+            Program.Game.SelectetBuildIndex = (BuildOption)((CityGame.Control.ButtonList)sender).getValue();
         }
         private void MenuOverlay_Enter(object sender, EventArgs e)
         {

@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Drawing;
 
-namespace GGL
+namespace GGL.Graphic
 {
     class LockBitmap
     {

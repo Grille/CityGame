@@ -24,6 +24,8 @@ namespace CityGame
         private NextPanel curMode;
         public MenuWindow()
         {
+
+
             mapImage = new Bitmap(1, 1);
             //listBox1.Items.
             InitializeComponent();
@@ -99,7 +101,7 @@ namespace CityGame
             currentPanel.Size = this.Size;
             currentPanel.Visible = true;
             if (lastPanel != null && currentPanel != lastPanel)lastPanel.Visible = false;
-            currentPanel.Invalidate();
+            //Invalidate();
 
             lastPanel = currentPanel;
         }
@@ -175,7 +177,7 @@ namespace CityGame
             Hide();
             if (browserMode == 0)
             {
-                Program.Game.World.GenerateMap(mapImage);
+                Program.Game.GenerateMap(mapImage);
                 Program.Game.Start();
                 Program.Game.NewGame();
                 Program.MenuOverlay.Show(Program.MainWindow);

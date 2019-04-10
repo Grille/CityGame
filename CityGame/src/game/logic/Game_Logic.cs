@@ -79,7 +79,7 @@ namespace CityGame
                 }
                 for (int i = 0; i < (World.Width + World.Height) / 1; i++)
                 {
-                    World.UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
+                    UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
                 }
                 date = date.AddDays(1);
                 //UpdateMiniMap();

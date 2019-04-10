@@ -82,6 +82,7 @@ namespace CityGame
                     int refPos = worldPos - refX - refY * World.Width;
                     int typ = World.Typ[refPos];
 
+                    var obj = Objects[typ];
                     /*
                     GL2D.DrawSquare(groundTexture,
                         new PointF[] { new PointF(groundX * size, groundY * size), new PointF(groundX * size+size, groundY* size), new PointF(groundX * size + size, groundY * size + size), new PointF(groundX * size, groundY * size + size) },
@@ -99,20 +100,20 @@ namespace CityGame
                     {
                         buffer.DrawImage(zoneTexture, new RectangleF(0,0, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Zones[World.Zone[worldPos]].Color);
                     }
-                    if (Objects[typ].Ground != null)
+                    if (obj.Ground != null)
                     {
-                        Texture texture = Objects[typ].Ground[0];
+                        var texture = obj.Ground[0];
                         int anim = animator[texture.Height / 64 - 1];
                         buffer.DrawImage(texture, new RectangleF(64 * World.TileGround[worldPos], 64 * anim, 64, 64), new RectangleF(drawPosX, drawPosY, scSize, scSize), Color.White);
                     }
-                    if (Objects[typ].Texture != null)
+                    if (obj.Texture != null)
                     {
                         int tile = World.TileStruct[refPos];
-                        if (Objects[typ].Texture[tile].Length != 0)
+                        if (obj.Texture[tile].Length != 0)
                         {
                             int version = World.Version[refPos];
-                            Texture texture = Objects[typ].Texture[tile][version];
-                            int objectSize = Objects[typ].Size;
+                            var texture = obj.Texture[tile][version];
+                            int objectSize = obj.Size;
                             int anim = animator[texture.Height / texture.Width - 1];
                             int overdrawSrs = texture.Width - 64 * objectSize;
                             if (refX == objectSize - 1 || refY == 0)
@@ -281,16 +282,18 @@ namespace CityGame
         }
         private void renderBuildPreview(int pos,byte l,byte u,byte r,byte o)
         {
+            
             byte buildTyp = replaceBuildTyp(World.Typ[pos]);
 
             Color color;
-            if (World.CanBuild((byte)buildTyp, pos) && World.TestAreaDependet((byte)buildTyp, pos) == 0)color = Color.FromArgb(150, 0, 255, 0);
+            if (CanBuild((byte)buildTyp, pos) && TestAreaDependet((byte)buildTyp, pos) == 0)color = Color.FromArgb(150, 0, 255, 0);
             else color = Color.FromArgb(150, 255, 0, 0);
 
             if (Objects[buildTyp].Ground != null)
-                drawGroundOnPos(Objects[buildTyp].Ground[0], pos, World.applyAutoTile(buildTyp, pos, Objects[buildTyp].GroundMode, Objects[buildTyp].GroundNeighbors, l, u, r, o), color);
+                drawGroundOnPos(Objects[buildTyp].Ground[0], pos, applyAutoTile(buildTyp, pos, Objects[buildTyp].GroundMode, Objects[buildTyp].GroundNeighbors, l, u, r, o), color);
             if (Objects[buildTyp].Texture != null)
-                drawObjectOnPos(buildTyp, 0, World.applyAutoTile(buildTyp, pos, Objects[buildTyp].StructMode, Objects[buildTyp].StructNeighbors, l, u, r, o), pos, color);
+                drawObjectOnPos(buildTyp, 0, applyAutoTile(buildTyp, pos, Objects[buildTyp].StructMode, Objects[buildTyp].StructNeighbors, l, u, r, o), pos, color);
+        
         }
 
         private void drawPos(Texture texture, int pos, out float drawPosX, out float drawPosY)

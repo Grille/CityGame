@@ -63,98 +63,104 @@ namespace CityGame
             //effects: 0=not, 1=up, 2=down, 3=break, 4=deacy, 5=destroy 6=entf//
             //AreaPermanent->typ: 0=water, 1=nature, 2=road,3=saltwater
             GGL.IO.Parser parser = new GGL.IO.Parser();
-            Zones = new Zone[256];
-            Resources = new GameResources[256];
-            Objects = new GameObject[256];
-            Areas = new GameArea[256];
-            
+            string[] names;
 
 
             Console.WriteLine("//load: gameZonesData");
             parser.ParseFile("../Data/config/Zones.gd");
+            names = parser.ObjectNames;
+            Zones = new Zone[names.Length];
             for (int i = 0; i < Zones.Length; i++)
             {
-                if (!parser.Exists(i)) continue;
+                string name = names[i];
                 Zones[i] = new Zone();
                 Zones[i].Load(
-                    parser.GetAttribute<string>(i, "name"),
-                    parser.GetAttribute<byte[]>(i, "color"),
-                    parser.GetAttribute<byte[]>(i, "supportTyp"),
-                    parser.GetAttribute<byte[]>(i, "canBuildOnTyp")
+                    parser.GetAttribute<string>(name, "name"),
+                    parser.GetAttribute<byte[]>(name, "color"),
+                    parser.GetAttribute<byte[]>(name, "supportTyp"),
+                    parser.GetAttribute<byte[]>(name, "canBuildOnTyp")
                     );
             }
             parser.Clear();
 
             Console.WriteLine("//load: gameResourcesData");
             parser.ParseFile("../Data/config/gameResources.gd");
+            names = parser.ObjectNames;
+            Resources = new GameResources[names.Length];
             for (int i = 0; i < Resources.Length; i++)
             {
-                if (!parser.Exists(i)) continue;
+                string name = names[i];
                 Resources[i] = new GameResources();
                 Resources[i].Load(
-                    parser.GetAttribute<string>(i, "name"),
-                    parser.GetAttribute<int>(i, "initValue"),
-                    parser.GetAttribute<bool>(i, "physical"), 
-                    parser.GetAttribute<bool>(i, "storable")
+                    parser.GetAttribute<string>(name, "name"),
+                    parser.GetAttribute<int>(name, "initValue"),
+                    parser.GetAttribute<bool>(name, "physical"), 
+                    parser.GetAttribute<bool>(name, "storable")
                     );
             }
             parser.Clear();
 
             Console.WriteLine("//load: gameAreaData");
             parser.ParseFile("../Data/config/gameArea.gd");
-            for (int i = 0; i < Resources.Length; i++)
+            names = parser.ObjectNames;
+            Areas = new GameArea[names.Length];
+            for (int i = 0; i < Areas.Length; i++)
             {
-                if (!parser.Exists(i)) continue;
+                string name = names[i];
                 Areas[i] = new GameArea();
                 Areas[i].Load(
-                    parser.GetAttribute<string>(i, "name"),
-                    parser.GetAttribute<bool>(i, "smooth")
+                    parser.GetAttribute<string>(name, "name"),
+                    parser.GetAttribute<bool>(name, "smooth")
                     );
             }
             parser.Clear();
 
-            for (int i = 0;i< 256; i++)
-            {
-                if (Resources[i] != null) parser.AddEnum("res", Resources[i].Name.ToLower(), i);
-                if (Areas[i] != null) parser.AddEnum("area", Areas[i].Name.ToLower(), i);
-            }
+            for (int i = 0;i< Resources.Length; i++)
+                parser.AddEnum("res", Resources[i].Name.ToLower(), i);
+            for (int i = 0; i < Areas.Length; i++)
+                parser.AddEnum("area", Areas[i].Name.ToLower(), i);
             parser.AddEnum("effect", new string[] { "not", "up", "down","break" ,"deacy" ,"destroy" ,"entf"});
             parser.AddEnum("gmode", new string[] { "not", "all", "foCu", "foEn", "cuEn", "fo", "cu" ,"en","st"});
             parser.AddEnum("bmode", new string[] { "single", "brush", "rnline", "eqline", "cnline", "rnarea", "eqarea" });
             parser.AddEnum("i","min",int.MinValue); parser.AddEnum("i", "max", int.MaxValue);
 
             parser.ParseFile("../Data/config/gameObject.gd");
+            names = parser.ObjectNames;
+            Objects = new GameObject[names.Length];
             for (int i = 0; i < Objects.Length; i++)
             {
                 bar.Value++;
+                string name = names[i];
                 Objects[i] = new GameObject(i);
-                if (!parser.Exists(i)) continue;
-                Objects[i].LoadBasic(
-                    parser.GetAttribute<string>(i, "name"),
-                    parser.GetAttribute<string>(i, "groundPath"),
-                    parser.GetAttribute<string>(i, "structPath"),
-                    parser.GetAttribute<byte>(i, "size"),
-                    parser.GetAttribute<byte>(i, "groundMode"),
-                    parser.GetAttribute<byte>(i, "structMode"),
-                    parser.GetAttribute<byte[]>(i, "groundNeighbors"),
-                    parser.GetAttribute<byte[]>(i, "structNeighbors")
+                Objects[i].LoadBasic(name,
+                    parser.GetAttribute<string>(name, "name"),
+                    parser.GetAttribute<string>(name, "groundPath"),
+                    parser.GetAttribute<string>(name, "structPath"),
+                    parser.GetAttribute<byte>(name, "size"),
+                    parser.GetAttribute<byte>(name, "groundMode"),
+                    parser.GetAttribute<byte>(name, "structMode"),
+                    parser.GetAttribute<byte[]>(name, "groundNeighbors"),
+                    parser.GetAttribute<byte[]>(name, "structNeighbors")
                     );
                 Objects[i].LoadTypRefs(
-                    parser.GetAttribute<byte[]>(i, "upgradeTyp"),
-                    parser.GetAttribute<byte[]>(i, "downgradeTyp"),
-                    parser.GetAttribute<byte[]>(i, "demolitionTyp"),
-                    parser.GetAttribute<byte[]>(i, "decayTyp"),
-                    parser.GetAttribute<byte[]>(i, "destroyTyp"),
-                    parser.GetAttribute<byte[]>(i, "canBuiltOn")
+                    parser.GetAttribute<byte[]>(name, "upgradeTyp"),
+                    parser.GetAttribute<byte[]>(name, "downgradeTyp"),
+                    parser.GetAttribute<byte[]>(name, "demolitionTyp"),
+                    parser.GetAttribute<byte[]>(name, "decayTyp"),
+                    parser.GetAttribute<byte[]>(name, "destroyTyp"),
+                    parser.GetAttribute<byte[]>(name, "canBuiltOn")
                     );
                 Objects[i].LoadSimData(
-                    parser.GetAttribute<int[]>(i, "AreaPermanent"),
-                    parser.GetAttribute<int[]>(i, "AreaDependent"),
-                    parser.GetAttribute<int[]>(i, "ResourcesEffect"),
-                    parser.GetAttribute<int[]>(i, "ResourcesBuild"),
-                    parser.GetAttribute<int[]>(i, "ResourcesPermanent"),
-                    parser.GetAttribute<int[]>(i, "ResourcesMonthly"),
-                    parser.GetAttribute<int[]>(i, "ResourcesDependent")
+                    parser.GetAttribute<int[]>(name, "AreaPermanent"),
+                    parser.GetAttribute<int[]>(name, "AreaDependent"),
+                    parser.GetAttribute<int[]>(name, "ResourcesEffect"),
+                    parser.GetAttribute<int[]>(name, "ResourcesBuild"),
+                    parser.GetAttribute<int[]>(name, "ResourcesPermanent"),
+                    parser.GetAttribute<int[]>(name, "ResourcesMonthly"),
+                    parser.GetAttribute<int[]>(name, "ResourcesDependent")
+                    );
+                Objects[i].LoadScriptSource(
+                    parser.GetAttribute<string>(name, "onupdate")
                     );
             }
             parser.Clear();
@@ -162,6 +168,8 @@ namespace CityGame
             groundTexture = new Texture("../Data/texture/ground/texture.png");
             zoneTexture = new Texture("../Data/texture/effect/zoon.png");
             gui = new Texture("../Data/texture/gui/aktivField.png");
+
+            compile();
 
             TextureAtlas._DEBUG();
         }

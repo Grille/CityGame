@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -46,12 +46,11 @@
     <ApplicationIcon>CityIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ByteStream">
+      <HintPath>lib\ByteStream.dll</HintPath>
+    </Reference>
     <Reference Include="CsGL2D">
       <HintPath>lib\CsGL2D.dll</HintPath>
-    </Reference>
-    <Reference Include="GGL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\GGL.dll</HintPath>
     </Reference>
     <Reference Include="OpenTK">
       <HintPath>lib\OpenTK.dll</HintPath>
@@ -79,14 +78,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="src\game\Game_Script.cs" />
     <Compile Include="src\game\logic\Game_Simulation.cs" />
+    <EmbeddedResource Include="src\game\Script.cs" />
+    <Compile Include="src\ggl\LockBitmap.cs" />
     <Compile Include="src\gui\controls\ImageButton.cs" />
-    <Compile Include="src\gui\controls\ListBox.cs" />
+    <Compile Include="src\gui\controls\ButtonList.cs" />
     <Compile Include="src\gui\controls\SimpleListBox.cs" />
     <Compile Include="src\game\Game.cs" />
     <Compile Include="src\structs\Area.cs" />
     <Compile Include="src\structs\BuildOption.cs" />
-    <Compile Include="src\structs\Resources.cs" />
+    <Compile Include="src\structs\GameResources.cs" />
     <Compile Include="src\structs\Camera.cs" />
     <Compile Include="src\structs\GameObject.cs" />
     <Compile Include="src\structs\Zone.cs" />
@@ -161,7 +163,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\ggl\" />
     <Folder Include="src\graphic\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

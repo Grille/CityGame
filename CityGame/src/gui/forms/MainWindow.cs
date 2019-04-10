@@ -84,10 +84,8 @@ namespace CityGame
 
 
             Program.Game.Cam = new Camera();
-            Program.Game.World = new World(Program.Game.Objects, Program.Game.Resources, Program.Game.Cam, Program.Game.Areas);
-            Program.Game.World.BuildWorld(32, 32);
+            Program.Game.World = new World(32, 32);
 
-    
             //set fullscreen
             this.Visible = false;
             this.Location = new Point(0, 0);

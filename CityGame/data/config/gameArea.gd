@@ -4,30 +4,28 @@
  Attributes{
   string name;
   bool smooth;
- }
 
- Init {
   name = "";
   smooth = true;
  }
 
-<0> {
+<water> {
   name = "water";
   smooth = false;
  }
-  <1> {
+  <saltwater> {
   name = "saltwater";
   smooth = false;
  }
 
- <2> {
+ <pollution> {
   name = "pollution";
  }
 
- <3> {
+ <road> {
   name = "road";
   smooth = false;
  }
- <4> {
+ <radiation> {
   name = "radiation";
  }

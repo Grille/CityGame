@@ -1,4 +1,5 @@
-﻿<button_0>{name = "terrain" }
+﻿//
+<button_0>{name = "terrain" }
 <button_1>{name = "traffic" }
 <button_2>{name = "supply" }
 <button_3>{name = "zones" }
@@ -16,15 +17,15 @@
 }
 <terrain_1>:tree{
   name = "conifer" 
-  value = 3
+  value = obj.conifer
 }
 <terrain_2>:tree{
   name = "deciduous" 
-  value = 4
+  value = obj.deciduous
 }
 <terrain_3>:tree{
   name = "palm" 
-  value = 5
+  value = obj.palm
 }
 <terrain_4>{
   name = "tools"
@@ -32,7 +33,7 @@
 }
 <terrain_5>:tool{
   name = "demolish" 
-  value = 0
+  value = obj.empety
 }
 <terrain_6>:tool{
   typ = typ.zone
@@ -49,18 +50,18 @@
 }
 <traffic_1>:road{
   name = "dirt way" 
-  value = 21
-  replace = [[1,25]]
+  value = obj.dirtWay
+  replace = [obj.water,obj.woodBridge]
 }
 <traffic_2>:road{
   name = "medium road" 
-  value = 23
-  replace = [[1,26]]
+  value = obj.mediumRoad
+  replace = [obj.water,obj.mediumBridge]
 }
 <traffic_3>:road{
   name = "large road" 
-  value = 24
-  replace = [[1,27],[2,28]]
+  value = obj.largeRoad
+  replace = [obj.water,obj.largeBridge, obj.saltwater,obj.oceanBridge]
 }
 
 //------------- < supply > -------------
@@ -74,23 +75,23 @@
 }
 <supply_1>:energy{
   name = "coal power plant" 
-  value = 41
+  value = obj.coalPowerPlant
 }
 <supply_2>:energy{
   name = "gas power plant" 
-  value = 42
+  value = obj.gasPowerPlant
 }
 <supply_3>:energy{
   name = "nuclear power plant" 
-  value = 43
+  value = obj.nuclearPowerPlant
 }
 <supply_4>:energy{
   name = "solar power plant" 
-  value = 44
+  value = obj.solarPowerPlant
 }
 <supply_5>:energy{
   name = "wind power plant" 
-  value = 45
+  value = obj.windPowerPlant
 }
 
 <supply_6>{
@@ -99,15 +100,15 @@
 }
 <supply_7>:water{
   name = "water pump" 
-  value = 51
+  value = obj.waterPump
 }
 <supply_8>:water{
   name = "water tower" 
-  value = 53
+  value = obj.waterTower
 }
 <supply_9>:water{
   name = "sewage plant" 
-  value = 55
+  value = obj.sewagePlant
 }
 
 <supply_10>{
@@ -117,11 +118,11 @@
 <supply_11>:disposal{
   name = "landfill" 
   mode=mode.area
-  value = 58
+  value = obj.landfill
 }
 <supply_12>:disposal{
   name = "incinerator" 
-  value = 60
+  value = obj.incinerator
 }
 
 //------------- < zones > -------------
@@ -135,15 +136,15 @@
 }
 <zones_1>:residential{
   name = "Light residential" 
-  value = 1
+  value = 0
 }
 <zones_2>:residential{
   name = "Medium residential" 
-  value = 2
+  value = 1
 }
 <zones_3>:residential{
   name = "Dense residential" 
-  value = 3
+  value = 2
 }
 
 <zones_4>{
@@ -152,15 +153,15 @@
 }
 <zones_5>:comercial{
   name = "Light comercial" 
-  value = 4
+  value = 3
 }
 <zones_6>:comercial{
   name = "Medium comercial" 
-  value = 5
+  value = 4
 }
 <zones_7>:comercial{
   name = "Dense comercial" 
-  value = 6
+  value = 5
 }
 
 <zones_8>{
@@ -169,15 +170,15 @@
 }
 <zones_9>:industrial{
   name = "Light industrial" 
-  value = 7
+  value = 6
 }
 <zones_10>:industrial{
   name = "Medium industrial" 
-  value = 8
+  value = 7
 }
 <zones_11>:industrial{
   name = "Dense industrial" 
-  value = 9
+  value = 8
 }
 
 <zones_12>{
@@ -199,22 +200,22 @@
 }
 <public_1>:public{
   name = "small fire department" 
-  value = 91
+  value = obj.smallFireDepartment
 }
 <public_2>:public{
   name = "large fire department" 
-  value = 92
+  value = obj.largeFireDepartment
 }
 <public_3>:public{
   name = "small police department" 
-  value = 93
+  value = obj.smallPoliceDepartment
 }
 <public_4>:public{
   name = "large police department" 
-  value = 94
+  value = obj.largePoliceDepartment
 }
 <public_5>:public{
   name = "hospital" 
-  value = 102
+  value = obj.hospital
 }
 

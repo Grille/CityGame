@@ -21,23 +21,16 @@ namespace CityGame
     {
         public readonly int ID;
         public string Name;
+        public string Title;
         public string StructPath;
         public string GroundPath;
-        
-        private Texture[][] texture;
         /// <summary>/// Textures of the object [tile][version]/// </summary>
-        public Texture[][] Texture { get { return texture; } }
+        public Texture[][] Texture { get; private set; }
         private byte[] diversity;
-        //public byte[] Diversity { get { return diversity; } }
-        private byte size;
-        public byte Size { get { return size; } }
-        private Texture[] ground;
-        public Texture[] Ground { get { return ground; } }
-        private int groundMode;
-        public int GroundMode { get { return groundMode; } }
-
-        private int structMode;  //0=nothing, 1=self, 2=useArray;
-        public int StructMode { get { return structMode; } }
+        public byte Size { get; private set; }
+        public Texture[] Ground { get; private set; }
+        public int GroundMode { get; private set; }
+        public int StructMode { get; private set; }
         public byte[] StructNeighbors;
         public byte[] GroundNeighbors;
 
@@ -58,6 +51,9 @@ namespace CityGame
         public int[] ResourcesMonthly;   //[[typ,value]]
         public int[] ResourcesDependent; //[[typ,minValue,maxValue,effects]]
 
+        public string SrcOnUpdate;
+        public Action OnUpdate;
+
         public GameObject(int id)
         {
             ID = id;
@@ -74,24 +70,24 @@ namespace CityGame
             }
             return result;
         }
-        public void LoadBasic(string name, string groundPath, string path, int size,int groundMode, int structMode, byte[] groundNeighbors,byte[] structNeighbors)
+        public void LoadBasic(string name, string title, string groundPath, string path, int size,int groundMode, int structMode, byte[] groundNeighbors,byte[] structNeighbors)
         {
-
             this.Name = name;
+            this.Title = title;
             this.StructPath = path;
             this.GroundPath = groundPath;
             this.diversity = new byte[] { 0 };
-            this.size = (byte)size;
-            this.groundMode = groundMode;
-            this.structMode = structMode;
+            this.Size = (byte)size;
+            this.GroundMode = groundMode;
+            this.StructMode = structMode;
             this.GroundNeighbors = groundNeighbors;
             this.StructNeighbors = structNeighbors;
 
             if (groundPath != null)
             {
-                ground = new Texture[1];
-                if (File.Exists(groundPath + "_g.png")) ground[0] = new Texture(groundPath+"_g.png");
-                else ground[0] = new Texture(groundPath + ".png"); 
+                Ground = new Texture[1];
+                if (File.Exists(groundPath + "_g.png")) Ground[0] = new Texture(groundPath+"_g.png");
+                else Ground[0] = new Texture(groundPath + ".png"); 
             }
             if (path != null)
             {
@@ -109,9 +105,9 @@ namespace CityGame
                     case 7: tiles = 7; break;
                     case 8: tiles = 3; break;
                 }
-                texture = new Texture[tiles][];
+                Texture = new Texture[tiles][];
                 for (int iTile = 0; iTile < tiles; iTile++)
-                    texture[iTile] = loadTiles(path, iTile);
+                    Texture[iTile] = loadTiles(path, iTile);
             }   
         }
         public void LoadTypRefs(byte[] upgradeTyp, byte[] downgradeTyp, byte[] demolitionTyp, byte[] decayTyp, byte[] destroyTyp, byte[] canBuiltOnTyp) 
@@ -132,6 +128,10 @@ namespace CityGame
             this.ResourcesPermanent = ResourcesPermanent;
             this.ResourcesMonthly = ResourcesMonthly;
             this.ResourcesDependent = ResourcesDependent;
+        }
+        public void LoadScriptSource(string onupdate)
+        {
+            SrcOnUpdate = onupdate;
         }
     }
 

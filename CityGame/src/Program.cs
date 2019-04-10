@@ -14,15 +14,14 @@ namespace CityGame
 
         static public MainWindow MainWindow;
         static public MenuWindow MenuWindow;
-
         static public MenuOverlay MenuOverlay;
 
         [STAThread]
         static void Main(string[] args)
         {
             MenuWindow = new MenuWindow();
-            MenuOverlay = new MenuOverlay();
             MainWindow = new MainWindow();
+            MenuOverlay = new MenuOverlay();
             //Console.WriteLine();
             Application.Run(MainWindow);
                 //new MainWindow().Run(60);

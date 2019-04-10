@@ -60,6 +60,7 @@ namespace CityGame
 
         public Game(System.Windows.Forms.Control con)
         {
+
             window = con;
             rnd = new Random();
             animatorTimer = new Stopwatch();
@@ -78,7 +79,6 @@ namespace CityGame
             timerRender.Tick += new System.EventHandler(render);
             timerLogic.Tick += new System.EventHandler(Simulate);
         }
-
 
         public void Start()
         {
