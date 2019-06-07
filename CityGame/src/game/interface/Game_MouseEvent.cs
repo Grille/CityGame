@@ -26,9 +26,10 @@ namespace CityGame
             float posX = -Cam.PosX + (e.X - window.Width / 2) / Cam.Scale;
             float posY = -Cam.PosY + (e.Y - window.Height / 2) / Cam.Scale;
 
-            //if (e.Delta < 0) Cam.Scale /= 2;
-            //else Cam.Scale *= 2;
-            Cam.Scale += (e.Delta / 500f) * Cam.Scale;
+
+            if (e.Delta < 0) Cam.Scale /= 1.3f;
+            else Cam.Scale *= 1.3f;
+            //Cam.Scale += (e.Delta / 500f) * Cam.Scale;
 
             if (Cam.Scale < 0.03125) Cam.Scale = 0.03125f;
             else if (Cam.Scale > 1f) Cam.Scale = 1f;

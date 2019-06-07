@@ -19,16 +19,16 @@ namespace CityGame
 
     public class GameObject
     {
-        public readonly int ID;
+        public int ID { get; private set; }
         public string Name;
         public string Title;
         public string StructPath;
         public string GroundPath;
         /// <summary>/// Textures of the object [tile][version]/// </summary>
-        public Texture[][] Texture { get; private set; }
+        public CGTexture[][] Texture { get; private set; }
         private byte[] diversity;
         public byte Size { get; private set; }
-        public Texture[] Ground { get; private set; }
+        public CGTexture[] Ground { get; private set; }
         public int GroundMode { get; private set; }
         public int StructMode { get; private set; }
         public byte[] StructNeighbors;
@@ -52,26 +52,27 @@ namespace CityGame
         public int[] ResourcesDependent; //[[typ,minValue,maxValue,effects]]
 
         public string SrcOnUpdate;
-        public Action OnUpdate;
+        public Action<ScriptAPI, GameObject> OnUpdate;
 
         public GameObject(int id)
         {
             ID = id;
         }
-        private Texture[] loadTiles(string path,int tile)
+        private CGTexture[] loadTiles(string path,int tile)
         {
             int lenght = 0;
             while (File.Exists(path + "_" + tile + "_" + lenght + ".png")|| File.Exists(path + "_" + lenght + ".png")) lenght++;
-            Texture[] result = new Texture[lenght];
+            CGTexture[] result = new CGTexture[lenght];
             for (int i = 0; i < result.Length; i++)
             {
-                if (!File.Exists(path + "_" + tile + "_" + i + ".png")) result[i] = new Texture(path + "_" + i + ".png");
-                else result[i] = new Texture(path + "_" + tile + "_" + i + ".png");
+                if (!File.Exists(path + "_" + tile + "_" + i + ".png")) result[i] = new CGTexture(path + "_" + i + ".png");
+                else result[i] = new CGTexture(path + "_" + tile + "_" + i + ".png");
             }
             return result;
         }
-        public void LoadBasic(string name, string title, string groundPath, string path, int size,int groundMode, int structMode, byte[] groundNeighbors,byte[] structNeighbors)
+        public void LoadBasic(int id,string name, string title, string groundPath, string path, int size,int groundMode, int structMode, byte[] groundNeighbors,byte[] structNeighbors)
         {
+            this.ID = id;
             this.Name = name;
             this.Title = title;
             this.StructPath = path;
@@ -85,9 +86,9 @@ namespace CityGame
 
             if (groundPath != null)
             {
-                Ground = new Texture[1];
-                if (File.Exists(groundPath + "_g.png")) Ground[0] = new Texture(groundPath+"_g.png");
-                else Ground[0] = new Texture(groundPath + ".png"); 
+                Ground = new CGTexture[1];
+                if (File.Exists(groundPath + "_g.png")) Ground[0] = new CGTexture(groundPath+"_g.png");
+                else Ground[0] = new CGTexture(groundPath + ".png"); 
             }
             if (path != null)
             {
@@ -105,7 +106,7 @@ namespace CityGame
                     case 7: tiles = 7; break;
                     case 8: tiles = 3; break;
                 }
-                Texture = new Texture[tiles][];
+                Texture = new CGTexture[tiles][];
                 for (int iTile = 0; iTile < tiles; iTile++)
                     Texture[iTile] = loadTiles(path, iTile);
             }   

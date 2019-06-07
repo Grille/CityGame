@@ -332,12 +332,12 @@
             this.lBrowser.Text = "Browser";
             this.lBrowser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // pbBrowserGame
+            // pbBrowser
             // 
             this.pbBrowser.BackColor = System.Drawing.Color.Black;
             this.pbBrowser.Location = new System.Drawing.Point(319, 75);
             this.pbBrowser.Margin = new System.Windows.Forms.Padding(0);
-            this.pbBrowser.Name = "pbBrowserGame";
+            this.pbBrowser.Name = "pbBrowser";
             this.pbBrowser.Size = new System.Drawing.Size(200, 200);
             this.pbBrowser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbBrowser.TabIndex = 5;
@@ -640,7 +640,7 @@
             this.textBoxSaveName.Text = "Neustadt";
             this.textBoxSaveName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // listBoxSaveGame
+            // lbSaveGame
             // 
             this.lbSaveGame.BackColor = System.Drawing.Color.CadetBlue;
             this.lbSaveGame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -653,7 +653,7 @@
             "dsh",
             "dsfh"});
             this.lbSaveGame.Location = new System.Drawing.Point(107, 75);
-            this.lbSaveGame.Name = "listBoxSaveGame";
+            this.lbSaveGame.Name = "lbSaveGame";
             this.lbSaveGame.Size = new System.Drawing.Size(190, 256);
             this.lbSaveGame.TabIndex = 10;
             this.lbSaveGame.SelectedIndexChanged += new System.EventHandler(this.listBoxSaveGame_SelectedIndexChanged);

@@ -38,25 +38,26 @@ namespace CityGame
             loadGame.BackgroundImage = backgroundImage;
             saveGame.BackgroundImage = backgroundImage;
 
-            Image menuButten = new Bitmap("../Data/texture/gui/menuButton1.png");
-            Image menuButtenDown = new Bitmap("../Data/texture/gui/menuButton3.png");
+            Image menuButton = new Bitmap("../Data/texture/gui/menuButton.png");
+            Image menuButtonDown = new Bitmap("../Data/texture/gui/menuButtonDown.png");
 
-            imageButton1.LoadImages(menuButten, menuButtenDown);
-            imageButton2.LoadImages(menuButten, menuButtenDown);
-            imageButton3.LoadImages(menuButten, menuButtenDown);
-            imageButton4.LoadImages(menuButten, menuButtenDown);
-            ibBrowserBack.LoadImages(menuButten, menuButtenDown);
-            ibBrowserNext.LoadImages(menuButten, menuButtenDown);
-            imageButton7.LoadImages(menuButten, menuButtenDown);
-            imageButton8.LoadImages(menuButten, menuButtenDown);
-            imageButton9.LoadImages(menuButten, menuButtenDown);
-            imageButton10.LoadImages(menuButten, menuButtenDown);
-            imageButton11.LoadImages(menuButten, menuButtenDown);
-            imageButton12.LoadImages(menuButten, menuButtenDown);
-            imageButton13.LoadImages(menuButten, menuButtenDown);
-            imageButton14.LoadImages(menuButten, menuButtenDown);
-            imageButton15.LoadImages(menuButten, menuButtenDown);
-            imageButton16.LoadImages(menuButten, menuButtenDown);
+
+            imageButton1.LoadImages(menuButton, menuButtonDown);
+            imageButton2.LoadImages(menuButton, menuButtonDown);
+            imageButton3.LoadImages(menuButton, menuButtonDown);
+            imageButton4.LoadImages(menuButton, menuButtonDown);
+            ibBrowserBack.LoadImages(menuButton, menuButtonDown);
+            ibBrowserNext.LoadImages(menuButton, menuButtonDown);
+            imageButton7.LoadImages(menuButton, menuButtonDown);
+            imageButton8.LoadImages(menuButton, menuButtonDown);
+            imageButton9.LoadImages(menuButton, menuButtonDown);
+            imageButton10.LoadImages(menuButton, menuButtonDown);
+            imageButton11.LoadImages(menuButton, menuButtonDown);
+            imageButton12.LoadImages(menuButton, menuButtonDown);
+            imageButton13.LoadImages(menuButton, menuButtonDown);
+            imageButton14.LoadImages(menuButton, menuButtonDown);
+            imageButton15.LoadImages(menuButton, menuButtonDown);
+            imageButton16.LoadImages(menuButton, menuButtonDown);
 
             this.Size = new Size(640, 400);
             this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer,true);

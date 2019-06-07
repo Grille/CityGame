@@ -81,7 +81,6 @@ namespace CityGame
         public void GenerateMap(Image map)
         {
             Random rnd = new Random(1000);
-            Console.WriteLine(map.Width);
             World = new World(map.Width, map.Height);
             LockBitmap data = new LockBitmap((Bitmap)map, true);
             byte[] rgbData = data.getData();

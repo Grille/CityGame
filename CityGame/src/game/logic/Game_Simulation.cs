@@ -18,7 +18,8 @@
             int result = TestAreaDependet(typ, pos);
             int result2 = TestResourcesDependet(typ);
             var obj = Objects[typ];
-            if (obj.OnUpdate != null) obj.OnUpdate();
+            API.Pos = pos;
+            if (obj.OnUpdate!=null) obj.OnUpdate(API,Objects[typ]);
             if (result < result2) result = result2;
             if (result == 0) return;
             else if (result == 1) replaceTyp(typ, pos, obj.UpgradeTyp);

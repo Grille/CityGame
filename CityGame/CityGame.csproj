@@ -78,9 +78,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\game\Game_Script.cs" />
+    <Compile Include="src\game\initialization\Game_Script.cs" />
     <Compile Include="src\game\logic\Game_Simulation.cs" />
-    <EmbeddedResource Include="src\game\Script.cs" />
     <Compile Include="src\ggl\LockBitmap.cs" />
     <Compile Include="src\gui\controls\ImageButton.cs" />
     <Compile Include="src\gui\controls\ButtonList.cs" />
@@ -88,12 +87,14 @@
     <Compile Include="src\game\Game.cs" />
     <Compile Include="src\structs\Area.cs" />
     <Compile Include="src\structs\BuildOption.cs" />
+    <Compile Include="src\structs\CGTexture.cs" />
     <Compile Include="src\structs\GameResources.cs" />
     <Compile Include="src\structs\Camera.cs" />
     <Compile Include="src\structs\GameObject.cs" />
+    <Compile Include="src\structs\ScriptAPI.cs" />
     <Compile Include="src\structs\Zone.cs" />
     <Compile Include="src\game\logic\Game_Build.cs" />
-    <Compile Include="src\game\Game_Init.cs" />
+    <Compile Include="src\game\initialization\Game_Init.cs" />
     <Compile Include="src\game\interface\Game_KeyEvent.cs" />
     <Compile Include="src\game\logic\Game_Logic.cs" />
     <Compile Include="src\game\graphic\Game_MiniMap.cs" />
@@ -118,7 +119,7 @@
     <Compile Include="src\gui\forms\MenuWindow.Designer.cs">
       <DependentUpon>MenuWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="src\game\Game_SaveLoad.cs" />
+    <Compile Include="src\game\initialization\Game_SaveLoad.cs" />
     <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

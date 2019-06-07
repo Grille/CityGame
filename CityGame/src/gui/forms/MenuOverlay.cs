@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Media;
+using System.IO;
 
 //using GGL.Control;
 using CityGame.Control;
@@ -38,7 +39,7 @@ namespace CityGame
             InitializeComponent();
             GGL.IO.Parser parser = new GGL.IO.Parser();
             parser.AddAttribute("string", "name", "");
-            parser.AddAttribute("int", "value", "0");
+            parser.AddAttribute("int", "value", "-1");
             parser.AddAttribute("int", "typ", "1");
             parser.AddAttribute("int", "mode", "0");
             parser.AddAttribute("byte[]", "replace", "[]");
@@ -47,6 +48,8 @@ namespace CityGame
             parser.AddEnum("typ", new string[] { "label", "build", "zone" });
             for (int i = 0; i < Program.Game.Objects.Length; i++)
                 parser.AddEnum("obj", Program.Game.Objects[i].Name, i);
+            for (int i = 0; i < Program.Game.Zones.Length; i++)
+                parser.AddEnum("zone", Program.Game.Zones[i].Name, i);
             Console.WriteLine("//load: gui");
             parser.ParseFile("../Data/config/guiBuildMenu.gd");
 
@@ -56,11 +59,14 @@ namespace CityGame
                 {
                     imageButtons[i] = new ImageButton();
                     imageButtons[i].Size = new Size(64, 64);
-                    imageButtons[i].Anchor = AnchorStyles.Right;
-                    imageButtons[i].Location = new Point(Width - 72, 72 * i);
+                    imageButtons[i].Anchor = AnchorStyles.Left;
+                    imageButtons[i].Location = new Point(8, 72 * i);
                     imageButtons[i].Visible = true;
                     string btnname = parser.GetAttribute<string>("button_" + i, "name");
-                    imageButtons[i].LoadImages(new Bitmap("../Data/texture/gui/"+ btnname+"1.png"), new Bitmap("../Data/texture/gui/" + btnname + "3.png"));
+                    if (File.Exists("../Data/texture/gui/" + btnname + ".png"))
+                        imageButtons[i].LoadImages(new Bitmap("../Data/texture/gui/"+ btnname+".png"), new Bitmap("../Data/texture/gui/" + btnname + "Down.png"));
+                    else
+                        imageButtons[i].LoadImages(new Bitmap("../Data/texture/gui/empty.png"), new Bitmap("../Data/texture/gui/emptyDown.png"));
                     Controls.Add(imageButtons[i]);
 
                     int size = -1;
@@ -108,16 +114,30 @@ namespace CityGame
         {
             listBox.Clear();
             listBox.Visible = true;
-            listBox.Location = new Point(btn.Left - 200, btn.Top);
+            listBox.Location = new Point(btn.Left + (btn.Width+6), btn.Top);
             listBox.Size = new Size(200, 200);
 
             for (int i = 0; i < buildOptions[id].Length; i++)
             {
-                listBox.UseColor(buildOptions[id][i].Color);
+                listBox.UsedBackColor = buildOptions[id][i].Color;
                 if (buildOptions[id][i].Color != Color.Transparent)
-                    listBox.Add(buildOptions[id][i].Text, buildOptions[id][i]);
+                {
+                    if (buildOptions[id][i].Value == -1)
+                    {
+                        listBox.UsedForeColor = Color.DarkSlateGray;
+                        listBox.Add(buildOptions[id][i].Text);
+                    }
+                    else
+                    {
+                        listBox.UsedForeColor = Color.Black;
+                        listBox.Add(buildOptions[id][i].Text, buildOptions[id][i]);
+                    }
+                }
                 else
+                {
+                    listBox.UsedForeColor = Color.Black;
                     listBox.Add(buildOptions[id][i].Text);
+                }
             }
             listBox.HeightToContent();
         }
@@ -128,7 +148,7 @@ namespace CityGame
 
         private void listBox_ChangeItem(object sender, EventArgs e)
         {
-            Program.Game.SelectetBuildIndex = (BuildOption)((CityGame.Control.ButtonList)sender).getValue();
+            Program.Game.SelectetBuildIndex = (BuildOption)((ButtonList)sender).SelectetValue;
         }
         private void MenuOverlay_Enter(object sender, EventArgs e)
         {

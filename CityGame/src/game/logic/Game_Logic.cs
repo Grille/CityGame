@@ -50,6 +50,11 @@ namespace CityGame
             while (timer100 > 100 * TimeSpan.TicksPerMillisecond)
             {
                 timer100 -= (int)(100 * TimeSpan.TicksPerMillisecond);
+
+                for (int i = 0; i < (World.Width + World.Height) / 1; i++)
+                {
+                    UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
+                }
             }
             timer200 += ticks;
             while (timer200 > 200 * TimeSpan.TicksPerMillisecond)
@@ -72,15 +77,12 @@ namespace CityGame
             while (timer1000 > 1000 * TimeSpan.TicksPerMillisecond)
             {
                 timer1000 -= (int)(1000 * TimeSpan.TicksPerMillisecond);
+
                 for (int i = 0; i < Resources.Length; i++)
                 {
-                    if (Resources[i] == null) continue;
-                    Resources[i].Update(1f/30f);
+                    Resources[i].Update(1f / 30f);
                 }
-                for (int i = 0; i < (World.Width + World.Height) / 1; i++)
-                {
-                    UpdateField((int)(World.Width * World.Height * rnd.NextDouble()));
-                }
+
                 date = date.AddDays(1);
                 //UpdateMiniMap();
             }

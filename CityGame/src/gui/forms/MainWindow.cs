@@ -48,24 +48,50 @@ namespace CityGame
         private void initGame()
         {
             Console.WriteLine("initGame()");
-            Program.Game = new Game(this);
             //show loading screen
-            this.Location = new Point(SystemInformation.VirtualScreen.Width / 2 - 320, SystemInformation.VirtualScreen.Height / 2 - 200);
             this.Size = new Size(640, 400);
-            pictureBoxLoad.Image = new Bitmap("../Data/texture/gui/load.png");
+            pictureBoxLoad.Image = new Bitmap("../Data/texture/gui/load2.png");
             pictureBoxLoad.Location = new Point(0, 0);
             pictureBoxLoad.Size = this.Size;
-            pictureBoxLogo.Image = new Bitmap("../Data/texture/gui/grille.png");
+            pictureBoxLogo.Image = new Bitmap("../Data/texture/gui/grille logo 3.png");
             pictureBoxLogo.Location = new Point(560 + 40 - 128, 320-128);
             pictureBoxLogo.Size = new Size(128,96);
             progressBarLoad.Location = new Point(40, 320);
             progressBarLoad.Size = new Size(560, 40);
+            progressBarLoad.Value = 0;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            Show();
+            //this.Location = new Point(SystemInformation.VirtualScreen.Width / 2 - 320, SystemInformation.VirtualScreen.Height / 2 - 200);
             this.Refresh();
+            Program.Game = new Game(this);
 
             //int game
 
             Console.WriteLine("initOpenGL()");
             //GL2D.SetRenderControl(this);
+
+            Console.WriteLine("loadData()");
+            Program.Game.LoadData(progressBarLoad);
+            GGL.IO.ByteStream bs = new GGL.IO.ByteStream();
+            bs.ResetIndex();
+
+            Program.Game.Cam = new Camera();
+            Program.Game.World = new World(32, 32);
+
+            //set fullscreen
+            pictureBoxLoad.Visible = false;
+            pictureBoxLogo.Visible = false;
+            progressBarLoad.Visible = false;
+            this.BackColor = Color.Black;
+            this.Location = new Point(0, 0);
+            this.Size = SystemInformation.VirtualScreen.Size;
+            SetForegroundWindow(this.Handle);
+            BringToFront();
+            Focus();
+            Visible = false;
+            Visible = true;
+            Refresh();
+
             Ctx = new Context(this);
             int code;
             if ((code = Program.Game.InitOpenGL()) != 0)
@@ -74,35 +100,12 @@ namespace CityGame
                 else if (code == 2) MessageBox.Show("Could not initialize OpenGL\n\nRender form == null\n", "Error by init OpenGL", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else if (code == 3) MessageBox.Show("Could not initialize OpenGL\n\nOpenGL context could not be created\nPlease update graphic drivers", "Error by init OpenGL", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //else if (code == 4) MessageBox.Show("Could not initialize OpenGL\n\nShader compilation failed\n" + GL2D.GetError(), "Error by init OpenGL", MessageBoxButtons.OK,MessageBoxIcon.Error);
-                Application.Exit();return;
+                //Program.MenuWindow.Close();
+                //Application.Exit();
             }
-
-            Console.WriteLine("loadData()");
-            Program.Game.LoadData(progressBarLoad);
-            GGL.IO.ByteStream bs = new GGL.IO.ByteStream();
-            bs.ResetIndex();
-
-
-            Program.Game.Cam = new Camera();
-            Program.Game.World = new World(32, 32);
-
-            //set fullscreen
-            this.Visible = false;
-            this.Location = new Point(0, 0);
-            this.Size = SystemInformation.VirtualScreen.Size;
-            pictureBoxLoad.Visible = false;
-            pictureBoxLogo.Visible = false;
-            progressBarLoad.Visible = false;
             Program.Game.StartRendering();
-            SetForegroundWindow(this.Handle);
-            BringToFront();
-            Focus();
-            //RenderMode = 1;
-            Visible = true;
-            Refresh();
 
             Console.WriteLine("//startGame");
-            //show menu
             Program.MenuWindow.Show(NextPanel.MainMenu);
         }
 

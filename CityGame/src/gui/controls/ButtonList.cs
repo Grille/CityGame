@@ -20,11 +20,12 @@ namespace CityGame.Control
         public event EventHandler ChangeItem;
 
         private string[] itemsText;
-        private Color usedColor;
-        private Color[] itemsColor;
+        public Color UsedBackColor;
+        public Color UsedForeColor;
+        private Color[] itemsBackColor;
+        private Color[] itemsForeColor;
         private object[] itemsValue;
         private int itemIndex;
-        private int hoverIndex;
         private int textDownOffset;
         private Bitmap processedButtonImage, processedButtonDownImage;
 
@@ -49,10 +50,12 @@ namespace CityGame.Control
 
         public ButtonList()
         {
+            UsedForeColor = base.ForeColor;
             DoubleBuffered = true;
             itemsText = new string[128];
             itemsValue = new object[128];
-            itemsColor = new Color[128];
+            itemsBackColor = new Color[128];
+            itemsForeColor = new Color[128];
             itemIndex = 0;
             ItemHeight = 20;
             textDownOffset = 1;
@@ -109,17 +112,17 @@ namespace CityGame.Control
                 StringFormat sf = new StringFormat();
                 sf.Alignment = StringAlignment.Center;
                 sf.LineAlignment = StringAlignment.Center;
-                g.FillRectangle(new SolidBrush(itemsColor[i]), new RectangleF(4, (ItemHeight + ItemDistance) * i + 4, Width - 8, ItemHeight));
+                g.FillRectangle(new SolidBrush(itemsBackColor[i]), new RectangleF(4, (ItemHeight + ItemDistance) * i + 4, Width - 8, ItemHeight));
                 if (i != SelectetIndex)
                 {
-                    g.DrawString(itemsText[i], base.Font, new SolidBrush(base.ForeColor), new RectangleF(0, (ItemHeight + ItemDistance) * i + 4, Width, ItemHeight), sf);
-                    if (itemsValue[i] != null)
+                    g.DrawString(itemsText[i], base.Font, new SolidBrush(itemsForeColor[i]), new RectangleF(0, (ItemHeight + ItemDistance) * i + 4, Width, ItemHeight), sf);
+                    if (itemsBackColor[i] != Color.Transparent)
                         g.DrawImage(processedButtonImage, new Point(4, (ItemHeight + ItemDistance) * i + 4));
                 }
                 else
                 {
-                    g.DrawString(itemsText[i], base.Font, new SolidBrush(base.ForeColor), new RectangleF(textDownOffset, (ItemHeight + ItemDistance) * i + textDownOffset + 4, Width + +textDownOffset, ItemHeight + +textDownOffset), sf);
-                    if (itemsValue[i] != null)
+                    g.DrawString(itemsText[i], base.Font, new SolidBrush(itemsForeColor[i]), new RectangleF(textDownOffset, (ItemHeight + ItemDistance) * i + textDownOffset + 4, Width + +textDownOffset, ItemHeight + +textDownOffset), sf);
+                    if (itemsBackColor[i] != Color.Transparent)
                         g.DrawImage(processedButtonDownImage, new Point(4, (ItemHeight + ItemDistance) * i + 4));
                 }
             }
@@ -139,8 +142,6 @@ namespace CityGame.Control
             {
                 for (int ix = 0; ix < 3; ix++)
                 {
-
-                    Console.WriteLine("<" + ix + ":" + iy + ">");
                     Rectangle dstRect, srcRect = new Rectangle(bSize*ix, bSize*iy, bSize, bSize);
                     switch (ix + iy * 3)
                     {
@@ -172,22 +173,17 @@ namespace CityGame.Control
             SelectetIndex = -1;
             itemIndex = 0;
         }
+        public object SelectetValue{get => itemsValue[SelectetIndex];}
         public void Add(string text)
         {
-            itemsText[itemIndex] = text;
-            itemsValue[itemIndex] = null;
-            itemsColor[itemIndex] = usedColor;
-            itemIndex++;
-        }
-        public object getValue()
-        {
-            return itemsValue[SelectetIndex];
+            Add(text, null);
         }
         public void Add(string text, object value)
         {
             itemsText[itemIndex] = text;
             itemsValue[itemIndex] = value;
-            itemsColor[itemIndex] = usedColor;
+            itemsBackColor[itemIndex] = UsedBackColor;
+            itemsForeColor[itemIndex] = UsedForeColor;
             itemIndex++;
         }
         public int ItemsLenght()
@@ -199,13 +195,5 @@ namespace CityGame.Control
             this.Height = (itemIndex * (ItemHeight + ItemDistance)) + 8 - ItemDistance;
             Refresh();
         }
-        public void UseColor(Color color)
-        {
-            usedColor = color;
-        }
-
-
-        
-
     }
 }

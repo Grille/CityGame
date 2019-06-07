@@ -43,7 +43,7 @@ namespace CityGame
             updateAnimator();
 
             buffer.Reset();
-            Program.MainWindow.Ctx.Clear(Color.Navy);
+            Program.MainWindow.Ctx.Clear(Color.DarkSlateGray);
             //GL2D.ClearBuffer(Color.Navy);
             int groundGraphicsIndex = 0, objectGraphicsIndex = 0;
 
@@ -271,8 +271,6 @@ namespace CityGame
                 usedShader = basicShader;
 
             Program.MainWindow.Ctx.Render(buffer, usedShader);
-
-            Console.WriteLine(buffer.Index);
         }
         private void renderZonePreview(int pos)
         {

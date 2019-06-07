@@ -27,6 +27,7 @@ namespace CityGame
 
         DateTime date;
         Random rnd;
+        public ScriptAPI API;
         public GameObject[] Objects;
         public Zone[] Zones;
         public GameArea[] Areas;
@@ -78,6 +79,8 @@ namespace CityGame
 
             timerRender.Tick += new System.EventHandler(render);
             timerLogic.Tick += new System.EventHandler(Simulate);
+
+            API = new ScriptAPI(this);
         }
 
         public void Start()

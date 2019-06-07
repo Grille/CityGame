@@ -33,19 +33,21 @@ Attributes {
   groundNeighbors = [];
   structNeighbors = [];
 
-  demolitionTyp = [empety];
+  demolitionTyp = [empty];
   size = 1;
   decayTyp = [debris];
   destroyTyp = [debris];
-  canBuiltOn = [empety,conifer to forestDestroyed,debris];
+  canBuiltOn = [empty,conifer to forestDestroyed,debris];
 }
 
-<empety> {
+<empty> {
   canBuiltOn = [];
-
-  ResourcesDependent = [[res.waste,1000,i.max,effect.down,0]];
-  ResourcesEffect = [[effect.down,res.waste,-100]];
-  downgradeTyp = [garbage];
+  onupdate = (){
+	if (resources.waste.Value > 1000 && api.GetAreaValue(area.road) > 0){
+	  api.ChangeTypTo(objects.garbage);
+	  resources.waste.Value -= 100;
+	}
+  }
 }
  
 
@@ -72,15 +74,14 @@ Attributes {
   name = "Conifer";  
   structPath = "../Data/texture/nature/Conifer";
   buildMode = 1;
-  canBuiltOn = [empety];
-  
-
+  canBuiltOn = [empty];
   downgradeTyp = [coniferDead];
   destroyTyp = [forestDestroyed];
-  
   AreaPermanent = [[area.pollution,6,1]];
-  
-  AreaDependent = [[area.pollution,0, i.max ,effect.down ,1]];
+  onupdate = (){
+	if (api.GetAreaValue(area.pollution) < 0) 
+	  api.ChangeTypTo(self.DowngradeTyp);
+  }
  
 }
 <deciduous>:conifer {
@@ -100,12 +101,9 @@ Attributes {
   upgradeTyp = [conifer];
   destroyTyp = [forestDestroyed];
   AreaPermanent = [area.pollution,5,-1];
-  AreaDependent = [area.pollution,0,i.max ,effect.up ,0];
   onupdate = (){
-    
-    System.Console.WriteLine("update");
-	//if (area.pollution < 0) 
-	//me.changeTo(me.upgradeTyp);
+	if (api.GetAreaValue(area.pollution) > 0) 
+	  api.ChangeTypTo(self.UpgradeTyp);
   }
 }
 <deciduousDead>:coniferDead {
@@ -134,12 +132,14 @@ Attributes {
 
 <garbage> {
   name = "Garbage";structPath = "../Data/texture/urban/disposal/rubbish";
-  canBuiltOn = [empety];
-  AreaPermanent = [[area.pollution,10,-4]];
-  ResourcesDependent = [[res.waste,i.min,800,effect.up,0]];
-  ResourcesEffect = [[effect.up,res.waste,+100]];
+  AreaPermanent = [area.pollution,10,-4];
   ResourcesMonthly = [res.waste,-10];
-  upgradeTyp = [empety];
+  onupdate = (){
+	if (resources.waste.Value <= 500){
+	  api.ChangeTypTo(objects.empty);
+	  resources.waste.Value += 100;
+	}
+  }
 }
 <debris> {
   name = "debris"; structPath = "../Data/texture/urban/debris/debris";canBuiltOn = [];
@@ -209,8 +209,24 @@ Attributes {
   structPath = "../Data/texture/urban/road/BL";
 }
 
- // supply 41 to 60
+<railRoad> {
+  name = "rail road"; 
+  groundMode = gmode.all; 
+  groundNeighbors = [railRoad]; 
+  groundPath = "../Data/texture/urban/road/RR";
+  AreaPermanent = [area.road,1,100]; //typ,size,value
+  ResourcesBuild = [res.money,-8];
+  ResourcesMonthly = [res.money,-2];
+}
 
+ // supply 41 to 60
+/*
+<powerLine> {
+  structMode = gmode.all; 
+  structNeighbors = [dirtWay to oceanBridge];
+  structPath = "../Data/texture/urban/power/PL";
+}
+*/
 <coalPowerPlant> {
   name = "coal power plant";size = 3; 
   structPath = "../Data/texture/urban/power/KKW";
@@ -238,7 +254,7 @@ Attributes {
   AreaDependent = [[area.road,100,i.max,effect.deacy, 1]];
   ResourcesPermanent = [[res.energy,15000]];
   ResourcesBuild = [[res.money,-20000]];
-  ResourcesMonthly = [[res.money,-10],[res.waste,1000]];
+  ResourcesMonthly = [[res.money,-10],[res.waste,500]];
 }
 <solarPowerPlant> {
   name = "solar power plant"; size = 3; 
@@ -260,31 +276,47 @@ Attributes {
 
 <waterPump> {
   name = "water pump";structPath = "../Data/texture/urban/water/WP";
-  AreaDependent = [[area.water,1,i.max,5, 1],[area.pollution,0,i.max,2 ,1]];
-  ResourcesPermanent = [[res.water,1800]];
-  ResourcesBuild = [[res.money,-300]];
-  ResourcesMonthly = [[res.money,-10]];
+  ResourcesPermanent = [res.water,1800];
+  ResourcesBuild = [res.money,-300];
+  ResourcesMonthly = [res.money,-10];
   downgradeTyp = [pollutedWaterPump];
+  onupdate = (){
+	if (api.GetAreaValue(area.water) <= 0) 
+	  api.ChangeTypTo(self.DestroyTyp);
+	if (api.GetAreaValue(area.pollution) < 0) 
+	  api.ChangeTypTo(self.DowngradeTyp);
+  }
 }
 <pollutedWaterPump> {
   name = "polluted water pump";structPath = "../Data/texture/urban/water/WPp";
-  AreaDependent = [[area.water,1,i.max,5, 1],[area.pollution,0,i.max,1 ,0]];
-  ResourcesMonthly = [[res.money,-10]];
+  ResourcesMonthly = [res.money,-10];
   upgradeTyp = [waterPump];
+  onupdate = (){
+	if (api.GetAreaValue(area.water) <= 0) 
+	  api.ChangeTypTo(self.DestroyTyp);
+	if (api.GetAreaValue(area.pollution) > 0) 
+	  api.ChangeTypTo(self.UpgradeTyp);
+  }
 }
 <waterTower> {
   name = "water tower";structPath = "../Data/texture/urban/water/WT";
-  AreaDependent = [[area.pollution,0,i.max,2 ,1]];
   downgradeTyp = [pollutedWaterTower];
-  ResourcesPermanent = [[res.water,1400]];
-  ResourcesBuild = [[res.money,-600]];
-  ResourcesMonthly = [[res.money,-10]];
+  ResourcesPermanent = [res.water,1400];
+  ResourcesBuild = [res.money,-600];
+  ResourcesMonthly = [res.money,-10];
+  onupdate = (){
+	if (api.GetAreaValue(area.pollution) < 0) 
+	  api.ChangeTypTo(self.DowngradeTyp);
+  }
 }
 <pollutedWaterTower> {
   name = "polluted water tower";structPath = "../Data/texture/urban/water/WTp";
-  AreaDependent = [[area.pollution,0,i.max,1 ,0]];
-  ResourcesMonthly = [[res.money,-10]];
+  ResourcesMonthly = [res.money,-10];
   upgradeTyp = [waterTower];
+  onupdate = (){
+	if (api.GetAreaValue(area.pollution) > 0) 
+	  api.ChangeTypTo(self.UpgradeTyp);
+  }
 }
 <sewagePlant> {
   name = "sewage plant"; size = 3; structPath = "../Data/texture/urban/water/KW";
@@ -295,11 +327,14 @@ Attributes {
 
 <landfill> {
   name = "landfill"; groundPath = "../Data/texture/urban/disposal/MD";
-  ResourcesDependent = [[res.waste,200,i.max,effect.up,0]];
-  ResourcesEffect = [[effect.up,res.waste,-200]];
-  ResourcesMonthly = [[res.money,-10]];
-  upgradeTyp = [filedLandfill];
-  ResourcesBuild = [[res.money,-50]];
+  ResourcesMonthly = [res.money,-10];
+  ResourcesBuild = [res.money,-50];
+  onupdate = (){
+	if (resources.waste.Value > 200){
+	  api.ChangeTypTo(objects.filedLandfill);
+	  resources.waste.Value -= 200;
+	}
+  }
 }
 <filedLandfill> {
   name = "filed landfill";
@@ -307,12 +342,14 @@ Attributes {
   groundNeighbors = [filedLandfill]; 
   groundPath = "../Data/texture/urban/disposal/MDF";
   structPath = "../Data/texture/urban/disposal/rubbish";
-
-  AreaPermanent = [[area.pollution,5,-3]];
-  ResourcesDependent = [[res.waste,i.min,0,effect.down,0]];
-  ResourcesEffect = [[effect.down,res.waste,+200]];
-  ResourcesMonthly = [[res.money,-10],[res.waste,-20]];
-  downgradeTyp = [landfill];
+  AreaPermanent = [area.pollution,5,-3];
+  ResourcesMonthly = [res.money,-10,  res.waste,-20];
+  onupdate = (){
+	if (resources.waste.Value <= 0){
+	  api.ChangeTypTo(objects.landfill);
+	  resources.waste.Value += 200;
+	}
+  }
 }
 <incinerator> {
   name = "incinerator";size = 2;structPath = "../Data/texture/urban/disposal/MV";
@@ -328,7 +365,7 @@ Attributes {
 <res1> {
   name = "Residential"; structPath = "../Data/texture/urban/Residential/W0";
   AreaDependent = [[area.road,1,i.max,effect.deacy, 1]];
-  decayTyp = [empety];
+  decayTyp = [empty];
   buildMode = bmode.rnarea;
 }
 <res2> {
@@ -406,10 +443,9 @@ Attributes {
   AreaDependent = [[area.road,1,i.max,5, 1]];
   buildMode = bmode.rnarea;
 }
-<_> {
-  name = "Comercial"; size = 3; structPath = "../Data/texture/urban/public/G";
+<prison> {
+  name = "prison"; size = 3; structPath = "../Data/texture/urban/public/G";
   AreaDependent = [[area.road,1,i.max,5, 1]];
-  buildMode = bmode.rnarea;
 }
 
 <hospital> {

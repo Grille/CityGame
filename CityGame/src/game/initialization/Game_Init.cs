@@ -15,6 +15,7 @@ using OpenTK.Graphics.OpenGL;
 
 using GGL;
 using CsGL2D;
+using System.Threading;
 
 namespace CityGame
 {
@@ -27,17 +28,6 @@ namespace CityGame
 
         public int InitOpenGL()
         {
-            int code;
-
-            //ctx = new Context();
-
-            //if ((code = GL2D.IsRendererReady()) > 0) return code;
-
-            
-            //GL2D.UseShader(GL2D.CreateShader());
-            //GL2D.CreateBuffer(512);
-
-            
             Console.WriteLine(GL.GetString(StringName.Renderer));
             Console.WriteLine(GL.GetString(StringName.Version));
 
@@ -57,8 +47,6 @@ namespace CityGame
         }
         public void LoadData(ProgressBar bar)
         {
-            bar.Value = 0;
-            bar.Maximum = 256;
             highViewMap = new Texture(4, 4/*, new byte[] { 255, 0, 0 }*/);
             //effects: 0=not, 1=up, 2=down, 3=break, 4=deacy, 5=destroy 6=entf//
             //AreaPermanent->typ: 0=water, 1=nature, 2=road,3=saltwater
@@ -74,7 +62,7 @@ namespace CityGame
             {
                 string name = names[i];
                 Zones[i] = new Zone();
-                Zones[i].Load(
+                Zones[i].Load(i, name,
                     parser.GetAttribute<string>(name, "name"),
                     parser.GetAttribute<byte[]>(name, "color"),
                     parser.GetAttribute<byte[]>(name, "supportTyp"),
@@ -91,7 +79,7 @@ namespace CityGame
             {
                 string name = names[i];
                 Resources[i] = new GameResources();
-                Resources[i].Load(
+                Resources[i].Load(i, name,
                     parser.GetAttribute<string>(name, "name"),
                     parser.GetAttribute<int>(name, "initValue"),
                     parser.GetAttribute<bool>(name, "physical"), 
@@ -108,7 +96,7 @@ namespace CityGame
             {
                 string name = names[i];
                 Areas[i] = new GameArea();
-                Areas[i].Load(
+                Areas[i].Load(i,name,
                     parser.GetAttribute<string>(name, "name"),
                     parser.GetAttribute<bool>(name, "smooth")
                     );
@@ -127,12 +115,14 @@ namespace CityGame
             parser.ParseFile("../Data/config/gameObject.gd");
             names = parser.ObjectNames;
             Objects = new GameObject[names.Length];
+            bar.Value = 0;
+            bar.Maximum = Objects.Length;
             for (int i = 0; i < Objects.Length; i++)
             {
                 bar.Value++;
                 string name = names[i];
                 Objects[i] = new GameObject(i);
-                Objects[i].LoadBasic(name,
+                Objects[i].LoadBasic(i, name,
                     parser.GetAttribute<string>(name, "name"),
                     parser.GetAttribute<string>(name, "groundPath"),
                     parser.GetAttribute<string>(name, "structPath"),
@@ -164,7 +154,6 @@ namespace CityGame
                     );
             }
             parser.Clear();
-
             groundTexture = new Texture("../Data/texture/ground/texture.png");
             zoneTexture = new Texture("../Data/texture/effect/zoon.png");
             gui = new Texture("../Data/texture/gui/aktivField.png");

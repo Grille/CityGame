@@ -40,7 +40,8 @@
             // 
             // progressBarLoad
             // 
-            this.progressBarLoad.ForeColor = System.Drawing.Color.Lime;
+            this.progressBarLoad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.progressBarLoad.ForeColor = System.Drawing.Color.YellowGreen;
             this.progressBarLoad.Location = new System.Drawing.Point(43, 95);
             this.progressBarLoad.Name = "progressBarLoad";
             this.progressBarLoad.Size = new System.Drawing.Size(98, 45);
@@ -50,6 +51,7 @@
             // 
             // pictureBoxLoad
             // 
+            this.pictureBoxLoad.BackColor = System.Drawing.Color.Black;
             this.pictureBoxLoad.Location = new System.Drawing.Point(43, 40);
             this.pictureBoxLoad.Name = "pictureBoxLoad";
             this.pictureBoxLoad.Size = new System.Drawing.Size(98, 52);
@@ -58,6 +60,7 @@
             // 
             // pictureBoxLogo
             // 
+            this.pictureBoxLogo.BackColor = System.Drawing.Color.Black;
             this.pictureBoxLogo.Location = new System.Drawing.Point(147, 40);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
             this.pictureBoxLogo.Size = new System.Drawing.Size(98, 52);

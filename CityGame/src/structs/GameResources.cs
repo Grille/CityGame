@@ -18,11 +18,9 @@ namespace CityGame
 {
     public class GameResources 
     {
-        private string name;
-        public string Name
-        {
-            get { return name; }
-        }
+        public string Title { get; private set; }
+        public string Name { get; private set; }
+        public int ID { get; private set; }
         private bool canBeNegative;
         private bool storable;
         public double Value;
@@ -34,9 +32,11 @@ namespace CityGame
         public GameResources()
         {
         }
-        public void Load(string name, int value, bool canBeNegative, bool storable)
+        public void Load(int id,string name, string title,int value, bool canBeNegative, bool storable)
         {
-            this.name = name;
+            this.ID = id;
+            this.Name = name;
+            Title = title;
             this.canBeNegative = canBeNegative;
             this.storable = storable;
             this.InitValue = value;

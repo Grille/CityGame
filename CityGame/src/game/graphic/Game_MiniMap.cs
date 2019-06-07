@@ -35,7 +35,7 @@ namespace CityGame
                 //data[iDst++] = (byte)(100-(value < 0 ? (byte)Math.Abs(value) : (byte)0));//g
                 //data[iDst++] = (byte)(100-(value > 0 ? (byte)Math.Abs(value) : (byte)0));//r
                 
-                if (Objects[World.Typ[pos]].Texture == null)
+                if (Objects[World.Typ[pos]].Texture == null || Objects[World.Typ[pos]].Texture[World.TileStruct[pos]].Length == 0)
                 {
                     if (Objects[World.Typ[pos]].Ground == null)
                     {
@@ -54,24 +54,32 @@ namespace CityGame
                     }
                     else
                     {
-                        Color color = Color.Gray;
-                        data[iDst++] = color.B;
-                        data[iDst++] = color.G;
-                        data[iDst++] = color.R;
+                        if (World.Typ[pos] == 1 || World.Typ[pos] == 2)
+                        {
+                            Color color = Objects[World.Typ[pos]].Ground[0].AverageColor;
+                            float pz = (float)color.A / 255f;
+                            data[iDst++] = (byte)(color.B);
+                            data[iDst++] = (byte)(color.G);
+                            data[iDst++] = (byte)(color.R);
+                        }
+                        else
+                        {
+                            Color color = Objects[World.Typ[pos]].Ground[0].AverageColor;
+                            float pz = (float)color.A / 255f;
+                            data[iDst++] = (byte)(color.B * pz + 17 * (1 - pz));
+                            data[iDst++] = (byte)(color.G * pz + 100 * (1 - pz));
+                            data[iDst++] = (byte)(color.R * pz + 38 * (1 - pz));
+                        }
                     }
 
                 }
                 else
                 {
-                    Color color = Color.Gray;
-                    data[iDst++] = color.B;
-                    data[iDst++] = color.G;
-                    data[iDst++] = color.R;
-                    //Color color = Objects[World.Typ[pos]].Texture[World.TileStruct[pos]][World.Version[pos]].BaseColor;
-                    //float pz = (float)color.A / 255f;
-                    //data[iDst++] = (byte)(color.B * pz + 17 * (1 - pz));
-                    //data[iDst++] = (byte)(color.G * pz + 100 * (1 - pz));
-                    //data[iDst++] = (byte)(color.R * pz + 38 * (1 - pz));
+                    Color color = Objects[World.Typ[pos]].Texture[World.TileStruct[pos]][World.Version[pos]].AverageColor;
+                    float pz = (float)color.A / 255f;
+                    data[iDst++] = (byte)(color.B * pz + 17 * (1 - pz));
+                    data[iDst++] = (byte)(color.G * pz + 100 * (1 - pz));
+                    data[iDst++] = (byte)(color.R * pz + 38 * (1 - pz));
 
                 }
                 

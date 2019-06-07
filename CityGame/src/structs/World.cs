@@ -17,9 +17,9 @@ using GGL.Graphic;
 
 namespace CityGame
 {
-    public partial class World
+    public class World
     {
-        public int Width { get; private set; }
+        public int Width { get; private set; } 
         public int Height { get; private set; }
 
         public byte[] TypCount;
@@ -39,7 +39,6 @@ namespace CityGame
         public World(int width, int height)
         {
             BuildWorld(width, height);
-
         }
         public void BuildWorld(int width, int height)
         {

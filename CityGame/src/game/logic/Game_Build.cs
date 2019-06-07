@@ -88,7 +88,6 @@ namespace CityGame
                     autoTile(pos, ix, iy);
                 }
             }
-
             //set Data
         }
         public void Clear(int pos)
@@ -145,24 +144,16 @@ namespace CityGame
             byte code = 0;
 
             //byte l = 0, u = 0, r = 0, o = 0;
-            if (graphicNeighbors.Length == 1 && graphicNeighbors[0] == typ)
+
+
+            for (int i = 0; graphicNeighbors != null && i < graphicNeighbors.Length; i++)
             {
-                if (World.Typ[pos - 1] == typ) l = 1;//l
-                if (World.Typ[pos + World.Width] == typ) u = 1;//u
-                if (World.Typ[pos + 1] == typ) r = 1;//r
-                if (World.Typ[pos - World.Width] == typ) o = 1;//o
+                if (x > 0 && World.Typ[pos - 1] == graphicNeighbors[i]) l = 1;//l
+                if (x + 1 < World.Width && World.Typ[pos + 1] == graphicNeighbors[i]) r = 1;//r
+                if (y > 0 && World.Typ[pos - World.Width] == graphicNeighbors[i]) o = 1;//o
+                if (y + 1 < World.Height && World.Typ[pos + World.Width] == graphicNeighbors[i]) u = 1;//u
             }
 
-            else
-            {
-                for (int i = 0; graphicNeighbors != null && i < graphicNeighbors.Length; i++)
-                {
-                    if (x > 0 && World.Typ[pos - 1] == graphicNeighbors[i]) l = 1;//l
-                    if (x + 1 < World.Width && World.Typ[pos + 1] == graphicNeighbors[i]) r = 1;//r
-                    if (y > 0 && World.Typ[pos - World.Width] == graphicNeighbors[i]) o = 1;//o
-                    if (y + 1 < World.Height && World.Typ[pos + World.Width] == graphicNeighbors[i]) u = 1;//u
-                }
-            }
             code = (byte)(1 * l + 4 * r + 8 * o + 2 * u);
             //gmode{ not=0, all=1, foCu=2, foEn=3, cuEn=4, fo=5, cu=6, en=7, st=8}
             switch (graphicMode)
