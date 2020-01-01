@@ -72,8 +72,6 @@ namespace CityGame
 
             Console.WriteLine("loadData()");
             Program.Game.LoadData(progressBarLoad);
-            GGL.IO.ByteStream bs = new GGL.IO.ByteStream();
-            bs.ResetIndex();
 
             Program.Game.Cam = new Camera();
             Program.Game.World = new World(32, 32);

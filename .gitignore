@@ -1,4 +1,6 @@
 /.vs
 CityGame/bin
+CityGame/saves
 CityGame/obj
+packages
 *.csproj.user

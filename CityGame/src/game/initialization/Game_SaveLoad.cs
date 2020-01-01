@@ -23,60 +23,64 @@ namespace CityGame
     {
         public void Save(string path)
         {
-            ByteStream byteStream = new ByteStream();
+            using (var binary = new BinaryView(path, true))
+            {
+                byte saveV = 0;
+                binary.WriteByte(saveV);
 
-            byte saveV = 0;
-            byteStream.WriteByte(saveV);
+                binary.WriteString("name");
+                binary.WriteString("player");
+                binary.WriteSingle(Cam.PosX);
+                binary.WriteSingle(Cam.PosY);
+                binary.WriteSingle(Cam.Scale);
 
-            byteStream.WriteString("name");
-            byteStream.WriteString("player");
-            byteStream.WriteFloat(Cam.PosX);
-            byteStream.WriteFloat(Cam.PosY);
-            byteStream.WriteFloat(Cam.Scale);
+                int i = 0;
+                binary.WriteInt32((int)Resources[i++].Value);
+                binary.WriteInt32((int)Resources[i++].Value);
+                binary.WriteInt32((int)Resources[i++].Value);
+                binary.WriteInt32((int)Resources[i++].Value);
 
+                binary.WriteInt32(World.Width);
+                binary.WriteInt32(World.Height);
+                binary.WriteArray(World.Ground);
+                binary.WriteArray(World.Typ);
+                binary.WriteArray(World.Version);
+                binary.WriteArray(World.Zone);
 
-            int i = 0;
-            byteStream.WriteInt((int)Resources[i++].Value);
-            byteStream.WriteInt((int)Resources[i++].Value);
-            byteStream.WriteInt((int)Resources[i++].Value);
-            byteStream.WriteInt((int)Resources[i++].Value);
+                binary.Compress();
+            }
 
-            byteStream.WriteInt(World.Width);
-            byteStream.WriteInt(World.Height);
-            byteStream.WriteByteArray(World.Ground, CompressMode.Auto);
-            byteStream.WriteByteArray(World.Typ, CompressMode.Auto);
-            byteStream.WriteByteArray(World.Version, CompressMode.Auto);
-            byteStream.WriteByteArray(World.Zone, CompressMode.Auto);
-
-            byteStream.Save(path);
         }
         public void Load(string path)
         {
-            ByteStream byteStream = new ByteStream(path);
+            using (var binary = new BinaryView(path, false))
+            {
+                binary.Decompress();
 
-            byte saveV = byteStream.ReadByte();//v
+                byte saveV = binary.ReadByte();//v
 
-            byteStream.ReadString();//name
-            byteStream.ReadString();//player
-            Cam.PosX = byteStream.ReadFloat();
-            Cam.PosY = byteStream.ReadFloat();
-            Cam.Scale = byteStream.ReadFloat();
+                binary.ReadString();//name
+                binary.ReadString();//player
+                Cam.PosX = binary.ReadSingle();
+                Cam.PosY = binary.ReadSingle();
+                Cam.Scale = binary.ReadSingle();
 
-            int ir = 0;
-            Resources[ir++].Value = byteStream.ReadInt();
-            Resources[ir++].Value = byteStream.ReadInt();
-            Resources[ir++].Value = byteStream.ReadInt();
-            Resources[ir++].Value = byteStream.ReadInt();
+                int ir = 0;
+                Resources[ir++].Value = binary.ReadInt32();
+                Resources[ir++].Value = binary.ReadInt32();
+                Resources[ir++].Value = binary.ReadInt32();
+                Resources[ir++].Value = binary.ReadInt32();
 
-            World.BuildWorld(byteStream.ReadInt(), byteStream.ReadInt());
+                int width = binary.ReadInt32(), height = binary.ReadInt32();
+                World = new World(width, height);
 
-
-            World.Ground = byteStream.ReadByteArray();
-            byte[] newTyp = byteStream.ReadByteArray();
-            for (int i = 0; i < World.Width * World.Height; i++) if (newTyp[i] != 0) World.Typ[i] = newTyp[i];
-                    //World.Build(newTyp[i], i);
-            World.Version = byteStream.ReadByteArray();
-            World.Zone = byteStream.ReadByteArray();
+                World.Ground = binary.ReadArray<byte>();
+                byte[] newTyp = binary.ReadArray<byte>();
+                for (int i = 0; i < World.Width * World.Height; i++) if (newTyp[i] != 0) World.Typ[i] = newTyp[i];
+                //World.Build(newTyp[i], i);
+                World.Version = binary.ReadArray<byte>();
+                World.Zone = binary.ReadArray<byte>();
+            }
         }
         public void GenerateMap(Image map)
         {

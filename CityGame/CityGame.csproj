@@ -46,17 +46,17 @@
     <ApplicationIcon>CityIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ByteStream">
-      <HintPath>lib\ByteStream.dll</HintPath>
+    <Reference Include="BinaryView, Version=0.1.6.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GGL.BinaryView.0.1.6.2\lib\net45\BinaryView.dll</HintPath>
     </Reference>
     <Reference Include="CsGL2D">
       <HintPath>lib\CsGL2D.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK">
-      <HintPath>lib\OpenTK.dll</HintPath>
+    <Reference Include="OpenTK, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.1.0\lib\net20\OpenTK.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK.GLControl">
-      <HintPath>lib\OpenTK.GLControl.dll</HintPath>
+    <Reference Include="OpenTK.GLControl, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.GLControl.3.1.0\lib\net20\OpenTK.GLControl.dll</HintPath>
     </Reference>
     <Reference Include="Parser, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -141,6 +141,8 @@
     <None Include="data\shaders\objectVS.glsl" />
     <None Include="data\shaders\reflectFS.glsl" />
     <None Include="data\shaders\reflectVS.glsl" />
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="City.ico" />

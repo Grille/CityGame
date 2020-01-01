@@ -38,10 +38,6 @@ namespace CityGame
 
         public World(int width, int height)
         {
-            BuildWorld(width, height);
-        }
-        public void BuildWorld(int width, int height)
-        {
             this.Width = width;
             this.Height = height;
             Ground = new byte[width * height];

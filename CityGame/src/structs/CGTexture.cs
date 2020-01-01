@@ -15,10 +15,10 @@ namespace CityGame
     public class CGTexture : Texture
     {
         public Color AverageColor { private set; get; }
-        public CGTexture(string path) {
-            addToAtlas(new Bitmap(path));
+        public CGTexture(string path) : base(path){
+            //addToAtlas(new Bitmap(path));
         }
-
+        /*
         new void addToAtlas(Image img)
         {
             Bitmap bitmap = (Bitmap)img;
@@ -48,7 +48,9 @@ namespace CityGame
             g /= colorCount;
             b /= colorCount;
             AverageColor = Color.FromArgb(a,r,g,b);
-            base.addToAtlas(img);
+            //base.a
+            //base.addToAtlas(img);
         }
+        */
     }
 }
